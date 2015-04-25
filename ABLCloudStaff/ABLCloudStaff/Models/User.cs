@@ -16,9 +16,16 @@ namespace ABLCloudStaff.Models
         public int UserID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public int Rank { get; set; }
+        public ERank Rank { get; set; }
 
         public virtual List<UserStatus> UserStatuses { get; set; }
         public virtual List<UserLocation> UserLocations { get; set; }
+    }
+
+    public enum ERank
+    {
+        General = 0,
+        Admin = 1,
+        Visitor = 2
     }
 }
