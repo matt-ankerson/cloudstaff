@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Data.Entity;
+using System.Data.SqlClient;
 
 namespace ABLCloudStaff.Models
 {
@@ -14,6 +15,27 @@ namespace ABLCloudStaff.Models
     /// </summary>
     public class ABLCloudStaffContext : DbContext
     {
+        public ABLCloudStaffContext() : base(ConnectionString)
+        {
+
+        }
+
+        private static string ConnectionString
+        {
+            get
+            {
+                var builder = new SqlConnectionStringBuilder
+                {
+                    DataSource=@".\SQLEXPRESS",
+                    InitialCatalog="ABLCloudStaff",
+                    IntegratedSecurity=true,
+                    MultipleActiveResultSets =true, // For Entity Framework case
+                };
+
+                return builder.ConnectionString;
+            }
+        }
+
         public DbSet<Core> CoreTable { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Status> Statuses { get; set; }

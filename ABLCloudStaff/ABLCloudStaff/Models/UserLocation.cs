@@ -16,6 +16,7 @@ namespace ABLCloudStaff.Models
         public int UserLocationID { get; set; }
         public int UserID { get; set; }
         public int LocationID { get; set; }
+        public DateTime DateAdded { get; set; }
 
         public virtual User User { get; set; }
         public virtual Location Location { get; set; }
