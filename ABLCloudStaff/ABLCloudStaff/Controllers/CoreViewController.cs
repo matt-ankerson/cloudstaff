@@ -27,7 +27,7 @@ namespace ABLCloudStaff.Controllers
                 try
                 {
                     // Eagerly pull all the info we will need
-                    coreInfo = db.CoreTable.Include("User").Include("Status").Include("Location").ToList();
+                    coreInfo = db.CoreTable.Include("User").ToList();
                 }
                 catch (Exception ex)
                 {

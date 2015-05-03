@@ -18,7 +18,7 @@ namespace ABLCloudStaff.Models
         public int LocationID { get; set; }     // Will this be a compulsary field?
         public int StatusID { get; set; }
         public DateTime StateStart { get; set; }
-        public DateTime StateEnd { get; set; }
+        public DateTime? StateEnd { get; set; }
 
         public virtual User User { get; set; }
         public virtual Status Status { get; set; }
