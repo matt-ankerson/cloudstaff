@@ -22,7 +22,7 @@ namespace ABLCloudStaff.Models
         {
             base.Seed(context);
 
-            // Populate all tables in the appropriate order
+            // Populate tables
             PopulateStatuses();
             PopulateLocations();
             PopulateUsers();
