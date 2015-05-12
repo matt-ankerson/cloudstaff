@@ -24,6 +24,9 @@ namespace ABLCloudStaff.Controllers
                 {
                     // Eagerly pull all the info we will need
                     coreInfo = db.CoreTable.Include("User").ToList();
+
+                    // this line is not necessary. It was put in for testing the gitignore
+                    int num = 6;
                 }
                 catch (Exception ex)
                 {
