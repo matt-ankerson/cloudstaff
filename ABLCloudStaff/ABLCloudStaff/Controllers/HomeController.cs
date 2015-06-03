@@ -16,26 +16,23 @@ namespace ABLCloudStaff.Controllers
         /// <returns>An ActionResult object</returns>
         public ActionResult Index()
         {
+
+            List<Core> coreInfo = new List<Core>();
+
             using (var db = new ABLCloudStaffContext())
             {
-                List<Core> coreInfo = new List<Core>();
-
                 try
                 {
                     // Eagerly pull all the info we will need
                     coreInfo = db.CoreTable.Include("User").ToList();
-
-                    // this line is not necessary. It was put in for testing the gitignore
-                    int num = 6;
                 }
                 catch (Exception ex)
                 {
                     throw new Exception(ex.Message);
-                }
-
-
-                return View(coreInfo);
+                }               
             }
+
+            return View(coreInfo);
         }
 
         public ActionResult About()

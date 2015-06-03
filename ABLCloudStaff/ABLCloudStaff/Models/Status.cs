@@ -15,6 +15,7 @@ namespace ABLCloudStaff.Models
     {
         public int StatusID { get; set; }
         public string Name { get; set; }
+        public bool Worksite { get; set; }
 
         public virtual List<UserStatus> UserStatuses { get; set; }
     }
