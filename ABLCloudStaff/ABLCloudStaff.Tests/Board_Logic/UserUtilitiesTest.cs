@@ -30,5 +30,25 @@ namespace ABLCloudStaff.Tests.Board_Logic
             // Assert
             CollectionAssert.AllItemsAreUnique(actual);
         }
+
+        [TestMethod]
+        public void TestGetUser()
+        {
+            // Arrange
+            User expected = new User();
+            User actual = new User();
+            int userID = 0;
+
+            // Act
+            using (var context = new ABLCloudStaffContext())
+            {
+                expected = context.Users.Where(u => u.UserID == userID).FirstOrDefault();
+            }
+
+            actual = UserUtilities.GetUser(userID);
+
+            // Assert
+            Assert.AreEqual(actual, expected);
+        }
     }
 }

@@ -33,5 +33,29 @@ namespace ABLCloudStaff.Board_Logic
 
             return users;
         }
+
+        /// <summary>
+        /// Gets a single user
+        /// </summary>
+        /// <param name="userID">Which user do you want?</param>
+        /// <returns>The appropriate user</returns>
+        public static User GetUser(int userID)
+        {
+            User user = new User();
+
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    user = context.Users.Where(u => u.UserID == userID).FirstOrDefault();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
+            return user;
+        }
     }
 }
