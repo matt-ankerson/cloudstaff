@@ -11,6 +11,10 @@ namespace ABLCloudStaff.Models
     /// <summary>
     /// Holds IDs to User, Location and Status, amongst other metadata
     /// </summary>
+    /// <remarks>
+    /// A single instance of this object holds all the information relavent for one user
+    /// at the current moment in time.
+    /// </remarks>
     public class Core
     {
         public int CoreID { get; set; }

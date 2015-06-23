@@ -50,7 +50,7 @@ namespace ABLCloudStaff.Models
             };
 
             foreach (Core c in cores)
-                dbContext.CoreTable.Add(c);
+                dbContext.Cores.Add(c);
             dbContext.SaveChanges();
         }
 
