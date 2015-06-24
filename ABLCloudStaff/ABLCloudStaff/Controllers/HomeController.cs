@@ -16,23 +16,23 @@ namespace ABLCloudStaff.Controllers
         /// <returns>An ActionResult object</returns>
         public ActionResult Index()
         {
+
+            List<Core> coreInfo = new List<Core>();
+
             using (var db = new ABLCloudStaffContext())
             {
-                List<Core> coreInfo = new List<Core>();
-
                 try
                 {
                     // Eagerly pull all the info we will need
-                    coreInfo = db.CoreTable.Include("User").ToList();
+                    coreInfo = db.Cores.Include("User").ToList();
                 }
                 catch (Exception ex)
                 {
                     throw new Exception(ex.Message);
-                }
-
-
-                return View(coreInfo);
+                }               
             }
+
+            return View(coreInfo);
         }
 
         public ActionResult About()
