@@ -19,7 +19,7 @@ namespace ABLCloudStaff.Models
     {
         public int CoreID { get; set; }
         public int UserID { get; set; }
-        public int LocationID { get; set; }     // Will this be a compulsary field?
+        public int LocationID { get; set; }
         public int StatusID { get; set; }
         public DateTime StateStart { get; set; }
         public DateTime? StateEnd { get; set; }

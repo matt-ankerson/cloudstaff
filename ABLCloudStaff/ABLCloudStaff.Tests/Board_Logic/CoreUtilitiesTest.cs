@@ -116,5 +116,71 @@ namespace ABLCloudStaff.Tests.Board_Logic
             // Assert
             Assert.AreEqual(expected.Name, actual.Name);
         }
+
+        [TestMethod]
+        public void TestGetStatusByUserID()
+        {
+            // Arrange
+            int userID = 1;
+            Status expected;
+
+            // Act
+            Status actual = CoreUtilities.GetStatusByUserID(userID);
+
+            using (var context = new ABLCloudStaffContext())
+            {
+                Core thisCore = context.Cores.Include("Status").Where(c => c.UserID == userID).FirstOrDefault();
+                expected = thisCore.Status;
+            }
+
+            // Assert
+            Assert.AreEqual(expected.Name, actual.Name);
+        }
+
+        [TestMethod]
+        public void TestUpdateStatus()
+        {
+            // Arrange
+            int userID = 1;
+            int newStatusID = 2;
+            Status expected;
+            Status actual;
+
+            // Act
+            using (var context = new ABLCloudStaffContext())
+            {
+                expected = context.Statuses.Where(s => s.StatusID == newStatusID).FirstOrDefault();
+
+                CoreUtilities.UpdateStatus(userID, newStatusID);
+                Core thisCore = context.Cores.Include("Status").Where(c => c.UserID == userID).FirstOrDefault();
+                actual = thisCore.Status;
+            }
+
+            // Assert
+            Assert.AreEqual(expected.Name, actual.Name);
+        }
+
+        [TestMethod]
+        public void TestUpdateLocation()
+        {
+            // Arrange
+            int userID = 1;
+            int newLocID = 1;
+            Location expected;
+            Location actual;
+
+            // Act
+            using (var context = new ABLCloudStaffContext())
+            {
+                expected = context.Locations.Where(l => l.LocationID == newLocID).FirstOrDefault();
+
+                CoreUtilities.UpdateLocation(userID, newLocID);
+                Core thisCore = context.Cores.Include("Location").Where(c => c.LocationID == newLocID).FirstOrDefault();
+                actual = thisCore.Location;
+            }
+
+            // Assert
+            Assert.AreEqual(expected.Name, actual.Name);
+        }
     }
 }
