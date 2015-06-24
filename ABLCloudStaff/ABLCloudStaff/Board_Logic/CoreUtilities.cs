@@ -175,16 +175,99 @@ namespace ABLCloudStaff.Board_Logic
         }
 
         /// <summary>
-        /// 
+        /// Gets the Status held by a single Core instance
         /// </summary>
-        /// <param name="userID"></param>
-        /// <returns></returns>
+        /// <param name="userID">The UserID to search on</param>
+        /// <returns>The Status object we need</returns>
         public static Status GetStatusByUserID(int userID)
         {
-            // TODO
-            return null;
+            Core thisCore = new Core();
+            Status thisStatus = new Status();
+
+            try
+            {
+                using(var context = new ABLCloudStaffContext())
+                {
+                    // Eagerly load status
+                    thisCore = context.Cores.Include("Status").Where(c => c.UserID == userID).FirstOrDefault();
+                }
+                // Get the status
+                thisStatus = thisCore.Status;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return thisStatus;
+        }
+        
+        /// <summary>
+        /// Replace the status in the indicated core instance with the new desired status
+        /// </summary>
+        /// <param name="userID">The core instance to modify</param>
+        /// <param name="newStatusID">The id of the new Status</param>
+        public static void UpdateStatus(int userID, int newStatusID)
+        {
+            Core thisCore = new Core();
+            Status newStatus = new Status();
+
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    // Get the Core instance indicated by the given UserID
+                    thisCore = context.Cores.Where(c => c.UserID == userID).FirstOrDefault();
+
+                    // Get the new status from the status table
+                    newStatus = context.Statuses.Where(s => s.StatusID == newStatusID).FirstOrDefault();
+
+                    // Assign the new status to our Core instance
+                    thisCore.StatusID = newStatus.StatusID;
+                    thisCore.Status = newStatus;
+
+                    context.SaveChanges();
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
-        // Write methods to change statuses and locations
+        /// <summary>
+        /// Replace the location in the indicated core instance with the new desired location
+        /// </summary>
+        /// <param name="userID">The core instance to modify</param>
+        /// <param name="newLocID">The id of the new Location</param>
+        public static void UpdateLocation(int userID, int newLocID)
+        {
+            Core thisCore = new Core();
+            Location thisLoc = new Location();
+
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    // Get the Core instance indicated by the given userID
+                    thisCore = context.Cores.Where(c => c.UserID == userID).FirstOrDefault();
+
+                    // Get the new location from the location table
+                    thisLoc = context.Locations.Where(l => l.LocationID == newLocID).FirstOrDefault();
+
+                    // Assign the new location to our Core instance
+                    thisCore.LocationID = thisLoc.LocationID;
+                    thisCore.Location = thisLoc;
+
+                    context.SaveChanges();
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
