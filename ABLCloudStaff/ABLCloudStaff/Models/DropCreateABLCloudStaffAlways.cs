@@ -39,14 +39,14 @@ namespace ABLCloudStaff.Models
             // We need core information entered for each user
             List<Core> cores = new List<Core>
             {
-                new Core {UserID = 1, StatusID = 1, LocationID = 1, StateStart = DateTime.Now, StateEnd = null},
-                new Core {UserID = 2, StatusID = 2, LocationID = 5, StateStart = DateTime.Now, StateEnd = null},
-                new Core {UserID = 3, StatusID = 3, LocationID = 3, StateStart = DateTime.Now, StateEnd = null},
-                new Core {UserID = 4, StatusID = 5, LocationID = 1, StateStart = DateTime.Now, StateEnd = null},
-                new Core {UserID = 5, StatusID = 6, LocationID = 1, StateStart = DateTime.Now, StateEnd = null},
-                new Core {UserID = 6, StatusID = 3, LocationID = 1, StateStart = DateTime.Now, StateEnd = null},
-                new Core {UserID = 7, StatusID = 3, LocationID = 2, StateStart = DateTime.Now, StateEnd = null},
-                new Core {UserID = 8, StatusID = 1, LocationID = 1, StateStart = DateTime.Now, StateEnd = null}
+                new Core {UserID = 1, StatusID = 1, LocationID = 1, StateStart = DateTime.Now},
+                new Core {UserID = 2, StatusID = 2, LocationID = 5, StateStart = DateTime.Now},
+                new Core {UserID = 3, StatusID = 3, LocationID = 3, StateStart = DateTime.Now},
+                new Core {UserID = 4, StatusID = 5, LocationID = 1, StateStart = DateTime.Now},
+                new Core {UserID = 5, StatusID = 6, LocationID = 1, StateStart = DateTime.Now},
+                new Core {UserID = 6, StatusID = 3, LocationID = 1, StateStart = DateTime.Now},
+                new Core {UserID = 7, StatusID = 3, LocationID = 2, StateStart = DateTime.Now},
+                new Core {UserID = 8, StatusID = 1, LocationID = 1, StateStart = DateTime.Now}
             };
 
             foreach (Core c in cores)

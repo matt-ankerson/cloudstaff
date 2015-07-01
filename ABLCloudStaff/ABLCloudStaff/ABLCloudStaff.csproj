@@ -119,6 +119,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Board_Logic\ChangeLogUtilities.cs" />
     <Compile Include="Board_Logic\CoreUtilities.cs" />
     <Compile Include="Board_Logic\UserUtilities.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -126,6 +127,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ABLCloudStaffContext.cs" />
+    <Compile Include="Models\ChangeLog.cs" />
     <Compile Include="Models\Core.cs" />
     <Compile Include="Models\DropCreateABLCloudStaffAlways.cs" />
     <Compile Include="Models\Location.cs" />
