@@ -14,28 +14,19 @@
     <link rel="stylesheet" href="../../Content/Site.css">
     <link rel="stylesheet" href="../../Content/bootstrap-switch.css">
     <script src="../../Scripts/bootstrap-switch.min.js"></script>
+    <script type="text/javascript" src="../../Scripts/init_modal.js"></script>
 
     <title>CloudStaff</title>
-    <script>
+
+    <script type="text/javascript">
         $(document).ready(function () {
-            // Launch modal when a module is clicked
-            $(".staff-modules").click(function (e) {
-                $("#myModal").modal();
-            });
-
-            $('#myModal').on('shown.bs.modal', function (e) {
-                // Get the name of the selected user
-                invoker = $(e.relatedTarget);
-                this_user = $invoker.find("staff-name-text").text();
-                console.log(this_user);
-
-                $("#modal-title").text(this_user);
-            });
 
             // Init toggle switches
             $("[name='staff-state']").bootstrapSwitch();
+
         });
     </script>
+
 </head>
 <body>
     <!-- Navigation Bar-->
@@ -61,12 +52,13 @@
     <br />
     <div class="row">
 
+        <!-- We require a variable to uniquely identify each module -->
+
         @foreach(var core in @Model)
         {
             <div class="col-md-2">
                 <div class="container-fluid">
-                    <div class="panel-group staff-modules">
-                        <a class="user-id" hidden="hidden" href="#">@core.UserID</a>
+                    <div id="@core.UserID" class="panel-group staff-modules">
                         <div class="panel-default panel">
                             <div class="panel-heading staff-name">
                                 <p class="staff-name-text">@core.User.FirstName @core.User.LastName</p>
@@ -103,28 +95,55 @@
                 <div class="modal-content">
                     <div class="modal-header" style="padding:35px 50px;">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 id="modal-title">Status</h4>
+                        <h4 id="modal-title"></h4>
                     </div>
+                    <!-- Modal Content -->
                     <div class="modal-body" style="padding:40px 50px;">
                         <form role="form">
                             <div class="form-group">
-                                <label for="usrname"><span class="glyphicon glyphicon-user"></span> Username</label>
-                                <input type="text" class="form-control" id="usrname" placeholder="Enter email">
+                                <label for="usrname"><span class="glyphicon glyphicon-user"></span> Status</label>
+
+                                <!-- Status Dropdown -->
+                                <div class="dropdown">
+                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        Dropdown
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                        <li><a href="#">Action</a></li>
+                                        <li><a href="#">Another action</a></li>
+                                        <li><a href="#">Something else here</a></li>
+                                        <li><a href="#">Separated link</a></li>
+                                    </ul>
+                                </div>
+                                <!-- /Status Dropdown -->
+
                             </div>
                             <div class="form-group">
-                                <label for="psw"><span class="glyphicon glyphicon-eye-open"></span> Password</label>
-                                <input type="text" class="form-control" id="psw" placeholder="Enter password">
+                                <label for="psw"><span class="glyphicon glyphicon-map-marker"></span> Location</label>
+
+                                <!-- Location Dropdown -->
+                                <div class="dropdown">
+                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        Dropdown
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                        <li><a href="#">Action</a></li>
+                                        <li><a href="#">Another action</a></li>
+                                        <li><a href="#">Something else here</a></li>
+                                        <li><a href="#">Separated link</a></li>
+                                    </ul>
+                                </div>
+                                <!-- /Location Dropdown -->
+
                             </div>
-                            <div class="checkbox">
-                                <label><input type="checkbox" value="" checked>Remember me</label>
-                            </div>
-                            <button type="submit" class="btn btn-success btn-block"><span class="glyphicon glyphicon-off"></span> Login</button>
+                            <button type="submit" class="btn btn-success btn-block"><span class="glyphicon glyphicon-floppy-disk"></span> Save & Update</button>
                         </form>
                     </div>
+                    <!-- Modal Footer -->
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
-                        <p>Not a member? <a href="#">Sign Up</a></p>
-                        <p>Forgot <a href="#">Password?</a></p>
                     </div>
                 </div>
 

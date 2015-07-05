@@ -35,6 +35,11 @@ namespace ABLCloudStaff.Controllers
             return View(coreInfo);
         }
 
+        public ActionResult GetStatusesAjax()
+        {
+            return Json("yoyo", JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
