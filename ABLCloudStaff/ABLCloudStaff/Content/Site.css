@@ -40,3 +40,36 @@ input[type="checkbox"].input-validation-error {
 .validation-summary-valid {
     display: none;
 }
+
+/* For the modal boxes*/
+
+.modal-header, h4, .close {
+    background-color: #5cb85c;
+    color: white !important;
+    text-align: center;
+    font-size: 30px;
+}
+
+.modal-footer {
+    background-color: #f9f9f9;
+}
+
+/* For the Toggle switches */
+.container-switch {
+    height: 35px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.staff-modules {
+    cursor: pointer;
+    margin-top: 40px;
+    box-shadow:1px 1px 5px 5px #C9C9C9;
+ -webkit-box-shadow:2px 2px 10px 10px #C9C9C9;
+ -moz-box-shadow:2px 2px 10px 10px #C9C9C9;
+}
+
+.staff-name {
+    white-space: nowrap;
+}
+

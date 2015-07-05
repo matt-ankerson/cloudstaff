@@ -24,7 +24,7 @@ namespace ABLCloudStaff.Controllers
                 try
                 {
                     // Eagerly pull all the info we will need
-                    coreInfo = db.Cores.Include("User").ToList();
+                    coreInfo = db.Cores.Include("User").Include("Status").ToList();
                 }
                 catch (Exception ex)
                 {
@@ -33,6 +33,11 @@ namespace ABLCloudStaff.Controllers
             }
 
             return View(coreInfo);
+        }
+
+        public ActionResult GetStatusesAjax()
+        {
+            return Json("yoyo", JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult About()

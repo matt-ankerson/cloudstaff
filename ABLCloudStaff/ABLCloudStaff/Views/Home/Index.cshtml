@@ -1,42 +1,155 @@
 ﻿@model List<ABLCloudStaff.Models.Core>
 
 @{
-    ViewBag.Title = "User Board";
+    ViewBag.Title = "CloudStaff";
+    Layout = null;
 }
 
-<div class="jumbotron">
-    <h1>CloudStaff</h1>
-    <p class="lead">
-        CloudStaff is a cloud based status and location logging tool for busy consultants.
-        With this tool, busy consultants can easily communicate their status and location
-        with colleagues.
-    </p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
-</div>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../Content/Site.css">
+    <link rel="stylesheet" href="../../Content/bootstrap-switch.css">
+    <script src="../../Scripts/bootstrap-switch.min.js"></script>
+    <script type="text/javascript" src="../../Scripts/init_modal.js"></script>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Current CloudStaff Users</h2>
-        <p>
-            You'll love CloudStaff just as much as these people do.
-        </p>
+    <title>CloudStaff</title>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            // Init toggle switches
+            $("[name='staff-state']").bootstrapSwitch();
+
+        });
+    </script>
+
+</head>
+<body>
+    <!-- Navigation Bar-->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("CloudStaff", "Index", "Home", null, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Status Board", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Create Group", "About", "Home")</li>
+                    <li>@Html.ActionLink("Administration", "Contact", "Home")</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+
+        <!-- We require a variable to uniquely identify each module -->
+
         @foreach(var core in @Model)
         {
-            <p>@core.User.FirstName @core.User.LastName</p>
+            <div class="col-md-2">
+                <div class="container-fluid">
+                    <div id="@core.UserID" class="panel-group staff-modules">
+                        <div class="panel-default panel">
+                            <div class="panel-heading staff-name">
+                                <p class="staff-name-text">@core.User.FirstName @core.User.LastName</p>
+                            </div>
+                            <div class="panel-body">
+                                <div class="container-switch">
+                                    <p>
+                                    @if (core.Status.Name == "In Office")
+                                    {
+                                        <input type="checkbox" name="staff-state" disabled="true" checked data-on-color="success" data-off-color="warning" data-on-text="In" data-off-text="Out">
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" name="staff-state" disabled="true" data-on-color="success" data-off-color="warning" data-off-text="Out" data-on-text="In">
+                                    }
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         }
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+
+    </div>      
+    <div class="row">
+        <div class="container">
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header" style="padding:35px 50px;">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 id="modal-title"></h4>
+                    </div>
+                    <!-- Modal Content -->
+                    <div class="modal-body" style="padding:40px 50px;">
+                        <form role="form">
+                            <div class="form-group">
+                                <label for="usrname"><span class="glyphicon glyphicon-user"></span> Status</label>
+
+                                <!-- Status Dropdown -->
+                                <div class="dropdown">
+                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        Dropdown
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                        <li><a href="#">Action</a></li>
+                                        <li><a href="#">Another action</a></li>
+                                        <li><a href="#">Something else here</a></li>
+                                        <li><a href="#">Separated link</a></li>
+                                    </ul>
+                                </div>
+                                <!-- /Status Dropdown -->
+
+                            </div>
+                            <div class="form-group">
+                                <label for="psw"><span class="glyphicon glyphicon-map-marker"></span> Location</label>
+
+                                <!-- Location Dropdown -->
+                                <div class="dropdown">
+                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        Dropdown
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                        <li><a href="#">Action</a></li>
+                                        <li><a href="#">Another action</a></li>
+                                        <li><a href="#">Something else here</a></li>
+                                        <li><a href="#">Separated link</a></li>
+                                    </ul>
+                                </div>
+                                <!-- /Location Dropdown -->
+
+                            </div>
+                            <button type="submit" class="btn btn-success btn-block"><span class="glyphicon glyphicon-floppy-disk"></span> Save & Update</button>
+                        </form>
+                    </div>
+                    <!-- Modal Footer -->
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+     </div>
     </div>
-    <div class="col-md-4">
-        <h2>Get more features</h2>
-        <p>CloudStaff is under construction. There are exciting features on the way, but you'll have to wait.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>An eye to the future</h2>
-        <p>
-            We plan for CloudStaff to tackle additional issues in more complex work environments. (namely visitors and health and safety in environments like farms, building sites etc.)
-            Watch this space!
-        </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
-</div>
+</body>
+</html>
