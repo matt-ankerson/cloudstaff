@@ -24,6 +24,8 @@
             // Init toggle switches
             $("[name='staff-state']").bootstrapSwitch();
 
+            alert("Page Reloaded")
+
         });
     </script>
 
@@ -52,7 +54,7 @@
     <br />
     <div class="row">
 
-        <!-- We require a variable to uniquely identify each module -->
+        <!-- We require a variable to uniquely identify each module (UserID) -->
 
         @foreach(var core in @Model)
         {
@@ -62,6 +64,7 @@
                         <div class="panel-default panel">
                             <div class="panel-heading staff-name">
                                 <p class="staff-name-text">@core.User.FirstName @core.User.LastName</p>
+                                <p><small>@core.Status.Name | @core.Location.Name</small></p>
                             </div>
                             <div class="panel-body">
                                 <div class="container-switch">
@@ -82,8 +85,8 @@
                 </div>
             </div>
         }
-
-    </div>      
+    </div>  
+        
     <div class="row">
         <div class="container">
 
@@ -104,7 +107,7 @@
                                 <label for="usrname"><span class="glyphicon glyphicon-user"></span> Status</label>
                                 <br />
                                 <!-- Status Dropdown -->
-                                <select id="status-list">
+                                <select id="status-list" name="statusID">
                                     <!-- Statuses go here. -->
                                 </select>
                                 <!-- /Status Dropdown -->
@@ -114,13 +117,13 @@
                                 <label for="psw"><span class="glyphicon glyphicon-map-marker"></span> Location</label>
                                 <br />
                                 <!-- Location Dropdown -->
-                                <select id="location-list">
+                                <select id="location-list" name="locationID">
                                     <!-- Locations go here. -->
                                 </select>
                                 <!-- /Location Dropdown -->
 
                             </div>
-                            <button type="submit" class="btn btn-success btn-block"><span class="glyphicon glyphicon-floppy-disk"></span> Save & Update</button>
+                            <button id="update-singular-user-state" type="submit" class="btn btn-success btn-block"><span class="glyphicon glyphicon-floppy-disk"></span> Save & Update</button>
                         </form>
                     </div>
                     <!-- Modal Footer -->
@@ -131,7 +134,9 @@
 
             </div>
         </div>
+        <!-- /modal -->
      </div>
     </div>
+    <!-- /row -->
 </body>
 </html>

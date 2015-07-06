@@ -23,7 +23,7 @@ namespace ABLCloudStaff.Board_Logic
             {
                 using (var context = new ABLCloudStaffContext())
                 {
-                    coreInstances = context.Cores.ToList();
+                    coreInstances = context.Cores.Include("User").Include("Status").Include("Location").ToList();
                 }
             }
             catch (Exception ex)

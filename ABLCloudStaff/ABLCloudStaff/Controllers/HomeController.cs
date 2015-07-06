@@ -17,23 +17,40 @@ namespace ABLCloudStaff.Controllers
         /// <returns>An ActionResult object</returns>
         public ActionResult Index()
         {
+            List<Core> coreInfo = CoreUtilities.GetAllCoreInstances();
+            return View(coreInfo);
+        }
 
-            List<Core> coreInfo = new List<Core>();
-
-            using (var db = new ABLCloudStaffContext())
+        /// <summary>
+        /// Push a status and location to the database for a specific user
+        /// </summary>
+        /// <returns>An ActionResult object</returns>
+        [HttpPost]
+        public ActionResult SubmitStatusOrLocationUpdate(string userID, string statusID, string locationID)
+        {
+            // Perform the update...
+            try
             {
-                try
-                {
-                    // Eagerly pull all the info we will need
-                    coreInfo = db.Cores.Include("User").Include("Status").ToList();
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception(ex.Message);
-                }               
+                // Convert our parameters into a useful data type
+                int actualUserID = Convert.ToInt32(userID);
+                int actualStatusID = Convert.ToInt32(statusID);
+                int actualLocationID = Convert.ToInt32(locationID);
+
+                // Perform the update
+                //  --We need to think about whether or not we update status or location
+                //      if it hasn't actually changed. It will currently perform an update regardless.
+                //      It's a question of how accurate and verbose we want the changelog to be.
+                CoreUtilities.UpdateStatus(actualUserID, actualStatusID);
+                CoreUtilities.UpdateLocation(actualUserID, actualLocationID);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
 
-            return View(coreInfo);
+            //List<Core> coreInfo = CoreUtilities.GetAllCoreInstances();
+            return Index();
+            //return View("Index", coreInfo);
         }
 
         /// <summary>
@@ -43,7 +60,7 @@ namespace ABLCloudStaff.Controllers
         /// <returns>JSON containing the relavent statuses</returns>
         public JsonResult GetStatusesAjax(string userID)
         {
-            List<string> statusNames = new List<string>();
+            Dictionary<string, string> statusDict = new Dictionary<string, string>();
 
             try
             {
@@ -53,14 +70,14 @@ namespace ABLCloudStaff.Controllers
                 List<Status> statuses = StatusUtilities.GetAvailableStatuses(thisUserID);
                 // Pull out the actual status names for the string list
                 foreach (var status in statuses)
-                    statusNames.Add(status.Name);
+                    statusDict.Add(status.StatusID.ToString(), status.Name);
             } 
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
 
-            return Json(statusNames, JsonRequestBehavior.AllowGet);
+            return Json(statusDict, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
@@ -70,7 +87,7 @@ namespace ABLCloudStaff.Controllers
         /// <returns>Json containing the relavent locations</returns>
         public JsonResult GetLocationsAjax(string userID)
         {
-            List<string> locationNames = new List<string>();
+            Dictionary<string, string> locationDict = new Dictionary<string, string>();
 
             try
             {
@@ -81,14 +98,14 @@ namespace ABLCloudStaff.Controllers
 
                 // Pull out the actual location names for the string list
                 foreach (Location loc in locations)
-                    locationNames.Add(loc.Name);
+                    locationDict.Add(loc.LocationID.ToString(), loc.Name);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
 
-            return Json(locationNames, JsonRequestBehavior.AllowGet);
+            return Json(locationDict, JsonRequestBehavior.AllowGet);
         }
 
 
