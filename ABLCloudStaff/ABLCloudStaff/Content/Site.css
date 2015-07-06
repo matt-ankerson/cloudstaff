@@ -54,6 +54,11 @@ input[type="checkbox"].input-validation-error {
     background-color: #f9f9f9;
 }
 
+#status-list,
+#location-list {
+    width: 200px;
+}
+
 /* For the Toggle switches */
 .container-switch {
     height: 35px;

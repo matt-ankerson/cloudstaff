@@ -121,6 +121,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Board_Logic\ChangeLogUtilities.cs" />
     <Compile Include="Board_Logic\CoreUtilities.cs" />
+    <Compile Include="Board_Logic\LocationUtilities.cs" />
+    <Compile Include="Board_Logic\StatusUtilities.cs" />
     <Compile Include="Board_Logic\UserUtilities.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
