@@ -28,29 +28,30 @@ namespace ABLCloudStaff.Controllers
         [HttpPost]
         public ActionResult SubmitStatusOrLocationUpdate(string userID, string statusID, string locationID)
         {
-            // Perform the update...
             try
             {
-                // Convert our parameters into a useful data type
-                int actualUserID = Convert.ToInt32(userID);
-                int actualStatusID = Convert.ToInt32(statusID);
-                int actualLocationID = Convert.ToInt32(locationID);
+                if (userID != null)
+                {
+                    // Convert our parameters into a useful data type
+                    int actualUserID = Convert.ToInt32(userID);
+                    int actualStatusID = Convert.ToInt32(statusID);
+                    int actualLocationID = Convert.ToInt32(locationID);
 
-                // Perform the update
-                //  --We need to think about whether or not we update status or location
-                //      if it hasn't actually changed. It will currently perform an update regardless.
-                //      It's a question of how accurate and verbose we want the changelog to be.
-                CoreUtilities.UpdateStatus(actualUserID, actualStatusID);
-                CoreUtilities.UpdateLocation(actualUserID, actualLocationID);
+                    // Perform the update
+                    //  --We need to think about whether or not we update status or location
+                    //      if it hasn't actually changed. It will currently perform an update regardless.
+                    //      It's a question of how accurate and verbose we want the changelog to be.
+                    CoreUtilities.UpdateStatus(actualUserID, actualStatusID);
+                    CoreUtilities.UpdateLocation(actualUserID, actualLocationID);
+                }
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
 
-            //List<Core> coreInfo = CoreUtilities.GetAllCoreInstances();
-            return Index();
-            //return View("Index", coreInfo);
+            List<Core> coreInfo = CoreUtilities.GetAllCoreInstances();
+            return View("Index", coreInfo);
         }
 
         /// <summary>
