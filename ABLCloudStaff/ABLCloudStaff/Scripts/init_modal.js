@@ -70,36 +70,16 @@ $(document).ready(function () {
 
         // Click handler for submit button on modal form
         $("#update-singular-user-state").on("click", function (e) {
-            // Prevent submittal until we've gathered all the data we need.
+
             e.preventDefault();
 
-            // Gather the values we need
-            var status_id = $("#status-list").val();
-            var location_id = $("#location-list").val();
-            
-            var post_new_state_url = "/Home/SubmitStatusOrLocationUpdate";
+            var form = $("#form-update-status-or-location");
 
-            // Manually submit data with AJAX
-            $.ajax({
-                type: "POST",
-                url: post_new_state_url,
-                data: JSON.stringify({ userID: invoker_id, statusID: status_id, locationID: location_id }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: post_state_update,
-                error: post_state_update
-            });
+            // Inject a hidden field into the form for the UserID
+            form.append('<input type="hidden" name="userID" value="' + invoker_id + '" />');
 
-            // Now hide the modal
-            $('#modal').modal('toggle');
-            // Refresh the page
-            location.reload();
-
-            function post_state_update(data, status) {
-                // Refresh the page
-                location.reload(false);
-            }
-            
+            form.submit();
+   
         });
 
         //----------------------------------------------------------------------
