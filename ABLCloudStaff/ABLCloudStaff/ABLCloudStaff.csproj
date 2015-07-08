@@ -133,7 +133,9 @@
     <Compile Include="Models\Core.cs" />
     <Compile Include="Models\DropCreateABLCloudStaffAlways.cs" />
     <Compile Include="Models\Location.cs" />
+    <Compile Include="Models\LocationChangeLog.cs" />
     <Compile Include="Models\Status.cs" />
+    <Compile Include="Models\StatusChangeLog.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserLocation.cs" />
     <Compile Include="Models\UserStatus.cs" />

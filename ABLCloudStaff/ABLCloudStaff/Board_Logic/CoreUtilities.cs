@@ -209,25 +209,56 @@ namespace ABLCloudStaff.Board_Logic
         /// <param name="newStatusID">The id of the new Status</param>
         public static void UpdateStatus(int userID, int newStatusID)
         {
-            Core thisCore = new Core();
+            Core currentCore = new Core();
             Status newStatus = new Status();
+
+            int previousStatusID;
+            DateTime previousStateInitTime;
+
+            // Assume an update is necessary
+            bool updateNecessary = true;
 
             try
             {
                 using (var context = new ABLCloudStaffContext())
                 {
                     // Get the Core instance indicated by the given UserID
-                    thisCore = context.Cores.Where(c => c.UserID == userID).FirstOrDefault();
+                    currentCore = context.Cores.Where(c => c.UserID == userID).FirstOrDefault();
 
-                    // Get the new status from the status table
-                    newStatus = context.Statuses.Where(s => s.StatusID == newStatusID).FirstOrDefault();
+                    // Save info from the old state that we need.
+                    previousStatusID = currentCore.StatusID;
+                    previousStateInitTime = new DateTime(currentCore.StateStart.Year, 
+                        currentCore.StateStart.Month, 
+                        currentCore.StateStart.Day, 
+                        currentCore.StateStart.Hour, 
+                        currentCore.StateStart.Minute, 
+                        currentCore.StateStart.Second, 
+                        currentCore.StateStart.Millisecond);
 
-                    // Assign the new status to our Core instance
-                    thisCore.StatusID = newStatus.StatusID;
-                    thisCore.Status = newStatus;
+                    // Is this update necessary?
+                    if (previousStatusID == newStatusID)
+                    {
+                        updateNecessary = false;
+                    }
+                    else  // If the statusIDs are different, go ahead with the update.
+                    {
+                        // Get the new status from the status table
+                        newStatus = context.Statuses.Where(s => s.StatusID == newStatusID).FirstOrDefault();
 
-                    context.SaveChanges();
+                        // Assign the new status to our Core instance
+                        currentCore.StatusID = newStatus.StatusID;
+                        currentCore.Status = newStatus;
+                        currentCore.StateStart = DateTime.Now;
+
+                        // Commit to the database
+                        context.SaveChanges();
+                    }
                 }
+
+                // Submit to change-log
+                // But, we don't want to log a change if the status hasn't actually changed.
+                if(updateNecessary)
+                    ChangeLogUtilities.LogStatusChange(userID, newStatusID, previousStatusID, previousStateInitTime);
                 
             }
             catch (Exception ex)
@@ -243,26 +274,57 @@ namespace ABLCloudStaff.Board_Logic
         /// <param name="newLocID">The id of the new Location</param>
         public static void UpdateLocation(int userID, int newLocID)
         {
-            Core thisCore = new Core();
-            Location thisLoc = new Location();
+            Core currentCore = new Core();
+            Location newLocation = new Location();
+
+            int previousLocationID;
+            DateTime previousStateInitTime;
+
+            // Assume an update is necessary
+            bool updateNecessary = true;
 
             try
             {
                 using (var context = new ABLCloudStaffContext())
                 {
-                    // Get the Core instance indicated by the given userID
-                    thisCore = context.Cores.Where(c => c.UserID == userID).FirstOrDefault();
+                    // Get the Core instance indicated by the given UserID
+                    currentCore = context.Cores.Where(c => c.UserID == userID).FirstOrDefault();
 
-                    // Get the new location from the location table
-                    thisLoc = context.Locations.Where(l => l.LocationID == newLocID).FirstOrDefault();
+                    // Save info from the old state that we need.
+                    previousLocationID = currentCore.LocationID;
+                    previousStateInitTime = new DateTime(currentCore.StateStart.Year,
+                        currentCore.StateStart.Month,
+                        currentCore.StateStart.Day,
+                        currentCore.StateStart.Hour,
+                        currentCore.StateStart.Minute,
+                        currentCore.StateStart.Second,
+                        currentCore.StateStart.Millisecond);
 
-                    // Assign the new location to our Core instance
-                    thisCore.LocationID = thisLoc.LocationID;
-                    thisCore.Location = thisLoc;
+                    // Is this update necessary?
+                    if (previousLocationID == newLocID)
+                    {
+                        updateNecessary = false;
+                    }
+                    else  // If the locationIDs are different, go ahead with the update.
+                    {
+                        // Get the new location from the status table
+                        newLocation = context.Locations.Where(l => l.LocationID == newLocID).FirstOrDefault();
 
-                    context.SaveChanges();
+                        // Assign the new Location to our Core instance
+                        currentCore.LocationID = newLocation.LocationID;
+                        currentCore.Location = newLocation;
+                        currentCore.StateStart = DateTime.Now;
+
+                        // Commit to the database
+                        context.SaveChanges();
+                    }
                 }
-                
+
+                // Submit to change-log
+                // But, we don't want to log a change if the Locaton hasn't actually changed.
+                if (updateNecessary)
+                    ChangeLogUtilities.LogLocationChange(userID, newLocID, previousLocationID, previousStateInitTime);
+
             }
             catch (Exception ex)
             {
