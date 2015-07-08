@@ -73,13 +73,15 @@ $(document).ready(function () {
 
             e.preventDefault();
 
-            var form = $("#form-update-status-or-location");
+            if ($("#status-list").val != null && $("location-list").val != null)
+            {
+                var form = $("#form-update-status-or-location");
 
-            // Inject a hidden field into the form for the UserID
-            form.append('<input type="hidden" name="userID" value="' + invoker_id + '" />');
+                // Inject a hidden field into the form for the UserID
+                form.append('<input type="hidden" name="userID" value="' + invoker_id + '" />');
 
-            form.submit();
-   
+                form.submit();
+            }
         });
 
         //----------------------------------------------------------------------

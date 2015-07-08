@@ -129,7 +129,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ABLCloudStaffContext.cs" />
-    <Compile Include="Models\ChangeLog.cs" />
     <Compile Include="Models\Core.cs" />
     <Compile Include="Models\DropCreateABLCloudStaffAlways.cs" />
     <Compile Include="Models\Location.cs" />
@@ -150,6 +149,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\bg.png" />
     <Content Include="Scripts\bootstrap-switch.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

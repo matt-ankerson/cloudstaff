@@ -46,7 +46,15 @@ namespace ABLCloudStaff.Models
                 new Core {UserID = 5, StatusID = 6, LocationID = 1, StateStart = DateTime.Now},
                 new Core {UserID = 6, StatusID = 3, LocationID = 1, StateStart = DateTime.Now},
                 new Core {UserID = 7, StatusID = 3, LocationID = 2, StateStart = DateTime.Now},
-                new Core {UserID = 8, StatusID = 1, LocationID = 1, StateStart = DateTime.Now}
+                new Core {UserID = 8, StatusID = 1, LocationID = 1, StateStart = DateTime.Now},
+                new Core {UserID = 9, StatusID = 1, LocationID = 1, StateStart = DateTime.Now},
+                new Core {UserID = 10, StatusID = 2, LocationID = 5, StateStart = DateTime.Now},
+                new Core {UserID = 11, StatusID = 3, LocationID = 3, StateStart = DateTime.Now},
+                new Core {UserID = 12, StatusID = 5, LocationID = 1, StateStart = DateTime.Now},
+                new Core {UserID = 13, StatusID = 6, LocationID = 1, StateStart = DateTime.Now},
+                new Core {UserID = 14, StatusID = 3, LocationID = 1, StateStart = DateTime.Now},
+                new Core {UserID = 15, StatusID = 3, LocationID = 2, StateStart = DateTime.Now},
+                new Core {UserID = 16, StatusID = 1, LocationID = 1, StateStart = DateTime.Now}
             };
 
             foreach (Core c in cores)
@@ -67,7 +75,15 @@ namespace ABLCloudStaff.Models
                 new User { FirstName = "Allan", LastName = "Moffat", Rank = ERank.General },
                 new User { FirstName = "Dick", LastName = "Johnson", Rank = ERank.General },
                 new User { FirstName = "Jim", LastName = "Richards", Rank = ERank.Admin },
-                new User { FirstName = "Glenn", LastName = "Seton", Rank = ERank.Admin },
+                new User { FirstName = "Marko", LastName = "Andretti", Rank = ERank.General },
+                new User { FirstName = "Craig", LastName = "Baird", Rank = ERank.General },
+                new User { FirstName = "Jason", LastName = "Bargwanna", Rank = ERank.General },
+                new User { FirstName = "Neal", LastName = "Bates", Rank = ERank.General },
+                new User { FirstName = "Troy", LastName = "Bayliss", Rank = ERank.General },
+                new User { FirstName = "Daryl", LastName = "Beattie", Rank = ERank.General },
+                new User { FirstName = "Jorg", LastName = "Bergmeister", Rank = ERank.General },
+                new User { FirstName = "Helen", LastName = "Clark", Rank = ERank.General },
+                new User { FirstName = "Tim", LastName = "Blankard", Rank = ERank.General },
                 new User { FirstName = "Craig", LastName = "Lowndes", Rank = ERank.General }
             };
 
@@ -179,7 +195,63 @@ namespace ABLCloudStaff.Models
                 new UserStatus {UserID = 8, StatusID = 3, DateAdded = new DateTime(2015, 3, 5)},
                 new UserStatus {UserID = 8, StatusID = 4, DateAdded = new DateTime(2015, 3, 5)},
                 new UserStatus {UserID = 8, StatusID = 5, DateAdded = new DateTime(2015, 3, 5)},
-                new UserStatus {UserID = 8, StatusID = 6, DateAdded = new DateTime(2015, 3, 5)}
+                new UserStatus {UserID = 8, StatusID = 6, DateAdded = new DateTime(2015, 3, 5)},
+                // User 9
+                new UserStatus {UserID = 9, StatusID = 1, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 9, StatusID = 2, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 9, StatusID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 9, StatusID = 4, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 9, StatusID = 5, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 9, StatusID = 6, DateAdded = new DateTime(2015, 3, 5)},
+                // User 10
+                new UserStatus {UserID = 10, StatusID = 1, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 10, StatusID = 2, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 10, StatusID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 10, StatusID = 4, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 10, StatusID = 5, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 10, StatusID = 6, DateAdded = new DateTime(2015, 3, 5)},
+                // User 11
+                new UserStatus {UserID = 11, StatusID = 1, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 11, StatusID = 2, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 11, StatusID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 11, StatusID = 4, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 11, StatusID = 5, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 11, StatusID = 6, DateAdded = new DateTime(2015, 3, 5)},
+                // User 12
+                new UserStatus {UserID = 12, StatusID = 1, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 12, StatusID = 2, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 12, StatusID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 12, StatusID = 4, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 12, StatusID = 5, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 12, StatusID = 6, DateAdded = new DateTime(2015, 3, 5)},
+                // User 13
+                new UserStatus {UserID = 13, StatusID = 1, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 13, StatusID = 2, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 13, StatusID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 13, StatusID = 4, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 13, StatusID = 5, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 13, StatusID = 6, DateAdded = new DateTime(2015, 3, 5)},
+                // User 14
+                new UserStatus {UserID = 14, StatusID = 1, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 14, StatusID = 2, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 14, StatusID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 14, StatusID = 4, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 14, StatusID = 5, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 14, StatusID = 6, DateAdded = new DateTime(2015, 3, 5)},
+                // User 15
+                new UserStatus {UserID = 15, StatusID = 1, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 15, StatusID = 2, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 15, StatusID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 15, StatusID = 4, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 15, StatusID = 5, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 15, StatusID = 6, DateAdded = new DateTime(2015, 3, 5)},
+                // User 16
+                new UserStatus {UserID = 16, StatusID = 1, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 16, StatusID = 2, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 16, StatusID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 16, StatusID = 4, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 16, StatusID = 5, DateAdded = new DateTime(2015, 3, 5)},
+                new UserStatus {UserID = 16, StatusID = 6, DateAdded = new DateTime(2015, 3, 5)}
             };
 
             foreach (UserStatus us in userStatuses)
@@ -241,7 +313,55 @@ namespace ABLCloudStaff.Models
                 new UserLocation {UserID = 8, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 8, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 8, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
-                new UserLocation {UserID = 8, LocationID = 5, DateAdded = new DateTime(2015, 3, 5)}
+                new UserLocation {UserID = 8, LocationID = 5, DateAdded = new DateTime(2015, 3, 5)},
+                // User 9
+                new UserLocation {UserID = 9, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 9, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 9, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 9, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 9, LocationID = 5, DateAdded = new DateTime(2015, 3, 5)},
+                // User 10
+                new UserLocation {UserID = 10, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 10, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 10, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 10, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 10, LocationID = 5, DateAdded = new DateTime(2015, 3, 5)},
+                // User 11
+                new UserLocation {UserID = 11, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 11, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 11, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 11, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 11, LocationID = 5, DateAdded = new DateTime(2015, 3, 5)},
+                // User 12
+                new UserLocation {UserID = 12, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 12, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 12, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 12, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 12, LocationID = 5, DateAdded = new DateTime(2015, 3, 5)},
+                // User 13
+                new UserLocation {UserID = 13, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 13, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 13, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 13, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 13, LocationID = 5, DateAdded = new DateTime(2015, 3, 5)},
+                // User 14
+                new UserLocation {UserID = 14, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 14, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 14, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 14, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 14, LocationID = 5, DateAdded = new DateTime(2015, 3, 5)},
+                // User 15
+                new UserLocation {UserID = 15, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 15, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 15, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 15, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 15, LocationID = 5, DateAdded = new DateTime(2015, 3, 5)},
+                // User 16
+                new UserLocation {UserID = 16, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 16, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 16, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 16, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 16, LocationID = 5, DateAdded = new DateTime(2015, 3, 5)}
             };
 
             foreach (UserLocation ul in userLocations)

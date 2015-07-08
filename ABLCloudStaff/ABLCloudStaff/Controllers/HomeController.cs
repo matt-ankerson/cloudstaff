@@ -38,9 +38,6 @@ namespace ABLCloudStaff.Controllers
                     int actualLocationID = Convert.ToInt32(locationID);
 
                     // Perform the update
-                    //  --We need to think about whether or not we update status or location
-                    //      if it hasn't actually changed. It will currently perform an update regardless.
-                    //      It's a question of how accurate and verbose we want the changelog to be.
                     CoreUtilities.UpdateStatus(actualUserID, actualStatusID);
                     CoreUtilities.UpdateLocation(actualUserID, actualLocationID);
                 }
