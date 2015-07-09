@@ -120,10 +120,12 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Board_Logic\ChangeLogUtilities.cs" />
+    <Compile Include="Board_Logic\Constants.cs" />
     <Compile Include="Board_Logic\CoreUtilities.cs" />
     <Compile Include="Board_Logic\LocationUtilities.cs" />
     <Compile Include="Board_Logic\StatusUtilities.cs" />
     <Compile Include="Board_Logic\UserUtilities.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -177,6 +179,7 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Views\Admin\Admin.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

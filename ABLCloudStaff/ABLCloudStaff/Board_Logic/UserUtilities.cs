@@ -57,5 +57,37 @@ namespace ABLCloudStaff.Board_Logic
 
             return user;
         }
+
+        /// <summary>
+        /// Add a new user to the User table
+        /// </summary>
+        /// <param name="firstName">Users first name</param>
+        /// <param name="lastName">Users last name</param>
+        /// <param name="rank">Enum. General, Visior or Admin</param>
+        public static void AddUser(string firstName, string lastName)
+        {
+            try
+            {
+                int userID = 0;
+
+                using (var context = new ABLCloudStaffContext())
+                {
+                    // Create the new user and add it to the db
+                    User newUser = new User {FirstName = firstName, LastName = lastName };
+                    context.Users.Add(newUser);
+                    context.SaveChanges();
+
+                    // Get the userID back out from the added record
+                    userID = context.Users.Select(x => x.UserID).ToList().LastOrDefault();
+                }
+
+                // Add a core instance for this user, with defaults for status and location.
+                CoreUtilities.AddCore(userID, Constants.DEFAULT_STATUS, Constants.DEFAULT_LOCATION);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

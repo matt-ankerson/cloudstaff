@@ -69,22 +69,22 @@ namespace ABLCloudStaff.Models
         {
             List<User> users = new List<User>
             {
-                new User { FirstName = "Peter", LastName = "Brock", Rank = ERank.General },
-                new User { FirstName = "Colin", LastName = "Bond", Rank = ERank.General },
-                new User { FirstName = "Mark", LastName = "Winterbottom", Rank = ERank.General },
-                new User { FirstName = "Allan", LastName = "Moffat", Rank = ERank.General },
-                new User { FirstName = "Dick", LastName = "Johnson", Rank = ERank.General },
-                new User { FirstName = "Jim", LastName = "Richards", Rank = ERank.Admin },
-                new User { FirstName = "Marko", LastName = "Andretti", Rank = ERank.General },
-                new User { FirstName = "Craig", LastName = "Baird", Rank = ERank.General },
-                new User { FirstName = "Jason", LastName = "Bargwanna", Rank = ERank.General },
-                new User { FirstName = "Neal", LastName = "Bates", Rank = ERank.General },
-                new User { FirstName = "Troy", LastName = "Bayliss", Rank = ERank.General },
-                new User { FirstName = "Daryl", LastName = "Beattie", Rank = ERank.General },
-                new User { FirstName = "Jorg", LastName = "Bergmeister", Rank = ERank.General },
-                new User { FirstName = "Helen", LastName = "Clark", Rank = ERank.General },
-                new User { FirstName = "Tim", LastName = "Blankard", Rank = ERank.General },
-                new User { FirstName = "Craig", LastName = "Lowndes", Rank = ERank.General }
+                new User { FirstName = "Peter", LastName = "Brock" },
+                new User { FirstName = "Colin", LastName = "Bond" },
+                new User { FirstName = "Mark", LastName = "Winterbottom" },
+                new User { FirstName = "Allan", LastName = "Moffat" },
+                new User { FirstName = "Dick", LastName = "Johnson" },
+                new User { FirstName = "Jim", LastName = "Richards" },
+                new User { FirstName = "Marko", LastName = "Andretti" },
+                new User { FirstName = "Craig", LastName = "Baird" },
+                new User { FirstName = "Jason", LastName = "Bargwanna" },
+                new User { FirstName = "Neal", LastName = "Bates" },
+                new User { FirstName = "Troy", LastName = "Bayliss" },
+                new User { FirstName = "Daryl", LastName = "Beattie" },
+                new User { FirstName = "Jorg", LastName = "Bergmeister" },
+                new User { FirstName = "Helen", LastName = "Clark" },
+                new User { FirstName = "Tim", LastName = "Blankard" },
+                new User { FirstName = "Craig", LastName = "Lowndes" }
             };
 
             foreach (User u in users)

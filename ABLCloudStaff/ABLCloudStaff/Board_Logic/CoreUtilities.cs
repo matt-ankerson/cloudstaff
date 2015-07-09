@@ -331,5 +331,45 @@ namespace ABLCloudStaff.Board_Logic
                 throw new Exception(ex.Message);
             }
         }
+
+        /// <summary>
+        /// Add a new Core instance, for a new user.
+        /// </summary>
+        /// <param name="userID">The new user id, this user must exist.</param>
+        /// <param name="statusID">The status id, this status must exist.</param>
+        /// <param name="locationID">The location id, this location must exist.</param>
+        public static void AddCore(int userID, int statusID, int locationID)
+        {
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    // We need to ensure that the given user, status and location all exist.
+                    List<int> existingUsers = context.Users.Select(x => x.UserID).ToList();
+                    List<int> existingStatuses = context.Statuses.Select(x => x.StatusID).ToList();
+                    List<int> existingLocations = context.Locations.Select(x => x.LocationID).ToList();
+                    // We also need to make sure that this user doesn't already have a core instance.
+                    List<int> existingCores = context.Cores.Select(x => x.UserID).ToList();
+
+                    if (!existingUsers.Contains(userID))
+                        throw new Exception("User does not exist.");
+                    if (!existingStatuses.Contains(statusID))
+                        throw new Exception("Status does not exist.");
+                    if (!existingLocations.Contains(locationID))
+                        throw new Exception("Location does not exist.");
+                    if (existingCores.Contains(userID))
+                        throw new Exception("User already has a core instance.");
+
+                    // Create and add the new Core instance
+                    Core newCore = new Core {UserID = userID, StatusID = statusID, LocationID = locationID, StateStart = DateTime.Now };
+                    context.Cores.Add(newCore);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

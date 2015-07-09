@@ -50,5 +50,24 @@ namespace ABLCloudStaff.Tests.Board_Logic
             // Assert
             Assert.AreEqual(actual, expected);
         }
+
+        [TestMethod]
+        public void TestAddUser()
+        {
+            // Arrange
+            string firstName = "Matt";
+            string lastName = "Ankerson";
+
+            // Act
+            try
+            {
+                UserUtilities.AddUser(firstName, lastName);
+            }
+            catch (Exception ex)
+            {
+                // Assert
+                Assert.IsTrue(true);
+            }
+        }
     }
 }

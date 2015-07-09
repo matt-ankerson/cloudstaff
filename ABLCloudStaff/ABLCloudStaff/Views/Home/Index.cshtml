@@ -1,7 +1,6 @@
 ﻿@model List<ABLCloudStaff.Models.Core>
 
 @{
-    ViewBag.Title = "CloudStaff";
     Layout = null;
 }
 
@@ -43,8 +42,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Status Board", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Create Group", "About", "Home")</li>
-                    <li>@Html.ActionLink("Administration", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Administration", "Admin", "Admin")</li>
                 </ul>
             </div>
         </div>
@@ -59,7 +57,7 @@
             <div class="col-md-2">
                 <div class="container-fluid">
                     <div id="@core.UserID" class="panel-group staff-modules">
-                        <div class="panel-default panel">
+                        <div class="panel-default panel staff-modules-panels">
                             <div class="panel-heading staff-name">
                                 <p class="staff-name-text">@core.User.FirstName @core.User.LastName</p>
                                 <p><small>@core.Status.Name <br /> @core.Location.Name</small></p>
@@ -101,7 +99,7 @@
                     </div>
                     <!-- Modal Content -->
                     <div class="modal-body" style="padding:40px 50px;">
-                        <form id="form-update-status-or-location" action="SubmitStatusOrLocationUpdate" method="post" role="form">
+                        <form id="form-update-status-or-location" action="/Home/SubmitStatusOrLocationUpdate" method="post" role="form">
                             <div class="form-group">
                                 <label for="usrname"><span class="glyphicon glyphicon-user"></span> Status</label>
                                 <br />
