@@ -1,0 +1,235 @@
+﻿@model ABLCloudStaff.Models.Core
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="../../Scripts/jquery-ui.min.js"></script>
+    <script src="../../Scripts/remove-user_autocomplete.js"></script>
+    <script src="../../Scripts/fill_user_table.js"></script>
+    <script src="../../Scripts/changelog_tables.js"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../Content/Site.css">
+    <link rel="stylesheet" href="../../Content/bootstrap-switch.css">
+    <link rel="stylesheet" href="../../Content/jquery-ui.min.css"/>
+    <title>CloudStaff-Admin</title>
+
+    <script type="text/javascript">
+        jQuery(document).ready(function ($) {
+            // Create tabs
+            $('.tabs').tab();
+        });
+    </script>
+
+</head>
+<body>
+    <!-- Navigation Bar-->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("CloudStaff", "Index", "Home", null, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Status Board", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Administration", "Admin", "Admin")</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <br />
+
+    <div class="row">
+
+        <!-- Outer tab set -->
+        <div class="container well" id="admin-foreground">
+            <div id="all-content">
+                <ul class="tabs nav nav-tabs" data-tabs="tabs">
+                    <li class="active"><a href="#users" data-toggle="tab">Users</a></li>
+                    <li><a href="#statuses" data-toggle="tab">Statuses</a></li>
+                    <li><a href="#locations" data-toggle="tab">Locations</a></li>
+                    <li><a href="#change-log" data-toggle="tab">Change Log</a></li>
+                </ul>
+                <div id="outer-tab-content" class="tab-content">
+                    <div class="tab-pane active" id="users">
+
+                        <!-- User tab set -->
+                        <div class="container well nested-tabs">
+                            <div id="user-content">
+                                <ul class="tabs nav nav-tabs" data-tabs="tabs">
+                                    <li class="active"><a href="#see-users" data-toggle="tab">See All</a></li>
+                                    <li><a href="#add-user" data-toggle="tab">Add User</a></li>
+                                    <li><a href="#remove-user" data-toggle="tab">Remove User</a></li>
+                                    <li><a href="#modify-user" data-toggle="tab">Modify User</a></li>
+                                </ul>
+                                <div class="tab-content">
+
+                                    <!-- See all users -->
+                                    <div class="tab-pane active" id="see-users">
+                                        <h3>All Users</h3>
+                                        <div class="container nested-tabs">
+                                            <div class="panel panel-default">
+
+                                                <!-- Table -->
+                                                <table id="user-table" class="table table-striped">
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Name</th>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Add User Form -->
+                                    <div class="tab-pane" id="add-user">
+                                        <form id="add-user-form" action="/Admin/AddNewUser" method="post" role="form">
+                                            <h3>Add new user</h3>
+                                            <div class="form-group container">
+                                                <label for="first-name-input">First Name</label>
+                                                <input type="text" id="first-name-input" class="form-control" placeholder="John" name="firstName" required />
+                                                <br />
+                                                <label for="last-name-input">Last Name</label>
+                                                <input type="text" id="last-name-input" class="form-control" placeholder="Smith" name="lastName" required />
+                                                <br />
+                                                <button id="new-user-submit" type="submit" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>
+                                            </div>
+                                        </form>
+                                            
+                                    </div>
+
+                                    <!-- Remove User Form -->
+                                    <div class="tab-pane" id="remove-user">
+                                        <form id="remove-user" action="/Admin/RemoveUser" method="post" role="form">
+                                            <h3>Remove User</h3>
+                                            <div class="form-group container">
+                                                <div class="ui-widget">
+                                                    <label for="remove-user-autocomplete">Which user?</label>
+                                                    <input id="remove-user-autocomplete" class="form-control" placeholder="First or Last name" required>
+                                                    <input type="hidden" name="userID" id="remove-userID" />
+                                                    <br />
+                                                    <button id="remove-user-submit" type="submit" class="btn btn-default">Remove User</button>
+                                                </div>
+                                            </div>
+                                        </form>             
+                                    </div>
+
+                                    <!-- Modify User Form -->
+                                    <div class="tab-pane" id="modify-user">
+                                        <h3>Modify User</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>          
+                        <!-- /end User tab set -->
+
+                    </div>
+                    <div class="tab-pane" id="statuses">
+
+                        <!-- Status tab set -->
+                        <div class="container well nested-tabs">
+                            <div id="status-content">
+                                <ul class="tabs nav nav-tabs" data-tabs="tabs">
+                                    <li class="active"><a href="#add-status" data-toggle="tab">Add Status</a></li>
+                                    <li><a href="#remove-status" data-toggle="tab">Remove Status</a></li>
+                                    <li><a href="#modify-status" data-toggle="tab">Modify Status</a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="add-status">
+                                        <h3>Add Status</h3>
+                                    </div>
+                                    <div class="tab-pane" id="remove-status">
+                                        <h3>Remove Status</h3>
+                                    </div>
+                                    <div class="tab-pane" id="modify-status">
+                                        <h3>Modify Status</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /end Status tab set -->
+
+                    </div>
+                    <div class="tab-pane" id="locations">
+
+                        <!-- Location tab set -->
+                        <div class="container well nested-tabs">
+                            <div id="location-content">
+                                <ul class="tabs nav nav-tabs" data-tabs="tabs">
+                                    <li class="active"><a href="#add-location" data-toggle="tab">Add Location</a></li>
+                                    <li><a href="#remove-location" data-toggle="tab">Remove Location</a></li>
+                                    <li><a href="#modify-location" data-toggle="tab">Modify Location</a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="add-location">
+                                        <h3>Add Location</h3>
+                                    </div>
+                                    <div class="tab-pane" id="remove-location">
+                                        <h3>Remove Location</h3>
+                                    </div>
+                                    <div class="tab-pane" id="modify-location">
+                                        <h3>Modify Location</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /end Location tab set -->
+
+                    </div>
+                    <div class="tab-pane" id="change-log">
+                        
+                        <!-- Change-log tab -->
+                        <div class="container well nested-tabs">
+                            <div id="change-log-content">
+                                <ul class="tabs nav nav-tabs" data-tabs="tabs">
+                                    <li class="active"><a href="#status-updates" data-toggle="tab">Status Updates</a></li>
+                                    <li><a href="#location-updates" data-toggle="tab">Location Updates</a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="status-updates">
+                                        <h3>Status</h3>
+                                        <div class="container nested-tabs">
+                                            <div class="panel panel-default">
+
+                                                <!-- Table -->
+                                                <table id="status-changes-table" class="table table-striped">
+                                                    <tr>
+                                                        <th>First</th>
+                                                        <th>Last</th>
+                                                        <th>Old</th>
+                                                        <th>New</th>
+                                                        <th>Changed</th>
+                                                        <th>Initiated</th>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="location-updates">
+                                        <h3>Location</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /end Change-log tab -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>

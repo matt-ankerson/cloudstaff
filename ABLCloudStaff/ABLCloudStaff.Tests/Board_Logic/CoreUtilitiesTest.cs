@@ -182,5 +182,43 @@ namespace ABLCloudStaff.Tests.Board_Logic
             // Assert
             Assert.AreEqual(expected.Name, actual.Name);
         }
+
+        [TestMethod]
+        public void TestAddCore()
+        {
+            // Arrange
+            int existingUserID = 1;
+            int existingStatusID = 1;
+            int existingLocationID = 1;
+
+            int badUserID = 9999;
+            int badStatusID = 9999;
+            int badLocationID = 9999;
+
+            // Act
+            try
+            {
+                CoreUtilities.AddCore(existingUserID, existingStatusID, existingLocationID);
+            }
+            catch (Exception ex)
+            {
+                // Assert
+                // If we reached this point, the function is robust
+                Assert.IsTrue(true);
+            }
+
+            // Act
+            try
+            {
+                CoreUtilities.AddCore(badUserID, badStatusID, badLocationID);
+            }
+            catch (Exception ex)
+            {
+                // Assert
+                // If we reached this point, the function is robust
+                Assert.IsTrue(true);
+            }
+
+        }
     }
 }

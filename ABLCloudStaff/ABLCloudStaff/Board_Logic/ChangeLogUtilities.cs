@@ -12,34 +12,122 @@ namespace ABLCloudStaff.Board_Logic
     public static class ChangeLogUtilities
     {
         /// <summary>
-        /// Log the change from one state to another
+        /// Get the latest status updates
         /// </summary>
-        /// <param name="oldState">The previous state</param>
-        /// <param name="newState">The new state</param>
-        public static void LogChange(Core oldState, Core newState)
+        /// <param name="nRecords">Number of records to fetch</param>
+        /// <returns>List of type StatusChangeLog</returns>
+        public static List<StatusChangeLog> GetStatusChanges(int nRecords)
         {
-            // Declare a ChangeLog object
-            ChangeLog cl = new ChangeLog();
+            List<StatusChangeLog> changeLog = new List<StatusChangeLog>();
 
             try
             {
-                // Ensure that both Core objects are for the same user.
-                if (oldState.UserID != newState.UserID)
-                    throw new Exception("Core objects are not of the same user.");
+                using (var context = new ABLCloudStaffContext())
+                {
+                    // Query for 'n' record, starting with the latest
+                    changeLog = context.StatusChangeLogs.OrderByDescending(x => x.StatusChangeTimeStamp).Take(nRecords).ToList();
+                }
+                
+                
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
 
-                // Load the ChangeLog object up with info from the old and new Core objects which hold our states.
-                cl.UserID = oldState.UserID;
-                cl.NewStatusID = newState.StatusID;
-                cl.OldStatusID = oldState.StatusID;
-                cl.NewLocationID = newState.LocationID;
-                cl.OldLocationID = oldState.LocationID;
-                cl.StateChangeTimeStamp = DateTime.Now;
-                cl.StateInitTimeStamp = oldState.StateStart;
+            return changeLog;
+        }
+
+        /// <summary>
+        /// Get the latest location updates
+        /// </summary>
+        /// <param name="nRecords">The number of records to fetch</param>
+        /// <returns>List of type LocationChangeLog</returns>
+        public static List<LocationChangeLog> GetLocationChanges(int nRecords)
+        {
+            List<LocationChangeLog> changeLog = new List<LocationChangeLog>();
+
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    // Query for 'n' record, starting with the latest
+                    changeLog = context.LocationChangeLogs.OrderByDescending(x => x.LocationChangeTimeStamp).Take(nRecords).ToList();
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return changeLog;
+        }
+
+        /// <summary>
+        /// Log the change from one status to another
+        /// </summary>
+        /// <param name="userID">The user to log the change for</param>
+        /// <param name="newStatusID">The new status</param>
+        /// <param name="oldStatusID">the old status</param>
+        /// <param name="stateInitTimeStamp">The time that the previous state was initiated</param>
+        public static void LogStatusChange(int userID, int newStatusID, int oldStatusID, DateTime stateInitTimeStamp)
+        {
+            StatusChangeLog changeLog = new StatusChangeLog();
+
+            try
+            {
+                // Ensure that this is a valid status change
+                if (newStatusID == oldStatusID)
+                    throw new Exception("Status IDs are identical");
+
+                changeLog.UserID = userID;
+                changeLog.NewStatusID = newStatusID;
+                changeLog.OldStatusID = oldStatusID;
+                changeLog.StatusChangeTimeStamp = DateTime.Now;
+                changeLog.StatusInitTimeStamp = stateInitTimeStamp;
 
                 // Save the new ChangeLog object to the db
                 using (var context = new ABLCloudStaffContext())
                 {
-                    context.ChangeLogs.Add(cl);
+                    context.StatusChangeLogs.Add(changeLog);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Log the change from one Location to another
+        /// </summary>
+        /// <param name="userID">The user to log the change for</param>
+        /// <param name="newLocID">The new location</param>
+        /// <param name="oldLocID">The old location</param>
+        /// <param name="stateInitTimeStamp">The time the previous state was initiated.</param>
+        public static void LogLocationChange(int userID, int newLocID, int oldLocID, DateTime stateInitTimeStamp)
+        {
+            LocationChangeLog changeLog = new LocationChangeLog();
+
+            try
+            {
+                // Ensure that this is a valid status change
+                if (newLocID == oldLocID)
+                    throw new Exception("Location IDs are identical");
+
+                changeLog.UserID = userID;
+                changeLog.NewLocationID = newLocID;
+                changeLog.OldLocationID = oldLocID;
+                changeLog.LocationChangeTimeStamp = DateTime.Now;
+                changeLog.LocationInitTimeStamp = stateInitTimeStamp;
+
+                // Save the new ChangeLog object to the db
+                using (var context = new ABLCloudStaffContext())
+                {
+                    context.LocationChangeLogs.Add(changeLog);
                     context.SaveChanges();
                 }
             }

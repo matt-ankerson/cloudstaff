@@ -23,7 +23,7 @@ namespace ABLCloudStaff.Board_Logic
             {
                 using (var context = new ABLCloudStaffContext())
                 {
-                    coreInstances = context.Cores.Include("User").Include("Status").Include("Location").ToList();
+                    coreInstances = context.Cores.Include("User").Include("Status").Include("Location").OrderBy(x => x.User.LastName).ToList();
                 }
             }
             catch (Exception ex)
@@ -209,25 +209,56 @@ namespace ABLCloudStaff.Board_Logic
         /// <param name="newStatusID">The id of the new Status</param>
         public static void UpdateStatus(int userID, int newStatusID)
         {
-            Core thisCore = new Core();
+            Core currentCore = new Core();
             Status newStatus = new Status();
+
+            int previousStatusID;
+            DateTime previousStateInitTime;
+
+            // Assume an update is necessary
+            bool updateNecessary = true;
 
             try
             {
                 using (var context = new ABLCloudStaffContext())
                 {
                     // Get the Core instance indicated by the given UserID
-                    thisCore = context.Cores.Where(c => c.UserID == userID).FirstOrDefault();
+                    currentCore = context.Cores.Where(c => c.UserID == userID).FirstOrDefault();
 
-                    // Get the new status from the status table
-                    newStatus = context.Statuses.Where(s => s.StatusID == newStatusID).FirstOrDefault();
+                    // Save info from the old state that we need.
+                    previousStatusID = currentCore.StatusID;
+                    previousStateInitTime = new DateTime(currentCore.StateStart.Year, 
+                        currentCore.StateStart.Month, 
+                        currentCore.StateStart.Day, 
+                        currentCore.StateStart.Hour, 
+                        currentCore.StateStart.Minute, 
+                        currentCore.StateStart.Second, 
+                        currentCore.StateStart.Millisecond);
 
-                    // Assign the new status to our Core instance
-                    thisCore.StatusID = newStatus.StatusID;
-                    thisCore.Status = newStatus;
+                    // Is this update necessary?
+                    if (previousStatusID == newStatusID)
+                    {
+                        updateNecessary = false;
+                    }
+                    else  // If the statusIDs are different, go ahead with the update.
+                    {
+                        // Get the new status from the status table
+                        newStatus = context.Statuses.Where(s => s.StatusID == newStatusID).FirstOrDefault();
 
-                    context.SaveChanges();
+                        // Assign the new status to our Core instance
+                        currentCore.StatusID = newStatus.StatusID;
+                        currentCore.Status = newStatus;
+                        currentCore.StateStart = DateTime.Now;
+
+                        // Commit to the database
+                        context.SaveChanges();
+                    }
                 }
+
+                // Submit to change-log
+                // But, we don't want to log a change if the status hasn't actually changed.
+                if(updateNecessary)
+                    ChangeLogUtilities.LogStatusChange(userID, newStatusID, previousStatusID, previousStateInitTime);
                 
             }
             catch (Exception ex)
@@ -243,30 +274,126 @@ namespace ABLCloudStaff.Board_Logic
         /// <param name="newLocID">The id of the new Location</param>
         public static void UpdateLocation(int userID, int newLocID)
         {
-            Core thisCore = new Core();
-            Location thisLoc = new Location();
+            Core currentCore = new Core();
+            Location newLocation = new Location();
+
+            int previousLocationID;
+            DateTime previousStateInitTime;
+
+            // Assume an update is necessary
+            bool updateNecessary = true;
 
             try
             {
                 using (var context = new ABLCloudStaffContext())
                 {
-                    // Get the Core instance indicated by the given userID
-                    thisCore = context.Cores.Where(c => c.UserID == userID).FirstOrDefault();
+                    // Get the Core instance indicated by the given UserID
+                    currentCore = context.Cores.Where(c => c.UserID == userID).FirstOrDefault();
 
-                    // Get the new location from the location table
-                    thisLoc = context.Locations.Where(l => l.LocationID == newLocID).FirstOrDefault();
+                    // Save info from the old state that we need.
+                    previousLocationID = currentCore.LocationID;
+                    previousStateInitTime = new DateTime(currentCore.StateStart.Year,
+                        currentCore.StateStart.Month,
+                        currentCore.StateStart.Day,
+                        currentCore.StateStart.Hour,
+                        currentCore.StateStart.Minute,
+                        currentCore.StateStart.Second,
+                        currentCore.StateStart.Millisecond);
 
-                    // Assign the new location to our Core instance
-                    thisCore.LocationID = thisLoc.LocationID;
-                    thisCore.Location = thisLoc;
+                    // Is this update necessary?
+                    if (previousLocationID == newLocID)
+                    {
+                        updateNecessary = false;
+                    }
+                    else  // If the locationIDs are different, go ahead with the update.
+                    {
+                        // Get the new location from the status table
+                        newLocation = context.Locations.Where(l => l.LocationID == newLocID).FirstOrDefault();
 
-                    context.SaveChanges();
+                        // Assign the new Location to our Core instance
+                        currentCore.LocationID = newLocation.LocationID;
+                        currentCore.Location = newLocation;
+                        currentCore.StateStart = DateTime.Now;
+
+                        // Commit to the database
+                        context.SaveChanges();
+                    }
                 }
-                
+
+                // Submit to change-log
+                // But, we don't want to log a change if the Locaton hasn't actually changed.
+                if (updateNecessary)
+                    ChangeLogUtilities.LogLocationChange(userID, newLocID, previousLocationID, previousStateInitTime);
+
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Add a new Core instance, for a new user.
+        /// </summary>
+        /// <param name="userID">The new user id, this user must exist.</param>
+        /// <param name="statusID">The status id, this status must exist.</param>
+        /// <param name="locationID">The location id, this location must exist.</param>
+        public static void AddCore(int userID, int statusID, int locationID)
+        {
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    // We need to ensure that the given user, status and location all exist.
+                    List<int> existingUsers = context.Users.Select(x => x.UserID).ToList();
+                    List<int> existingStatuses = context.Statuses.Select(x => x.StatusID).ToList();
+                    List<int> existingLocations = context.Locations.Select(x => x.LocationID).ToList();
+                    // We also need to make sure that this user doesn't already have a core instance.
+                    List<int> existingCores = context.Cores.Select(x => x.UserID).ToList();
+
+                    if (!existingUsers.Contains(userID))
+                        throw new Exception("User does not exist.");
+                    if (!existingStatuses.Contains(statusID))
+                        throw new Exception("Status does not exist.");
+                    if (!existingLocations.Contains(locationID))
+                        throw new Exception("Location does not exist.");
+                    if (existingCores.Contains(userID))
+                        throw new Exception("User already has a core instance.");
+
+                    // Create and add the new Core instance
+                    Core newCore = new Core {UserID = userID, StatusID = statusID, LocationID = locationID, StateStart = DateTime.Now };
+                    context.Cores.Add(newCore);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Remove the indicated core instance from the core table
+        /// </summary>
+        /// <param name="userID">Core instance indicated by userID</param>
+        public static void DeleteCore(int userID)
+        {
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    var coreToDelete = context.Cores.SingleOrDefault(x => x.UserID == userID);
+
+                    if(coreToDelete != null)
+                    {
+                        context.Cores.Remove(coreToDelete);
+                        context.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
             }
         }
     }
