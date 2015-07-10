@@ -12,6 +12,60 @@ namespace ABLCloudStaff.Board_Logic
     public static class ChangeLogUtilities
     {
         /// <summary>
+        /// Get the latest status updates
+        /// </summary>
+        /// <param name="nRecords">Number of records to fetch</param>
+        /// <returns>List of type StatusChangeLog</returns>
+        public static List<StatusChangeLog> GetStatusChanges(int nRecords)
+        {
+            List<StatusChangeLog> changeLog = new List<StatusChangeLog>();
+
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    // Query for 'n' record, starting with the latest
+                    changeLog = context.StatusChangeLogs.OrderByDescending(x => x.StatusChangeTimeStamp).Take(nRecords).ToList();
+                }
+                
+                
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return changeLog;
+        }
+
+        /// <summary>
+        /// Get the latest location updates
+        /// </summary>
+        /// <param name="nRecords">The number of records to fetch</param>
+        /// <returns>List of type LocationChangeLog</returns>
+        public static List<LocationChangeLog> GetLocationChanges(int nRecords)
+        {
+            List<LocationChangeLog> changeLog = new List<LocationChangeLog>();
+
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    // Query for 'n' record, starting with the latest
+                    changeLog = context.LocationChangeLogs.OrderByDescending(x => x.LocationChangeTimeStamp).Take(nRecords).ToList();
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return changeLog;
+        }
+
+        /// <summary>
         /// Log the change from one status to another
         /// </summary>
         /// <param name="userID">The user to log the change for</param>

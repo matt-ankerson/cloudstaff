@@ -23,7 +23,7 @@ namespace ABLCloudStaff.Board_Logic
             {
                 using (var context = new ABLCloudStaffContext())
                 {
-                    users = context.Users.ToList();
+                    users = context.Users.OrderBy(x => x.LastName).ToList();
                 }
             }
             catch (Exception e)
@@ -81,8 +81,114 @@ namespace ABLCloudStaff.Board_Logic
                     userID = context.Users.Select(x => x.UserID).ToList().LastOrDefault();
                 }
 
+                // Add default statuses and locations for the new user.
+                // Statuses
+                foreach (var statusID in Constants.DEFAULT_STATUSES)
+                {
+                    AddUserStatus(userID, statusID);
+                }
+                // Locations
+                foreach (var locationID in Constants.DEFAULT_LOCATIONS)
+                {
+                    AddUserLocation(userID, locationID);
+                }
+
                 // Add a core instance for this user, with defaults for status and location.
                 CoreUtilities.AddCore(userID, Constants.DEFAULT_STATUS, Constants.DEFAULT_LOCATION);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Make a status available for the given user
+        /// </summary>
+        /// <param name="userID">The user to add the status to</param>
+        /// <param name="statusID">The status we'd like to add.</param>
+        public static void AddUserStatus(int userID, int statusID)
+        {
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    // Ensure that both the user and status actually exist
+                    List<int> allUsers = context.Users.Select(x => x.UserID).ToList();
+                    List<int> allStatuses = context.Statuses.Select(x => x.StatusID).ToList();
+
+                    if (!allUsers.Contains(userID))
+                        throw new Exception("User does not exist.");
+                    if (!allStatuses.Contains(statusID))
+                        throw new Exception("Status does not exist.");
+
+                    // Create the UserStatus instance and add it to the database
+                    UserStatus newUserStatus = new UserStatus { UserID = userID, StatusID = statusID, DateAdded = DateTime.Now };
+                    context.UserStatuses.Add(newUserStatus);
+                    context.SaveChanges();
+                }
+                 
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Make a given location available for a given user.
+        /// </summary>
+        /// <param name="userID">The user to add the location to</param>
+        /// <param name="locationID">The location to add</param>
+        public static void AddUserLocation(int userID, int locationID)
+        {
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    // Ensure that both the user and location actually exist
+                    List<int> allUsers = context.Users.Select(x => x.UserID).ToList();
+                    List<int> allLocations = context.Locations.Select(x => x.LocationID).ToList();
+
+                    if (!allUsers.Contains(userID))
+                        throw new Exception("User does not exist.");
+                    if (!allLocations.Contains(locationID))
+                        throw new Exception("Location does not exist.");
+
+                    // Create the UserLocation instance and add it to the database
+                    UserLocation newUserLocation = new UserLocation { UserID = userID, LocationID = locationID, DateAdded = DateTime.Now };
+                    context.UserLocations.Add(newUserLocation);
+                    context.SaveChanges();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Remove the indicated user from the database
+        /// </summary>
+        /// <param name="userID">User to delete</param>
+        public static void DeleteUser(int userID)
+        {
+            try
+            {
+                // Remove the core instance for this user
+                CoreUtilities.DeleteCore(userID);
+
+                using (var context = new ABLCloudStaffContext())
+                {
+                    var userToDelete = context.Users.SingleOrDefault(x => x.UserID == userID);
+
+                    if (userToDelete != null)
+                    {
+                        context.Users.Remove(userToDelete);
+                        context.SaveChanges();
+                    }
+                }
             }
             catch (Exception ex)
             {

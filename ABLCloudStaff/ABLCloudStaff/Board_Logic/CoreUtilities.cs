@@ -23,7 +23,7 @@ namespace ABLCloudStaff.Board_Logic
             {
                 using (var context = new ABLCloudStaffContext())
                 {
-                    coreInstances = context.Cores.Include("User").Include("Status").Include("Location").ToList();
+                    coreInstances = context.Cores.Include("User").Include("Status").Include("Location").OrderBy(x => x.User.LastName).ToList();
                 }
             }
             catch (Exception ex)
@@ -369,6 +369,31 @@ namespace ABLCloudStaff.Board_Logic
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Remove the indicated core instance from the core table
+        /// </summary>
+        /// <param name="userID">Core instance indicated by userID</param>
+        public static void DeleteCore(int userID)
+        {
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    var coreToDelete = context.Cores.SingleOrDefault(x => x.UserID == userID);
+
+                    if(coreToDelete != null)
+                    {
+                        context.Cores.Remove(coreToDelete);
+                        context.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
             }
         }
     }
