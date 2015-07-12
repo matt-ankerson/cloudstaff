@@ -70,6 +70,7 @@ namespace ABLCloudStaff.Controllers
         /// <returns>A List of status change information objects</returns>
         public JsonResult GetStatusChanges()
         {
+            /*
             List<ChangeLogInfo> changeLogInfo = new List<ChangeLogInfo>();
             int nRecords = 10;
 
@@ -88,8 +89,9 @@ namespace ABLCloudStaff.Controllers
                 // Add to the basic object list
                 changeLogInfo.Add(cli);
             }
+             */
 
-            return Json(changeLogInfo, JsonRequestBehavior.AllowGet);
+            return Json(null, JsonRequestBehavior.AllowGet);
         }
 	}
 

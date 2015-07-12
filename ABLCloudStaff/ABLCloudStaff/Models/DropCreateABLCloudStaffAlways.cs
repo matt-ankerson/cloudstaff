@@ -32,6 +32,19 @@ namespace ABLCloudStaff.Models
         }
 
         /// <summary>
+        /// Seed the UserType table
+        /// </summary>
+        public void PopulateUserTypes()
+        {
+            List<UserType> userTypes = new List<UserType>
+            {
+                new UserType {Type = "General"},
+                new UserType {Type = "Admin"},
+                new UserType {Type = "Visitor"}
+            };
+        }
+
+        /// <summary>
         /// Seed the core table
         /// </summary>
         public void PopulateCore()
@@ -69,22 +82,40 @@ namespace ABLCloudStaff.Models
         {
             List<User> users = new List<User>
             {
-                new User { FirstName = "Peter", LastName = "Brock" },
-                new User { FirstName = "Colin", LastName = "Bond" },
-                new User { FirstName = "Mark", LastName = "Winterbottom" },
-                new User { FirstName = "Allan", LastName = "Moffat" },
-                new User { FirstName = "Dick", LastName = "Johnson" },
-                new User { FirstName = "Jim", LastName = "Richards" },
-                new User { FirstName = "Marko", LastName = "Andretti" },
-                new User { FirstName = "Craig", LastName = "Baird" },
-                new User { FirstName = "Jason", LastName = "Bargwanna" },
-                new User { FirstName = "Neal", LastName = "Bates" },
-                new User { FirstName = "Troy", LastName = "Bayliss" },
-                new User { FirstName = "Daryl", LastName = "Beattie" },
-                new User { FirstName = "Jorg", LastName = "Bergmeister" },
-                new User { FirstName = "Helen", LastName = "Clark" },
-                new User { FirstName = "Tim", LastName = "Blankard" },
-                new User { FirstName = "Craig", LastName = "Lowndes" }
+                new User { FirstName = "Anna", LastName = "Campbell", UserTypeID = 1 },
+                new User { FirstName = "Bram", LastName = "Visser", UserTypeID = 1 },
+                new User { FirstName = "Bruno", LastName = "Santos", UserTypeID = 1 },
+                new User { FirstName = "Daniel", LastName = "Martin-Collado", UserTypeID = 1 },
+                new User { FirstName = "Fiona", LastName = "Hely", UserTypeID = 1 },
+                new User { FirstName = "Gemma", LastName = "Jenkins", UserTypeID = 1 },
+                new User { FirstName = "Bruce", LastName = "McCorkindale", UserTypeID = 1 },
+                new User { FirstName = "Gertje", LastName = "Petersen", UserTypeID = 1 },
+                new User { FirstName = "Grace", LastName = "Johnstone", UserTypeID = 1 },
+                new User { FirstName = "Cheryl", LastName = "King", UserTypeID = 2 },
+                new User { FirstName = "Hadyn", LastName = "Craig", UserTypeID = 1 },
+                new User { FirstName = "Jason", LastName = "Archer", UserTypeID = 1 },
+                new User { FirstName = "Joanne", LastName = "Kerslake", UserTypeID = 1 },
+                new User { FirstName = "Jonathan", LastName = "Chuah", UserTypeID = 1 },
+                new User { FirstName = "Jude", LastName = "Sise", UserTypeID = 1 },
+                new User { FirstName = "Katarzyna", LastName = "Stachowicz", UserTypeID = 1 },
+                new User { FirstName = "Kevin", LastName = "Wilson", UserTypeID = 1 },
+                new User { FirstName = "Luke", LastName = "Proctor", UserTypeID = 1 },
+                new User { FirstName = "Mark", LastName = "Teviotdale", UserTypeID = 2 },
+                new User { FirstName = "Melanie", LastName = "Joubert", UserTypeID = 1 },
+                new User { FirstName = "Nadia", LastName = "McLean", UserTypeID = 1 },
+                new User { FirstName = "Nana", LastName = "Bortsie-Aryee", UserTypeID = 1 },
+                new User { FirstName = "Natalie", LastName = "Howes", UserTypeID = 1 },
+                new User { FirstName = "Neville", LastName = "Jopson", UserTypeID = 1 },
+                new User { FirstName = "Nicola", LastName = "Dennis", UserTypeID = 1 },
+                new User { FirstName = "Peter", LastName = "Amer", UserTypeID = 1 },
+                new User { FirstName = "Peter", LastName = "Fennessy", UserTypeID = 1 },
+                new User { FirstName = "Peter", LastName = "O'Neill", UserTypeID = 1 },
+                new User { FirstName = "Peter", LastName = "Wong", UserTypeID = 1 },
+                new User { FirstName = "Sammy", LastName = "Wong", UserTypeID = 1 },
+                new User { FirstName = "Simon", LastName = "Glennie", UserTypeID = 1 },
+                new User { FirstName = "Simon", LastName = "Ryan", UserTypeID = 2 },
+                new User { FirstName = "Robyn", LastName = "Simpson", UserTypeID = 2 },
+                new User { FirstName = "Tim", LastName = "Byne", UserTypeID = 1 }
             };
 
             foreach (User u in users)
