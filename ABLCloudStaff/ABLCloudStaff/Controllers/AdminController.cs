@@ -70,7 +70,7 @@ namespace ABLCloudStaff.Controllers
         /// <returns>A List of status change information objects</returns>
         public JsonResult GetStatusChanges()
         {
-            /*
+            
             List<ChangeLogInfo> changeLogInfo = new List<ChangeLogInfo>();
             int nRecords = 10;
 
@@ -84,14 +84,47 @@ namespace ABLCloudStaff.Controllers
                 cli.lastName = log.User.LastName;
                 cli.oldState = log.OldStatus.Name;
                 cli.newState = log.NewStatus.Name;
-                cli.stateChangeTimestamp = log.StatusChangeTimeStamp.ToShortTimeString();
-                cli.prevStateInitTimestamp = log.StatusInitTimeStamp.ToShortTimeString();
+                // Assign a meaningful date/time string
+                cli.stateChangeTimestamp = log.StatusChangeTimeStamp.ToShortDateString() + ", " + log.StatusChangeTimeStamp.ToShortTimeString();
+                cli.prevStateInitTimestamp = log.StatusInitTimeStamp.ToShortDateString() + ", " + log.StatusInitTimeStamp.ToShortTimeString();
                 // Add to the basic object list
                 changeLogInfo.Add(cli);
             }
-             */
 
-            return Json(null, JsonRequestBehavior.AllowGet);
+            IEnumerable<ChangeLogInfo> data = changeLogInfo;
+
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// Get all location changes back until a certain point
+        /// </summary>
+        /// <returns>A list of location change objects</returns>
+        public JsonResult GetLocationChanges()
+        {
+            List<ChangeLogInfo> changeLogInfo = new List<ChangeLogInfo>();
+            int nRecords = 10;
+
+            // Get the data from the location change log table ()
+            List<LocationChangeLog> locationChangeLog = ChangeLogUtilities.GetLocationChanges(nRecords);
+
+            foreach (var log in locationChangeLog)
+            {
+                ChangeLogInfo cli = new ChangeLogInfo();
+                cli.firstName = log.User.FirstName;
+                cli.lastName = log.User.LastName;
+                cli.oldState = log.OldLocation.Name;
+                cli.newState = log.NewLocation.Name;
+                // Assign a meaningful date/time string
+                cli.stateChangeTimestamp = log.LocationChangeTimeStamp.ToShortDateString() + ", " + log.LocationChangeTimeStamp.ToShortTimeString();
+                cli.prevStateInitTimestamp = log.LocationInitTimeStamp.ToShortDateString() + ", " + log.LocationInitTimeStamp.ToShortTimeString();
+                // Add to the basic object list
+                changeLogInfo.Add(cli);
+            }
+
+            IEnumerable<ChangeLogInfo> data = changeLogInfo;
+
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
 	}
 
