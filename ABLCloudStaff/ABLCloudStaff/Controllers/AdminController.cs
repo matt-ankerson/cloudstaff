@@ -22,12 +22,20 @@ namespace ABLCloudStaff.Controllers
         /// </summary>
         /// <returns>An ActionResult object</returns>
         [HttpPost]
-        public ActionResult AddNewUser(string firstName, string lastName)
+        public ActionResult AddNewUser(string firstName, string lastName, string userTypeID, string active)
         {
+            int actualUserTypeID = Convert.ToInt32(userTypeID);
+            bool actualActive;
+
+            if (active == "on")
+                actualActive = true;
+            else
+                actualActive = false;
+
             // Perform the insertion.
             // This will also add a new core instance to the database for the new user
             // ... and all default statuses and locations.
-            UserUtilities.AddUser(firstName, lastName);
+            UserUtilities.AddUser(firstName, lastName, actualUserTypeID, actualActive);
 
             return View("Admin");
         }
@@ -40,13 +48,18 @@ namespace ABLCloudStaff.Controllers
         [HttpPost]
         public ActionResult RemoveUser(string userID)
         {
-            int actualUserID = Convert.ToInt32(userID);
-            UserUtilities.DeleteUser(actualUserID);
+            // If we have a user ID
+            if (!string.IsNullOrEmpty(userID))
+            {
+                int actualUserID = Convert.ToInt32(userID);
+                UserUtilities.FlagUserDeleted(actualUserID);
+            }
+            
             return View("Admin");
         }
 
         /// <summary>
-        /// Get all users currently in database
+        /// Get all user's names and IDs currently in database
         /// </summary>
         /// <returns>A Dictionary of users</returns>
         public JsonResult GetAllUsers()
@@ -62,6 +75,35 @@ namespace ABLCloudStaff.Controllers
             }
 
             return Json(usersDict, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// Get all users in verbose detail
+        /// </summary>
+        /// <returns>An Ienumberable of type UserInfo in JSON format</returns>
+        public JsonResult GetFullUserInformations()
+        {
+            List<UserInfo> userInfo = new List<UserInfo>();
+
+            // Get all our users (regardless of deleted status)
+            List<User> allUsers = UserUtilities.GetAllUsers();
+
+            // Iterate our users and build our list of stringified user information
+            foreach (User user in allUsers)
+            {
+                UserInfo ui = new UserInfo();
+                ui.userID = user.UserID.ToString();
+                ui.firstName = user.FirstName;
+                ui.lastName = user.LastName;
+                ui.userType = user.UserType.Type;
+                ui.isDeleted = user.IsActive.ToString();
+                // Add to the list of verbose user details
+                userInfo.Add(ui);
+            }
+
+            IEnumerable<UserInfo> data = userInfo;
+
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
@@ -126,6 +168,20 @@ namespace ABLCloudStaff.Controllers
 
             return Json(data, JsonRequestBehavior.AllowGet);
         }
+
+        /// <summary>
+        /// Gets all possible user types
+        /// </summary>
+        /// <returns>A list of type UserType</returns>
+        public JsonResult GetUserTypes()
+        {
+            // Get all user types
+            List<UserType> userTypes = UserUtilities.GetAllUserTypes();
+
+            IEnumerable<UserType> data = userTypes;
+
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
 	}
 
     /// <summary>
@@ -139,5 +195,17 @@ namespace ABLCloudStaff.Controllers
         public string newState;
         public string stateChangeTimestamp;
         public string prevStateInitTimestamp;
+    }
+
+    /// <summary>
+    /// Object to hold information about a user in verbose detail
+    /// </summary>
+    public class UserInfo
+    {
+        public string userID;
+        public string firstName;
+        public string lastName;
+        public string userType;
+        public string isDeleted;
     }
 }
