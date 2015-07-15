@@ -272,13 +272,27 @@
                         <div class="modal-content">
                             <div class="modal-header" id="admin-edit-user-modal-header">
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 id="modal-title"></h4>
+                                <h4 id="edit-user-modal-title">Edit: </h4>
                             </div>
                             <!-- Modal Content -->
                             <div class="modal-body" style="padding:40px 50px;">
-                                <form id="edit-user-form" action="/Home/UpdateUser" method="post" role="form">
+                                <form id="edit-user-form" action="/Admin/UpdateUser" method="post" role="form">
                                     <div class="form-group">
-
+                                        <label for="edit-user-firstName">First name</label>
+                                        <input id="edit-user-firstName" type="text" name="firstName" class="form-control" disabled="disabled" />
+                                        <br />
+                                        <label for="edit-user-lastName">Last name</label>
+                                        <input id="edit-user-lastName" type="text" name="lastName" class="form-control" disabled="disabled"/>
+                                        <br />
+                                        <label for="edit-user-userType">User Type</label>
+                                        <select id="edit-user-userType" name="userType">
+                                            <!-- User Type options go here. -->
+                                        </select>
+                                        <br />
+                                        <br />
+                                        <label for="edit-user-isActive">User is active:</label>
+                                        <input type="checkbox" id="edit-user-isActive" name="isActive" disabled="disabled" />
+                                        <br />
                                     </div>
 
                                     <button id="update-user-button" type="submit" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> Update & Save</button>

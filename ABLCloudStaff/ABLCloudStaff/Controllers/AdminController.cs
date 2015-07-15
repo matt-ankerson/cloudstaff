@@ -96,7 +96,8 @@ namespace ABLCloudStaff.Controllers
                 ui.firstName = user.FirstName;
                 ui.lastName = user.LastName;
                 ui.userType = user.UserType.Type;
-                ui.isDeleted = user.IsActive.ToString();
+                ui.userTypeID = user.UserTypeID.ToString();
+                ui.isActive = user.IsActive.ToString();
                 // Add to the list of verbose user details
                 userInfo.Add(ui);
             }
@@ -206,6 +207,7 @@ namespace ABLCloudStaff.Controllers
         public string firstName;
         public string lastName;
         public string userType;
-        public string isDeleted;
+        public string userTypeID;
+        public string isActive;
     }
 }

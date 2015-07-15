@@ -20,7 +20,7 @@ $(document).ready(function () {
 
         var list = data;
 
-        // Pull values out of object list and inject table elements into option lit
+        // Pull values out of object list and inject table elements into option list
 
         // For each usertype object in the list
         for (var i = 0; i < list.length; i++) {
