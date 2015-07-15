@@ -91,3 +91,9 @@ input[type="checkbox"].input-validation-error {
 .nested-tabs {
     width: inherit;
 }
+
+/* Administration EDIT USER Modal */
+#admin-edit-user-modal-header {
+    background-color: lightgray;
+    padding:35px 50px;
+}

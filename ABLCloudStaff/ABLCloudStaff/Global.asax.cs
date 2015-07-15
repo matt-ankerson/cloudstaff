@@ -20,7 +20,8 @@ namespace ABLCloudStaff
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             // Initialise the database (for testing)
-            Database.SetInitializer(new DropCreateABLCloudStaffAlways());
+            //Database.SetInitializer(new DropCreateABLCloudStaffAlways());
+            //Database.SetInitializer<ABLCloudStaffContext>(new CreateDatabaseIfNotExists<ABLCloudStaffContext>());
         }
     }
 }

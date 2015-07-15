@@ -23,7 +23,7 @@ namespace ABLCloudStaff.Board_Logic
             {
                 using (var context = new ABLCloudStaffContext())
                 {
-                    users = context.Users.OrderBy(x => x.LastName).ToList();
+                    users = context.Users.Include("UserType").OrderBy(x => x.LastName).ToList();
                 }
             }
             catch (Exception e)
@@ -63,8 +63,9 @@ namespace ABLCloudStaff.Board_Logic
         /// </summary>
         /// <param name="firstName">Users first name</param>
         /// <param name="lastName">Users last name</param>
-        /// <param name="rank">Enum. General, Visior or Admin</param>
-        public static void AddUser(string firstName, string lastName)
+        /// <param name="userType">General, Visior or Admin</param>
+        /// <param name="isDeleted">Indicate whether or not to make this user Active</param>
+        public static void AddUser(string firstName, string lastName, int userType, bool isDeleted)
         {
             try
             {
@@ -73,12 +74,16 @@ namespace ABLCloudStaff.Board_Logic
                 using (var context = new ABLCloudStaffContext())
                 {
                     // Create the new user and add it to the db
-                    User newUser = new User {FirstName = firstName, LastName = lastName };
+                    User newUser = new User {FirstName = firstName, LastName = lastName, UserTypeID = userType, IsActive = isDeleted };
                     context.Users.Add(newUser);
-                    context.SaveChanges();
+                    context.SaveChanges();      
+                }
 
+                // Use a different context instance
+                using (var context = new ABLCloudStaffContext())
+                {
                     // Get the userID back out from the added record
-                    userID = context.Users.Select(x => x.UserID).ToList().LastOrDefault();
+                    userID = context.Users.OrderBy(x => x.UserID).Select(x => x.UserID).ToList().LastOrDefault();
                 }
 
                 // Add default statuses and locations for the new user.
@@ -194,6 +199,57 @@ namespace ABLCloudStaff.Board_Logic
             {
                 throw new Exception(ex.Message);
             }
+        }
+
+        /// <summary>
+        /// Set the IsDeleted flag on the indicated user to True
+        /// </summary>
+        /// <param name="userID">The user to flag as deleted</param>
+        public static void FlagUserDeleted(int userID)
+        {
+            try
+            {
+                // Remove the core instance for this user
+                CoreUtilities.DeleteCore(userID);
+
+                using (var context = new ABLCloudStaffContext())
+                {
+                    var userToDelete = context.Users.SingleOrDefault(x => x.UserID == userID);
+
+                    if (userToDelete != null)
+                    {
+                        userToDelete.IsActive = false;
+                        context.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Get all available user types
+        /// </summary>
+        /// <returns>A lis of type UserType</returns>
+        public static List<UserType> GetAllUserTypes()
+        {
+            List<UserType> userTypes = new List<UserType>();
+
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    userTypes = context.UserTypes.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return userTypes;
         }
     }
 }

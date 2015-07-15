@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using ABLCloudStaff.Models;
+using System.Data.Entity;
 
 namespace ABLCloudStaff.Board_Logic
 {
@@ -25,7 +26,7 @@ namespace ABLCloudStaff.Board_Logic
                 using (var context = new ABLCloudStaffContext())
                 {
                     // Query for 'n' record, starting with the latest
-                    changeLog = context.StatusChangeLogs.OrderByDescending(x => x.StatusChangeTimeStamp).Take(nRecords).ToList();
+                    changeLog = context.StatusChangeLogs.Include("User").Include("NewStatus").Include("OldStatus").OrderByDescending(x => x.StatusChangeTimeStamp).Take(nRecords).ToList();
                 }
                 
                 
@@ -52,7 +53,7 @@ namespace ABLCloudStaff.Board_Logic
                 using (var context = new ABLCloudStaffContext())
                 {
                     // Query for 'n' record, starting with the latest
-                    changeLog = context.LocationChangeLogs.OrderByDescending(x => x.LocationChangeTimeStamp).Take(nRecords).ToList();
+                    changeLog = context.LocationChangeLogs.Include("User").Include("NewLocation").Include("OldLocation").OrderByDescending(x => x.LocationChangeTimeStamp).Take(nRecords).ToList();
                 }
 
 
@@ -91,6 +92,13 @@ namespace ABLCloudStaff.Board_Logic
                 // Save the new ChangeLog object to the db
                 using (var context = new ABLCloudStaffContext())
                 {
+                    // Explicitly assign statuses
+                    Status newStatus = context.Statuses.Where(x => x.StatusID == newStatusID).FirstOrDefault();
+                    Status oldStatus = context.Statuses.Where(x => x.StatusID == oldStatusID).FirstOrDefault();
+                    changeLog.NewStatus = newStatus;
+                    changeLog.OldStatus = oldStatus;
+
+
                     context.StatusChangeLogs.Add(changeLog);
                     context.SaveChanges();
                 }
@@ -127,6 +135,11 @@ namespace ABLCloudStaff.Board_Logic
                 // Save the new ChangeLog object to the db
                 using (var context = new ABLCloudStaffContext())
                 {
+                    // Explicitly assign locations
+                    Location oldLocation = context.Locations.Where(x => x.LocationID == oldLocID).FirstOrDefault();
+                    Location newLocation = context.Locations.Where(x => x.LocationID == newLocID).FirstOrDefault();
+                    changeLog.OldLocation = oldLocation;
+                    changeLog.NewLocation = newLocation;
                     context.LocationChangeLogs.Add(changeLog);
                     context.SaveChanges();
                 }

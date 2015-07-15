@@ -29,6 +29,17 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PublishDatabaseSettings>
+      <Objects>
+        <ObjectGroup Name="ABLCloudStaff" Order="1">
+          <Destination Path="Data Source=localhost\SQLEXPRESS%3bInitial Catalog=ABLCloudStaff%3bIntegrated Security=True" />
+          <Object Type="DbFullSql" Enabled="True">
+            <PreSource Path="Data Source=localhost\SQLEXPRESS%3bInitial Catalog=ABLCloudStaff%3bIntegrated Security=True" ScriptSchema="True" ScriptData="False" CopyAllFullTextCatalogs="False" DriDefaults="True" />
+            <Source Path="obj\Debug\AutoScripts\ABLCloudStaff_SchemaOnly.sql" Transacted="True" />
+          </Object>
+        </ObjectGroup>
+      </Objects>
+    </PublishDatabaseSettings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -140,6 +151,7 @@
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserLocation.cs" />
     <Compile Include="Models\UserStatus.cs" />
+    <Compile Include="Models\UserType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -169,10 +181,14 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\bg.png" />
+    <Content Include="Scripts\add_user_form.js" />
     <Content Include="Scripts\bootstrap-switch.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ClassDiagram1.cd" />
+    <None Include="Properties\PublishProfiles\CloudStaff.pubxml" />
+    <None Include="Properties\PublishProfiles\Default Package.pubxml" />
+    <None Include="Properties\PublishProfiles\Default.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\changelog_tables.js" />
     <Content Include="Scripts\fill_user_table.js" />

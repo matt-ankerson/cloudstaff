@@ -16,9 +16,12 @@ namespace ABLCloudStaff.Models
         public int UserID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public int UserTypeID { get; set; }
+        public bool IsActive { get; set; }
 
         public virtual List<UserStatus> UserStatuses { get; set; }
         public virtual List<UserLocation> UserLocations { get; set; }
+        public virtual UserType UserType { get; set; }
     }
 
     public enum ERank

@@ -19,6 +19,10 @@ namespace ABLCloudStaff.Controllers
         {
             List<Core> coreInfo = CoreUtilities.GetAllCoreInstances();
             return View(coreInfo);
+            //List<Core> coreInfo = new List<Core> { new Core {User = new User {FirstName = "Mike", LastName = "Hoskins", IsActive = true, UserID = 1, UserTypeID = 1, UserType = new UserType {Type = "General"}
+            //}, CoreID = 1, LocationID = 1, Location = new Location {LocationID = 1, Name = "AbacusBio"}, Status = new Status {StatusID = 1, Name = "In Office"}, StatusID = 1,
+            //UserID = 1, StateStart = DateTime.Now}  };
+            //return View(coreInfo);
         }
 
         /// <summary>
