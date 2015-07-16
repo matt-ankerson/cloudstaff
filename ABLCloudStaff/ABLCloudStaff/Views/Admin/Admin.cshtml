@@ -16,6 +16,7 @@
     <script src="../../Scripts/fill_user_table.js"></script>
     <script src="../../Scripts/changelog_tables.js"></script>
     <script src="../../Scripts/add_user_form.js"></script>
+    <script src="../../Scripts/all_statuses_table.js"></script>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../Content/Site.css">
     <link rel="stylesheet" href="../../Content/bootstrap-switch.css">
@@ -156,17 +157,32 @@
                                     <ul class="tabs nav nav-tabs" data-tabs="tabs">
                                         <li class="active"><a href="#add-status" data-toggle="tab">Add Status</a></li>
                                         <li><a href="#remove-status" data-toggle="tab">Remove Status</a></li>
-                                        <li><a href="#modify-status" data-toggle="tab">Modify Status</a></li>
                                     </ul>
                                     <div class="tab-content">
                                         <div class="tab-pane active" id="add-status">
                                             <h3>Add Status</h3>
+                                            <div class="container nested-tabs">
+                                                <form id="add-status-form" action="/Admin/AddNewStatusForSingleUser" method="post" role="form">
+
+                                                </form>
+                                            </div>
+                                            <h3>All Statuses</h3>
+                                            <div class="container nested-tabs">
+                                                <div class="panel panel-default">
+                                                    <!-- Table -->
+                                                    <table id="all-statuses-table" class="table table-striped">
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Status name</th>
+                                                            <th>Worksite</th>
+                                                        </tr>
+                                                        <!-- Statuses go here. -->
+                                                    </table>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="tab-pane" id="remove-status">
                                             <h3>Remove Status</h3>
-                                        </div>
-                                        <div class="tab-pane" id="modify-status">
-                                            <h3>Modify Status</h3>
                                         </div>
                                     </div>
                                 </div>

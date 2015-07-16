@@ -182,6 +182,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Images\bg.png" />
     <Content Include="Scripts\add_user_form.js" />
+    <Content Include="Scripts\all_statuses_table.js" />
     <Content Include="Scripts\bootstrap-switch.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

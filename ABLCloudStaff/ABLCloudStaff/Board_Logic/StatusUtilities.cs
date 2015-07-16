@@ -41,5 +41,29 @@ namespace ABLCloudStaff.Board_Logic
 
             return statuses;
         }
+
+        /// <summary>
+        /// Get all statuses, regarlesss of who they belong to.
+        /// </summary>
+        /// <returns>List of type Status</returns>
+        public static List<Status> GetAllStatuses()
+        {
+            List<Status> statuses = new List<Status>();
+
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    // Get status objects
+                    statuses = context.Statuses.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return statuses;
+        }
     }
 }

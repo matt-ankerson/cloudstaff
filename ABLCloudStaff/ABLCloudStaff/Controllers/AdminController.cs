@@ -139,6 +139,38 @@ namespace ABLCloudStaff.Controllers
         }
 
         /// <summary>
+        /// Get all available statuses, regardless of who they belong to.
+        /// </summary>
+        /// <returns>List of Statuses</returns>
+        public JsonResult GetAllStatuses()
+        {
+            List<Status> statuses = StatusUtilities.GetAllStatuses();
+            List<StatusInfo> statusInfos = new List<StatusInfo>();
+
+            // Build the flat StatusInfo list
+            foreach(Status s in statuses)
+            {
+                StatusInfo si = new StatusInfo { name = s.Name, statusID = s.StatusID.ToString(), worksite = s.Worksite.ToString() };
+                statusInfos.Add(si);
+            }
+
+            IEnumerable<StatusInfo> data = statusInfos;
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// Accept params necessary to add a new status for a single user
+        /// </summary>
+        /// <param name="userID">The user to add the status to</param>
+        /// <param name="name"></param>
+        /// <param name="worksite"></param>
+        /// <returns></returns>
+        public ActionResult AddNewStatusForSingleUser(string userID, string name, string worksite)
+        {
+            return View("Admin");
+        }
+
+        /// <summary>
         /// Get all status changes until an indicated point.
         /// </summary>
         /// <returns>A List of status change information objects</returns>
@@ -240,5 +272,15 @@ namespace ABLCloudStaff.Controllers
         public string userType;
         public string userTypeID;
         public string isActive;
+    }
+
+    /// <summary>
+    /// Object to hold information about a status 
+    /// </summary>
+    public class StatusInfo
+    {
+        public string statusID;
+        public string name;
+        public string worksite;
     }
 }
