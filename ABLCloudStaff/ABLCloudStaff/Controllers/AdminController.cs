@@ -96,7 +96,8 @@ namespace ABLCloudStaff.Controllers
                 ui.firstName = user.FirstName;
                 ui.lastName = user.LastName;
                 ui.userType = user.UserType.Type;
-                ui.isDeleted = user.IsActive.ToString();
+                ui.userTypeID = user.UserTypeID.ToString();
+                ui.isActive = user.IsActive.ToString();
                 // Add to the list of verbose user details
                 userInfo.Add(ui);
             }
@@ -104,6 +105,37 @@ namespace ABLCloudStaff.Controllers
             IEnumerable<UserInfo> data = userInfo;
 
             return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// Accept parameters necessary to update a user's information
+        /// </summary>
+        /// <param name="userID">The user's userID</param>
+        /// <param name="firstName">String to set the firstName</param>
+        /// <param name="lastName">String to set the lastName</param>
+        /// <param name="userType">String to set the user type ID</param>
+        /// <param name="isActive">String to indicate IsActive status</param>
+        /// <returns>ActionResult object</returns>
+        [HttpPost]
+        public ActionResult UpdateUser(string userID, string firstName, string lastName, string userType, string isActive)
+        {
+            // Convert fields to appropriate types
+            bool actualIsActive;
+
+            if ((!string.IsNullOrEmpty(userID)) && (!string.IsNullOrEmpty(userType)))
+            {
+                int actualUserID = Convert.ToInt32(userID);
+                int actualUserTypeID = Convert.ToInt32(userType);
+                if (isActive == "on")
+                    actualIsActive = true;
+                else
+                    actualIsActive = false;
+
+                // Perform the update
+                UserUtilities.UpdateUser(actualUserID, firstName, lastName, actualUserTypeID, actualIsActive);
+            }         
+
+            return View("Admin");
         }
 
         /// <summary>
@@ -206,6 +238,7 @@ namespace ABLCloudStaff.Controllers
         public string firstName;
         public string lastName;
         public string userType;
-        public string isDeleted;
+        public string userTypeID;
+        public string isActive;
     }
 }
