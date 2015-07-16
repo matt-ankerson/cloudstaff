@@ -108,6 +108,37 @@ namespace ABLCloudStaff.Controllers
         }
 
         /// <summary>
+        /// Accept parameters necessary to update a user's information
+        /// </summary>
+        /// <param name="userID">The user's userID</param>
+        /// <param name="firstName">String to set the firstName</param>
+        /// <param name="lastName">String to set the lastName</param>
+        /// <param name="userType">String to set the user type ID</param>
+        /// <param name="isActive">String to indicate IsActive status</param>
+        /// <returns>ActionResult object</returns>
+        [HttpPost]
+        public ActionResult UpdateUser(string userID, string firstName, string lastName, string userType, string isActive)
+        {
+            // Convert fields to appropriate types
+            bool actualIsActive;
+
+            if ((!string.IsNullOrEmpty(userID)) && (!string.IsNullOrEmpty(userType)))
+            {
+                int actualUserID = Convert.ToInt32(userID);
+                int actualUserTypeID = Convert.ToInt32(userType);
+                if (isActive == "on")
+                    actualIsActive = true;
+                else
+                    actualIsActive = false;
+
+                // Perform the update
+                UserUtilities.UpdateUser(actualUserID, firstName, lastName, actualUserTypeID, actualIsActive);
+            }         
+
+            return View("Admin");
+        }
+
+        /// <summary>
         /// Get all status changes until an indicated point.
         /// </summary>
         /// <returns>A List of status change information objects</returns>

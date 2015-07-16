@@ -42,6 +42,8 @@ $(document).ready(function () {
 
         //----------------------------------------------------------------------------------------
 
+        invoker_id = 0;
+
         // Launch modal when a edit button is clicked
         $(".edit-user-button").on('click', function (e) {
             // Launch the modal
@@ -101,22 +103,14 @@ $(document).ready(function () {
                 // We need to populate and enable all fields on the form
                 $("#edit-user-firstName").val(firstName).prop('disabled', false);
                 $("#edit-user-lastName").val(lastName).prop('disabled', false);
+                $("#edit-user-isActive").prop('disabled', false)
 
                 if (isActive == "True")
                 {
-                    $("#edit-user-isActive").prop('checked', true).prop('disabled', false);
+                    $("#edit-user-isActive").prop('checked', true);
                 }
                 
             });
-        });
-
-        //-----------------------------------------------------------------------------------------
-
-        // Unbind the trigger for our modal form submission
-        // ...doing this stops the form being submitted multiple times.
-        $('#edit-user-modal').on('hide.bs.modal', function (e) {
-            $("#edit-user-modal form").trigger('submit');
-            $("#edit-user-modal form").unbind('submit');
         });
         
     }
@@ -124,4 +118,39 @@ $(document).ready(function () {
     function errorFunc(error) {
         alert('error' + error.responseText);
     }
+
+    //-----------------------------------------------------------------------------------------
+
+    // Click handler for submit button on modal form
+    $("#update-user-button").on("click", function (e) {
+
+        e.preventDefault();
+
+        var form = $("#edit-user-form");
+
+        // Inject a hidden field into the form for the UserID
+        form.append('<input type="hidden" name="userID" value="' + invoker_id + '" />');
+
+        form.submit();
+
+    });
+
+    //// Intercept the form submittal, only submit if the userID is valid
+    //$("#edit-user-form").on("submit", function (e) {
+
+    //    e.preventDefault();
+    //    alert("here");
+    //    var form = $("#edit-user-form");
+    //    var userID = form.find("#userID").val();
+
+    //    if (userID != undefined && userID != null && userID != 0)
+    //        form.submit();
+    //});
+
+    // Unbind the trigger for our modal form submission
+    // ...doing this stops the form being submitted multiple times.
+    $('#edit-user-modal').on('hide.bs.modal', function (e) {
+        $("#edit-user-modal form").trigger('submit');
+        $("#edit-user-modal form").unbind('submit');
+    });
 });

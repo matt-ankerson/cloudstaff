@@ -251,5 +251,40 @@ namespace ABLCloudStaff.Board_Logic
 
             return userTypes;
         }
+
+        /// <summary>
+        /// Update an existing user
+        /// </summary>
+        /// <param name="userID">The user to update</param>
+        /// <param name="newFirstName">New firstname</param>
+        /// <param name="newLastName">New Lastname</param>
+        /// <param name="newUserTypeID">New user type</param>
+        /// <param name="newIsActive">Indicates whether the user is to be active or not</param>
+        public static void UpdateUser(int userID, string newFirstName, string newLastName, int newUserTypeID, bool newIsActive)
+        {
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    // Get the appropriate user:
+                    User userToModify = context.Users.Where(x => x.UserID == userID).FirstOrDefault();
+
+                    if (userToModify == null)
+                        throw new Exception("Bad UserID, user does not exist.");
+
+                    // Update the fields on this user
+                    userToModify.FirstName = newFirstName;
+                    userToModify.LastName = newLastName;
+                    userToModify.UserTypeID = newUserTypeID;
+                    userToModify.IsActive = newIsActive;
+
+                    context.SaveChanges();
+                }        
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
