@@ -92,6 +92,15 @@ input[type="checkbox"].input-validation-error {
     width: inherit;
 }
 
+#spinner-container {
+    text-align: center;
+}
+
+#spn-user-table-loading {
+    margin: auto;
+}
+
+
 /* Administration EDIT USER Modal */
 #admin-edit-user-modal-header {
     background-color: lightgray;

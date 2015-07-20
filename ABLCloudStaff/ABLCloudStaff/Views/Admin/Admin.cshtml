@@ -18,6 +18,7 @@
     <script src="../../Scripts/add_user_form.js"></script>
     <script src="../../Scripts/all_statuses_table.js"></script>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://css-spinners.com/css/spinner/spinner.css" type="text/css">
     <link rel="stylesheet" href="../../Content/Site.css">
     <link rel="stylesheet" href="../../Content/bootstrap-switch.css">
     <link rel="stylesheet" href="../../Content/jquery-ui.min.css"/>
@@ -80,23 +81,14 @@
 
                                         <!-- See all users -->
                                         <div class="tab-pane active" id="see-users">
-                                            <h3>All Users</h3>
-                                            <div class="container nested-tabs">
-                                                <div class="panel panel-default">
-
-                                                    <!-- Table -->
-                                                    <table id="user-table" class="table table-striped table-hover">
-                                                        <tr>
-                                                            <th>#</th>
-                                                            <th>First name</th>
-                                                            <th>Last name</th>
-                                                            <th>Type</th>
-                                                            <th>Active</th>
-                                                            <th></th>
-                                                        </tr>
-                                                    </table>
+                                            <h3 id="head-user-table">All Users</h3>
+                                            <!-- Put a spinner here until the user-table has loaded. -->
+                                            <div id="spinner-container">
+                                                <div id="spn-user-table-loading" class="spinner-loader">
+                                                    Loading…
                                                 </div>
-                                            </div>
+                                            </div>    
+                                            <!-- User table goes here. -->
                                         </div>
 
                                         <!-- Add User Form -->
