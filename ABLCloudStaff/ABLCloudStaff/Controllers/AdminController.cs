@@ -139,6 +139,57 @@ namespace ABLCloudStaff.Controllers
         }
 
         /// <summary>
+        /// Get all available statuses, regardless of who they belong to.
+        /// </summary>
+        /// <returns>List of Statuses</returns>
+        public JsonResult GetAllStatuses()
+        {
+            List<Status> statuses = StatusUtilities.GetAllStatuses();
+            List<StatusInfo> statusInfos = new List<StatusInfo>();
+
+            // Build the flat StatusInfo list
+            foreach(Status s in statuses)
+            {
+                StatusInfo si = new StatusInfo { name = s.Name, statusID = s.StatusID.ToString(), worksite = s.Available.ToString() };
+                statusInfos.Add(si);
+            }
+
+            IEnumerable<StatusInfo> data = statusInfos;
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// Add a new status
+        /// </summary>
+        /// <param name="statusName">The name of the status in question</param>
+        /// <param name="available">Indicates whether or not this status is considered 'in office'</param>
+        /// <param name="userID">If not null, add the status just for this user.</param>
+        /// <returns>ActionResult object</returns>
+        public ActionResult AddStatus(string statusName, string available, string userID)
+        {
+            bool actualAvailable = false;
+            int actualUserID = 0;
+
+            if (!string.IsNullOrEmpty(statusName))
+            {
+                if (available == "on")
+                    actualAvailable = true;
+
+                // If we've got a userID, then we need to add the status ONLY for that user.
+                if (!string.IsNullOrEmpty(userID))
+                {
+                    actualUserID = Convert.ToInt32(userID);
+                    StatusUtilities.AddStatusForSingleUser(actualUserID, statusName, actualAvailable);
+                }
+                else
+                {
+                    StatusUtilities.AddStatusForAllUsers(statusName, actualAvailable);
+                }         
+            }
+            return View("Admin");
+        }
+
+        /// <summary>
         /// Get all status changes until an indicated point.
         /// </summary>
         /// <returns>A List of status change information objects</returns>
@@ -240,5 +291,15 @@ namespace ABLCloudStaff.Controllers
         public string userType;
         public string userTypeID;
         public string isActive;
+    }
+
+    /// <summary>
+    /// Object to hold information about a status 
+    /// </summary>
+    public class StatusInfo
+    {
+        public string statusID;
+        public string name;
+        public string worksite;
     }
 }

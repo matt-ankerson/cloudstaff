@@ -11,13 +11,33 @@ $(document).ready(function () {
         data: null,
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        success: success_func,
-        error: errorFunc
+        success: get_user_info_success_func,
+        error: get_user_info_errorFunc
     });
 
-    function success_func(data, status) {
+    function get_user_info_success_func(data, status) {
 
         var list = data;
+
+        // Remove the loading-spinner
+        $("#spn-user-table-loading").remove();
+
+        // Paste in the table containers and header
+        $("#see-users").append('<div id="user-table-container" class="container nested-tabs">' +
+                                                '<div class="panel panel-default">' +
+                                                    '<!-- Table -->' +
+                                                    '<table id="user-table" class="table table-striped table-hover">' +
+                                                        '<tr>' +
+                                                            '<th>#</th>' +
+                                                            '<th>First name</th>' +
+                                                            '<th>Last name</th>' +
+                                                            '<th>Type</th>' +
+                                                            '<th>Active</th>' +
+                                                            '<th>Edit</th>' +
+                                                        '</tr>' +
+                                                    '</table>' +
+                                                '</div>' +
+                                            '</div>');
 
         // Pull values out of object list and inject table elements into table
 
@@ -74,7 +94,7 @@ $(document).ready(function () {
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     success: get_usertypes_success_func,
-                    error: errorFunc
+                    error: get_usertypes_errorFunc
                 });
 
                 function get_usertypes_success_func(data, status) {
@@ -98,6 +118,10 @@ $(document).ready(function () {
 
                 }
 
+                function get_usertypes_errorFunc(error) {
+                    alert('error' + error.responseText);
+                }
+
                 $("#edit-user-modal-title").text("Edit: " + firstName + " " + lastName);
 
                 // We need to populate and enable all fields on the form
@@ -115,8 +139,12 @@ $(document).ready(function () {
         
     }
 
-    function errorFunc(error) {
-        alert('error' + error.responseText);
+    function get_user_info_errorFunc(error) {
+        // Remove the loading-spinner
+        $("#spn-user-table-loading").remove();
+
+        // Report the error
+        $("#see-users").append("There was an error. " + error.responseText);
     }
 
     //-----------------------------------------------------------------------------------------
