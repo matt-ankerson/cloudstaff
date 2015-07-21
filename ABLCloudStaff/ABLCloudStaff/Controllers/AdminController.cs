@@ -150,12 +150,32 @@ namespace ABLCloudStaff.Controllers
             // Build the flat StatusInfo list
             foreach(Status s in statuses)
             {
-                StatusInfo si = new StatusInfo { name = s.Name, statusID = s.StatusID.ToString(), worksite = s.Worksite.ToString() };
+                StatusInfo si = new StatusInfo { name = s.Name, statusID = s.StatusID.ToString(), worksite = s.Available.ToString() };
                 statusInfos.Add(si);
             }
 
             IEnumerable<StatusInfo> data = statusInfos;
             return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// Add a new status for all users
+        /// </summary>
+        /// <param name="statusName">The name of the status in question</param>
+        /// <param name="available">Indicates whether or not this status is considered 'in office'</param>
+        /// <returns>ActionResult object</returns>
+        public ActionResult AddStatus(string statusName, string available)
+        {
+            bool actualAvailable = false;
+
+            if (!string.IsNullOrEmpty(statusName))
+            {
+                if (available == "on")
+                    actualAvailable = true;
+
+                StatusUtilities.AddStatusForAllUsers(statusName, actualAvailable);
+            }
+            return View("Admin");
         }
 
         /// <summary>
@@ -165,7 +185,7 @@ namespace ABLCloudStaff.Controllers
         /// <param name="name"></param>
         /// <param name="worksite"></param>
         /// <returns></returns>
-        public ActionResult AddNewStatusForSingleUser(string userID, string name, string worksite)
+        public ActionResult AddStatusForSingleUser(string userID, string name, string worksite)
         {
             return View("Admin");
         }

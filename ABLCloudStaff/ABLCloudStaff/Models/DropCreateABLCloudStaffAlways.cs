@@ -153,12 +153,12 @@ namespace ABLCloudStaff.Models
         {
             List<Status> statuses = new List<Status>
             {
-                new Status {Name = "In Office", Worksite = true},
-                new Status {Name = "On Farm", Worksite = false},
-                new Status {Name = "Meeting", Worksite = false},
-                new Status {Name = "Lunch", Worksite = false},
-                new Status {Name = "Home", Worksite = false},
-                new Status {Name = "On Leave", Worksite = false}
+                new Status {Name = "In Office", Available = true},
+                new Status {Name = "On Farm", Available = false},
+                new Status {Name = "Meeting", Available = false},
+                new Status {Name = "Lunch", Available = false},
+                new Status {Name = "Home", Available = false},
+                new Status {Name = "On Leave", Available = false}
             };
 
             foreach (Status s in statuses)
