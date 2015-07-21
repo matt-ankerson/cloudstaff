@@ -159,34 +159,33 @@ namespace ABLCloudStaff.Controllers
         }
 
         /// <summary>
-        /// Add a new status for all users
+        /// Add a new status
         /// </summary>
         /// <param name="statusName">The name of the status in question</param>
         /// <param name="available">Indicates whether or not this status is considered 'in office'</param>
+        /// <param name="userID">If not null, add the status just for this user.</param>
         /// <returns>ActionResult object</returns>
-        public ActionResult AddStatus(string statusName, string available)
+        public ActionResult AddStatus(string statusName, string available, string userID)
         {
             bool actualAvailable = false;
+            int actualUserID = 0;
 
             if (!string.IsNullOrEmpty(statusName))
             {
                 if (available == "on")
                     actualAvailable = true;
 
-                StatusUtilities.AddStatusForAllUsers(statusName, actualAvailable);
+                // If we've got a userID, then we need to add the status ONLY for that user.
+                if (!string.IsNullOrEmpty(userID))
+                {
+                    actualUserID = Convert.ToInt32(userID);
+                    StatusUtilities.AddStatusForSingleUser(actualUserID, statusName, actualAvailable);
+                }
+                else
+                {
+                    StatusUtilities.AddStatusForAllUsers(statusName, actualAvailable);
+                }         
             }
-            return View("Admin");
-        }
-
-        /// <summary>
-        /// Accept params necessary to add a new status for a single user
-        /// </summary>
-        /// <param name="userID">The user to add the status to</param>
-        /// <param name="name"></param>
-        /// <param name="worksite"></param>
-        /// <returns></returns>
-        public ActionResult AddStatusForSingleUser(string userID, string name, string worksite)
-        {
             return View("Admin");
         }
 

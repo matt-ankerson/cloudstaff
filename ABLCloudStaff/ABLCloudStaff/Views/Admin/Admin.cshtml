@@ -17,6 +17,7 @@
     <script src="../../Scripts/changelog_tables.js"></script>
     <script src="../../Scripts/add_user_form.js"></script>
     <script src="../../Scripts/all_statuses_table.js"></script>
+    <script src="../../Scripts/add_status_autocomplete.js"></script>
     <script src="../../Scripts/add_status_form.js"></script>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://css-spinners.com/css/spinner/spinner.css" type="text/css">
@@ -174,19 +175,22 @@
                                             <div class="container nested-tabs">
                                                 <!-- Add Status Form -->
                                                 <form id="add-status-form" action="/Admin/AddStatus" method="post" role="form">
-                                                    <label for="new_status_name">Status Name</label>
-                                                    <input type="text" id="new_status_name" class="form-control" placeholder="At John's place" name="statusName" required /><br />
-                                                    <label for="new_status_worksite">Are people considered <i>available</i> when assigned this status?</label>&nbsp;
-                                                    <input type="checkbox" id="new_status_worksite" name="available" />
-                                                    <br /><br />
+                                                    <hr />
                                                     <label for="add_status_for_one_or_all">Add for all users</label>&nbsp;
                                                     <input type="checkbox" id="add_status_for_one_or_all" checked />
                                                     <hr />
-                                                    <div class="ui-widget">
-                                                        <label for="remove-user-autocomplete">Which user?</label>
-                                                        <input id="add-status-user-autocomplete" class="form-control" placeholder="First or Last name" required>
-                                                        <input type="hidden" name="userID" id="add-status-userID" />
-                                                    </div>
+                                                    <label for="new_status_name">Status Name</label>
+                                                    <input type="text" id="new_status_name" class="form-control" placeholder="At John's place" name="statusName" required /><br />
+                                                    <label for="new_status_worksite">Are people considered <i>available</i> when assigned this status?</label>&nbsp;
+                                                    <input type="checkbox" id="new_status_worksite" name="available" />                     
+                                                    <hr />
+                                                    <fieldset id="fldst_status_for_single_user" disabled="disabled">
+                                                        <div class="ui-widget">
+                                                            <label for="remove-user-autocomplete">Which user?</label>
+                                                            <input id="add-status-user-autocomplete" class="form-control" placeholder="First or Last name" required>
+                                                            <input type="hidden" name="userID" id="add-status-userID" />
+                                                        </div>
+                                                    </fieldset>
                                                     <br /><br />
                                                     <button id="add-status-submit" type="submit" class="btn btn-default">Add Status</button>
                                                 </form>
