@@ -12,6 +12,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="../../Scripts/jquery-ui.min.js"></script>
+    <script src="../../Scripts/admin_error_window.js"></script>
     <script src="../../Scripts/remove-user_autocomplete.js"></script>
     <script src="../../Scripts/fill_user_table.js"></script>
     <script src="../../Scripts/changelog_tables.js"></script>
@@ -19,6 +20,7 @@
     <script src="../../Scripts/all_statuses_table.js"></script>
     <script src="../../Scripts/add_status_autocomplete.js"></script>
     <script src="../../Scripts/add_status_form.js"></script>
+    <script src="../../Scripts/remove_status_autocomplete.js"></script>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://css-spinners.com/css/spinner/spinner.css" type="text/css">
     <link rel="stylesheet" href="../../Content/Site.css">
@@ -55,6 +57,20 @@
         </div>
     </div>
     <br />
+
+    @if(ViewBag.Error != null)
+    {
+        <div class="row" id="admin_error_window">
+            <div class="container-fluid">
+                <div class="col-md-12">
+                    <div class="container well red_text">
+                        @ViewBag.Error
+                        <button type="button" id="admin_error_window_close" class="btn btn-default pull-right">&times;</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 
     <div class="container-fluid">
         <div class="row">
@@ -186,7 +202,7 @@
                                                     <hr />
                                                     <fieldset id="fldst_status_for_single_user" disabled="disabled">
                                                         <div class="ui-widget">
-                                                            <label for="remove-user-autocomplete">Which user?</label>
+                                                            <label for="add-status-user-autocomplete">Which user?</label>
                                                             <input id="add-status-user-autocomplete" class="form-control" placeholder="First or Last name" required>
                                                             <input type="hidden" name="userID" id="add-status-userID" />
                                                         </div>
@@ -199,6 +215,18 @@
                                         </div>
                                         <div class="tab-pane" id="remove-status">
                                             <h3>Remove Status</h3>
+                                            <div class="container nested-tabs">
+                                                <!-- Remove Status Form -->
+                                                <form id="remove-status-form" action="/Admin/RemoveStatus" method="post" role="form">
+                                                    <div class="ui-widget">
+                                                        <label for="remove-status-user-autocomplete">Which Status?</label>
+                                                        <input id="remove-status-user-autocomplete" class="form-control" placeholder="Status name" required>
+                                                        <input type="hidden" name="statusID" id="remove-status-userID" />
+                                                    </div>
+                                                    <br />
+                                                    <button id="remove-status-submit" type="submit" class="btn btn-default">Remove Status</button>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

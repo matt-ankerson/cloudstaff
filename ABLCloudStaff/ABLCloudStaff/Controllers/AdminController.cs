@@ -159,6 +159,23 @@ namespace ABLCloudStaff.Controllers
         }
 
         /// <summary>
+        /// Get all available statuses, return as a dictionary
+        /// </summary>
+        /// <returns>Dictionary containing status and statusID</returns>
+        public JsonResult GetAllStatusesForAutoComplete()
+        {
+            Dictionary<string, string> statusDict = new Dictionary<string, string>();
+            List<Status> statuses = StatusUtilities.GetAllStatuses();
+
+            foreach(Status s in statuses)
+            {
+                statusDict.Add(s.StatusID.ToString(), s.Name);
+            }
+
+            return Json(statusDict, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
         /// Add a new status
         /// </summary>
         /// <param name="statusName">The name of the status in question</param>
@@ -186,6 +203,21 @@ namespace ABLCloudStaff.Controllers
                     StatusUtilities.AddStatusForAllUsers(statusName, actualAvailable);
                 }         
             }
+            return View("Admin");
+        }
+
+        /// <summary>
+        /// Remove an indicated Status, providing it's not currently in use.
+        /// </summary>
+        /// <param name="statusID"></param>
+        /// <returns></returns>
+        public ActionResult RemoveStatus(string statusID)
+        {
+            if (!string.IsNullOrEmpty(statusID))
+            {
+                // TODO
+            }
+
             return View("Admin");
         }
 
