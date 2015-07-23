@@ -64,7 +64,7 @@ $(document).ready(function () {
 
         invoker_id = 0;
 
-        // Launch modal when a edit button is clicked
+        // Launch modal when an edit button is clicked
         $(".edit-user-button").on('click', function (e) {
             // Launch the modal
             $("#edit-user-modal").modal();

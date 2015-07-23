@@ -1,16 +1,16 @@
-﻿// Date: 22 July
-// Author: Matt Ankerson
+﻿// Author: Matt Ankerson
+// Date: 23 July 2015
 $(document).ready(function () {
 
     // The list of available autocomplete options:
     var availableTags = [];
 
-    // Use ajax to fetch all statuses
-    var get_statuses_url = "/Admin/GetAllStatusesForAutoComplete";
+    // Use ajax to fetch all users
+    var get_users_url = "/Admin/GetAllUsers";
 
     $.ajax({
         type: "GET",
-        url: get_statuses_url,
+        url: get_users_url,
         data: null,
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -31,12 +31,11 @@ $(document).ready(function () {
         alert('error' + error.responseText);
     }
 
-    $("#remove-status-user-autocomplete").autocomplete({
+    $("#add-location-user-autocomplete").autocomplete({
         source: availableTags,
         select: function (event, ui) {
-            $('#remove-status-user-autocomplete').val(ui.item.label);
-            $('#remove-status-userID').val(ui.item.value);
-            $('#remove-status-userID-display').text("# " + ui.item.value);
+            $('#add-location-user-autocomplete').val(ui.item.label);
+            $('#add-location-userID').val(ui.item.value);
             return false;
         }
     });

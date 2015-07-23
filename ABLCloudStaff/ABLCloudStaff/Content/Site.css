@@ -100,11 +100,16 @@ input[type="checkbox"].input-validation-error {
     margin: auto;
 }
 
-/* Administration EDIT USER Modal */
+/* Administration EDIT Modals */
+#admin-edit-status-modal-header,
+#admin-edit-location-modal-header,
 #admin-edit-user-modal-header {
     background-color: lightgray;
     padding:35px 50px;
 }
+
+#edit-status-modal-title,
+#edit-location-modal-title,
 #edit-user-modal-title {
     background-color: lightgray;
 }
