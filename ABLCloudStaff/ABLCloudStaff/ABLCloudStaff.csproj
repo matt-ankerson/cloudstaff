@@ -181,9 +181,13 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\bg.png" />
+    <Content Include="Scripts\add_location_autocomplete.js" />
+    <Content Include="Scripts\add_location_form.js" />
     <Content Include="Scripts\add_status_autocomplete.js" />
     <Content Include="Scripts\add_status_form.js" />
     <Content Include="Scripts\add_user_form.js" />
+    <Content Include="Scripts\admin_error_window.js" />
+    <Content Include="Scripts\all_locations_table.js" />
     <Content Include="Scripts\all_statuses_table.js" />
     <Content Include="Scripts\bootstrap-switch.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -201,6 +205,8 @@
     <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\remove-user_autocomplete.js" />
+    <Content Include="Scripts\remove_location_autocomplete.js" />
+    <Content Include="Scripts\remove_status_autocomplete.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />

@@ -67,6 +67,29 @@ namespace ABLCloudStaff.Board_Logic
         }
 
         /// <summary>
+        /// Get a list of IDs corresponding to all statuses that're currently in use.
+        /// </summary>
+        /// <returns>Lit of StatusIDs</returns>
+        public static List<int> GetCurrentlyUsedStatusIDs()
+        {
+            List<int> statusIDs = new List<int>();
+
+            try
+            {
+                using(var context = new ABLCloudStaffContext())
+                {
+                    statusIDs = context.Cores.Select(x => x.StatusID).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return statusIDs;
+        }
+
+        /// <summary>
         /// Add a new status for all users
         /// </summary>
         /// <param name="statusName">The name of the status in question</param>
@@ -144,6 +167,57 @@ namespace ABLCloudStaff.Board_Logic
             {
                 throw new Exception(ex.Message);
             }    
+        }
+
+        /// <summary>
+        /// Permanantly remove the indicated status from the db.
+        /// </summary>
+        /// <param name="statusID">The Status to remove.</param>
+        public static void DeleteStatus(int statusID)
+        {
+            try
+            {
+                using(var context = new ABLCloudStaffContext())
+                {
+                    Status statusToDelete = context.Statuses.Where(x => x.StatusID == statusID).FirstOrDefault();
+                    context.Statuses.Remove(statusToDelete);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Update the indicated status with the given information
+        /// </summary>
+        /// <param name="statusID">Status to update</param>
+        /// <param name="name">The new Status name</param>
+        /// <param name="available">Indicates whether or not users should be considered available on this status</param>
+        public static void UpdateStatus(int statusID, string name, bool available)
+        {
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    // Get the indicated Status object
+                    Status statusToUpdate = context.Statuses.Where(x => x.StatusID == statusID).FirstOrDefault();
+
+                    if (statusToUpdate == null)
+                        throw new Exception("Bad StatusID, Status does not exist.");
+
+                    // Update the field on this Status object
+                    statusToUpdate.Name = name;
+                    statusToUpdate.Available = available;
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

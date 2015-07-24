@@ -61,7 +61,7 @@ namespace ABLCloudStaff.Tests.Board_Logic
             // Act
             try
             {
-                UserUtilities.AddUser(firstName, lastName);
+                //UserUtilities.AddUser(firstName, lastName);
             }
             catch (Exception ex)
             {

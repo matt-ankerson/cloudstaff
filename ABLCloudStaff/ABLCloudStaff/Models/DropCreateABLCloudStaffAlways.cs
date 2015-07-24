@@ -154,7 +154,7 @@ namespace ABLCloudStaff.Models
             List<Status> statuses = new List<Status>
             {
                 new Status {Name = "In Office", Available = true},
-                new Status {Name = "On Farm", Available = false},
+                new Status {Name = "Out of Office", Available = false},
                 new Status {Name = "Meeting", Available = false},
                 new Status {Name = "Lunch", Available = false},
                 new Status {Name = "Home", Available = false},
@@ -173,9 +173,9 @@ namespace ABLCloudStaff.Models
         {
             List<Location> locations = new List<Location>
             {
-                new Location {Name = "AbacusBio Dunedin"},
-                new Location {Name = "AbacusBio Sydney"},
-                new Location {Name = "Otago Polytech"},
+                new Location {Name = "Dunedin"},
+                new Location {Name = "Mosgiel"},
+                new Location {Name = "Lawrence"},
                 new Location {Name = "Nelson"}
             };
 
