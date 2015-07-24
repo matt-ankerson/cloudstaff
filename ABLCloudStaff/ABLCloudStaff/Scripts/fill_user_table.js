@@ -26,7 +26,7 @@ $(document).ready(function () {
         $("#see-users").append('<div id="user-table-container" class="container nested-tabs">' +
                                                 '<div class="panel panel-default">' +
                                                     '<!-- Table -->' +
-                                                    '<table id="user-table" class="table table-striped table-hover">' +
+                                                    '<table id="user-table" class="table table-striped">' +
                                                         '<tr>' +
                                                             '<th>#</th>' +
                                                             '<th>First name</th>' +
