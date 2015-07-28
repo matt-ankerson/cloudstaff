@@ -66,18 +66,27 @@
                             <div class="panel-default panel staff-modules-panels">
                                 <div class="panel-heading staff-name">
                                     <p class="staff-name-text">@core.User.FirstName @core.User.LastName</p>
-                                    <p><small>@core.Status.Name <br /> @core.Location.Name</small></p>
+                                    <p>
+                                        <small>
+                                            @core.Status.Name 
+                                            <br /> 
+                                            @if(core.Location != null)
+                                            {
+                                                @core.Location.Name
+                                            }
+                                        </small>
+                                    </p>
                                 </div>
                                 <div class="panel-body">
                                     <div class="container-switch">
                                         <p>
                                         @if (core.Status.Available == true)
                                         {
-                                            <input type="checkbox" name="staff-state" disabled="true" checked data-on-color="success" data-off-color="warning" data-on-text="In" data-off-text="Out">
+                                            <input type="checkbox" name="staff-state" disabled="disabled" checked data-on-color="success" data-off-color="warning" data-on-text="In" data-off-text="Out">
                                         }
                                         else
                                         {
-                                            <input type="checkbox" name="staff-state" disabled="true" data-on-color="success" data-off-color="warning" data-off-text="Out" data-on-text="In">
+                                            <input type="checkbox" name="staff-state" disabled="disabled" data-on-color="success" data-off-color="warning" data-off-text="Out" data-on-text="In">
                                         }
                                         </p>
                                     </div>
