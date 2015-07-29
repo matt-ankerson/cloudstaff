@@ -19,9 +19,12 @@ namespace ABLCloudStaff
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            // Initialise the database (for testing)
-            //Database.SetInitializer(new DropCreateABLCloudStaffAlways());
+            // Initialise the database
+#if DEBUG
+            Database.SetInitializer(new DropCreateABLCloudStaffAlways());
+#else
             Database.SetInitializer(new CreateABLCloudStaffIfNotExists());
+#endif
         }
     }
 }
