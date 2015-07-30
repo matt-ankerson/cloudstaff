@@ -60,6 +60,19 @@ input[type="checkbox"].input-validation-error {
     width: 200px;
 }
 
+
+.core_modal_form_control {
+    display: inline;
+}
+
+#core_status_selection {
+    float: left;
+}
+
+#core_location_selection {
+    float: right;
+}
+
 /* For the Toggle switches */
 .container-switch {
     height: 35px;

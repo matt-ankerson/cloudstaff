@@ -115,24 +115,29 @@
                     <!-- Modal Content -->
                     <div class="modal-body" style="padding:40px 50px;">
                         <form id="form-update-status-or-location" action="/Home/SubmitStatusOrLocationUpdate" method="post" role="form">
+
                             <div class="form-group">
-                                <label for="usrname"><span class="glyphicon glyphicon-user"></span> Status</label>
-                                <br />
-                                <!-- Status Dropdown -->
-                                <select id="status-list" class="form-control" name="statusID">
-                                    <!-- Statuses go here. -->
-                                </select>
-                                <!-- /Status Dropdown -->
-                            </div>
-                            <div class="form-group">
-                                <label for="psw"><span class="glyphicon glyphicon-map-marker"></span> Location</label>
-                                <br />
-                                <!-- Location Dropdown -->
-                                <select id="location-list" class="form-control" name="locationID">
-                                    <!-- Locations go here. -->
-                                </select>
-                                <!-- /Location Dropdown -->
-                            </div>
+
+                                <div id="core_status_selection" class="container-fluid">
+                                    <label for="status-list"><span class="glyphicon glyphicon-user"></span> Status</label>
+                                    <br />
+                                    <!-- Status Dropdown -->
+                                    <select id="status-list" class="form-control" name="statusID">
+                                        <!-- Statuses go here. -->
+                                    </select>
+                                </div>
+
+                                <div id="core_location_selection" class="container-fluid">
+                                    <label for="location-list"><span class="glyphicon glyphicon-map-marker"></span> Location</label>
+                                    <br />
+                                    <!-- Location Dropdown -->
+                                    <select id="location-list" class="form-control" name="locationID">
+                                        <!-- Locations go here. -->
+                                    </select>
+                                </div>   
+
+                            </div>  
+                                           
                             <button id="update-singular-user-state" type="submit" class="btn btn-success btn-block"><span class="glyphicon glyphicon-floppy-disk"></span> Save & Update</button>
                         </form>
                     </div>
