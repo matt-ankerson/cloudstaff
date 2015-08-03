@@ -7,10 +7,11 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet/less" type="text/css" href="../../Content/slider.less" />
+   <!-- <link rel="stylesheet/less" type="text/css" href="../../Content/slider.less" /> -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="../../Scripts/less.js"></script>
+    <script src="../../Scripts/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../Content/Site.css">
     <link rel="stylesheet" href="../../Content/bootstrap-switch.css">
@@ -78,9 +79,13 @@
                                         <small>
                                             @core.Status.Name 
                                             <br /> 
-                                            @if(core.Location != null)
+                                            @if(core.LocationID != 1)
                                             {
                                                 @core.Location.Name
+                                            }
+                                            else
+                                            {
+                                                <br />
                                             }
                                         </small>
                                     </p>
@@ -145,15 +150,19 @@
                                     </div>
                                     <br />
                                     <div class="row">
-                                        <div class="col-xs-12" id="time_display">
-                                            <label for="time_slider">Return at: <span id="time_slider_val">0</span></label>
+                                        <div class="col-xs-8" id="time_display">
+                                            <label for="time_slider">Return at: <span id="time_slider_val">Not applicable</span></label>
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <button id="cancel_time" class="btn btn-default form-control">Cancel</button>
                                         </div>
                                     </div>
                                     <br />
                                     <div class="row">
                                         <div class="col-xs-12">
-                                            <input id="time_slider" class="form-control" data-slider-id='time_slider' type="text" data-slider-orientation="horizontal"
-                                                    data-slider-min="0" data-slider-max="20" data-slider-step="1" value="0" data-slider-value="0" />
+                                            <input id="time_slider" class="form-control" data-slider-id='time_slider' type="text" data-slider-orientation="horizontal" />
+                                            <!-- Hidden field for datetime information -->
+                                            <input type="hidden" id="time_value" value="0"/>
                                         </div>
                                     </div>
                                     <br />

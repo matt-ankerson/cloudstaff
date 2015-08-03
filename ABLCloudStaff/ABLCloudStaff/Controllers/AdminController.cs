@@ -362,11 +362,18 @@ namespace ABLCloudStaff.Controllers
                 // Get all LocationIDs that are currently 'in use'
                 List<int> inUseLocationIDs = LocationUtilities.GetCurrentlyUsedLocationIDs();
 
-                // If our locationID is freed up:
+                // If our locationID is freed up, and isn't the core location
                 if (!inUseLocationIDs.Contains(actualLocationID))
                 {
-                    // Perform the removal. (This will be a HARD DELETE)
-                    LocationUtilities.DeleteLocation(actualLocationID);
+                    if(actualLocationID != Constants.DEFAULT_LOCATION)
+                    {
+                        // Perform the removal. (This will be a HARD DELETE)
+                        LocationUtilities.DeleteLocation(actualLocationID);
+                    }
+                    else
+                    {
+                        ViewBag.Message = "Cannot remove Location because it is a core location.";
+                    }
                 }
                 else
                 {

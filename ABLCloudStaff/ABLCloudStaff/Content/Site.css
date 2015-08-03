@@ -60,6 +60,10 @@ input[type="checkbox"].input-validation-error {
     width: 200px;
 }
 
+#cancel_time {
+    visibility: hidden;
+}
+
 
 .core_modal_form_control {
     display: inline;

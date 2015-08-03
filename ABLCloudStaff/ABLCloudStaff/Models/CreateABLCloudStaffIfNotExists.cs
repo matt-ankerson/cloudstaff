@@ -173,6 +173,7 @@ namespace ABLCloudStaff.Models
         {
             List<Location> locations = new List<Location>
             {
+                new Location {Name = "Not applicable"},
                 new Location {Name = "Dunedin"},
                 new Location {Name = "Mosgiel"},
                 new Location {Name = "Lawrence"},
@@ -449,139 +450,173 @@ namespace ABLCloudStaff.Models
                 new UserLocation {UserID = 1, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 1, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 1, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 1, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
                 // User 2
                 new UserLocation {UserID = 2, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 2, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 2, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 2, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
                 // User 3
                 new UserLocation {UserID = 3, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 3, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 3, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 3, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
                 // User 4
                 new UserLocation {UserID = 4, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 4, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 4, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 4, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
                 // User 5
                 new UserLocation {UserID = 5, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 5, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 5, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 5, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
                 // User 6
                 new UserLocation {UserID = 6, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 6, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 6, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 6, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
                 // User 7
                 new UserLocation {UserID = 7, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 7, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 7, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 7, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
                 // User 8
                 new UserLocation {UserID = 8, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 8, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 8, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 8, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
                 // User 9
                 new UserLocation {UserID = 9, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 9, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 9, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 9, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
                 // User 10
                 new UserLocation {UserID = 10, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 10, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 10, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 10, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
                 // User 11
                 new UserLocation {UserID = 11, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 11, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 11, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 11, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
                 // User 12
                 new UserLocation {UserID = 12, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 12, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 12, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 12, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
                 // User 13
                 new UserLocation {UserID = 13, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 13, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 13, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 13, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
                 // User 14
                 new UserLocation {UserID = 14, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 14, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 14, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 14, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
                 // User 15
                 new UserLocation {UserID = 15, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 15, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 15, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 15, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
                 // User 16
                 new UserLocation {UserID = 16, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 16, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 16, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 16, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
                 // User 17
                 new UserLocation {UserID = 17, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 17, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 17, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 17, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
                 // User 18
                 new UserLocation {UserID = 18, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 18, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 18, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 18, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
                 // User 19
                 new UserLocation {UserID = 19, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 19, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 19, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 19, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 19, LocationID = 5, DateAdded = new DateTime(2015, 3, 5)},
                 // User 20
                 new UserLocation {UserID = 20, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 20, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 20, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 20, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
                 // User 21
                 new UserLocation {UserID = 21, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 21, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 21, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 21, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
                 // User 22
                 new UserLocation {UserID = 22, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 22, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 22, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 22, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
                 // User 23
                 new UserLocation {UserID = 23, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 23, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 23, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 23, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
                 // User 24
                 new UserLocation {UserID = 24, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 24, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 24, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 24, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
                 // User 25
                 new UserLocation {UserID = 25, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 25, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 25, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 25, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
                 // User 26
                 new UserLocation {UserID = 26, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 26, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 26, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 26, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
                 // User 27
                 new UserLocation {UserID = 27, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 27, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 27, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 27, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
                 // User 28
                 new UserLocation {UserID = 28, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 28, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 28, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 28, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
                 // User 29
                 new UserLocation {UserID = 29, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 29, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 29, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 29, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
                 // User 30
                 new UserLocation {UserID = 30, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 30, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 30, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 30, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
                 // User 31
                 new UserLocation {UserID = 31, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 31, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 31, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 31, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
                 // User 32
                 new UserLocation {UserID = 32, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 32, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 32, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 32, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
                 // User 33
                 new UserLocation {UserID = 33, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 33, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 33, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 33, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
                 // User 34
                 new UserLocation {UserID = 34, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 34, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
-                new UserLocation {UserID = 34, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)}
+                new UserLocation {UserID = 34, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
+                new UserLocation {UserID = 34, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)}
             };
 
             foreach (UserLocation ul in userLocations)

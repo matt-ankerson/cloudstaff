@@ -145,7 +145,7 @@ namespace ABLCloudStaff.Controllers
             DateTime now = DateTimeUtilities.RoundUp(DateTime.Now, TimeSpan.FromMinutes(30));
             DateTime thisMidnight = DateTime.Now.AddDays(1).Date;
 
-            while(now <= thisMidnight)
+            while(now < thisMidnight)
             {
                 TimeInfo ti = new TimeInfo();
 
@@ -154,7 +154,8 @@ namespace ABLCloudStaff.Controllers
                 {
                     ti = new TimeInfo
                     {
-                        numeric_repr = now.Hour.ToString() + "00",  // 24hr time
+                        numeric_repr = now.Hour.ToString() + ":00",  // 24hr time
+                        dateString = now.ToString(),
                         year = now.Year.ToString(),
                         month = now.Month.ToString(),
                         day = now.Day.ToString(),
@@ -167,7 +168,8 @@ namespace ABLCloudStaff.Controllers
                 {
                     ti = new TimeInfo
                     {
-                        numeric_repr = (now.Hour.ToString() + now.Minute.ToString()),
+                        numeric_repr = (now.Hour.ToString() + ":" + now.Minute.ToString()),
+                        dateString = now.ToString(),
                         year = now.Year.ToString(),
                         month = now.Month.ToString(),
                         day = now.Day.ToString(),
@@ -196,6 +198,7 @@ namespace ABLCloudStaff.Controllers
     public class TimeInfo
     {
         public string numeric_repr;
+        public string dateString;
         public string year;
         public string month;
         public string day;
