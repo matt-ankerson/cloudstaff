@@ -133,6 +133,7 @@
     <Compile Include="Board_Logic\ChangeLogUtilities.cs" />
     <Compile Include="Board_Logic\Constants.cs" />
     <Compile Include="Board_Logic\CoreUtilities.cs" />
+    <Compile Include="Board_Logic\DateTimeUtilities.cs" />
     <Compile Include="Board_Logic\LocationUtilities.cs" />
     <Compile Include="Board_Logic\StatusUtilities.cs" />
     <Compile Include="Board_Logic\UserUtilities.cs" />
@@ -177,6 +178,7 @@
     <Content Include="Content\jquery-ui.min.css" />
     <Content Include="Content\jquery-ui.structure.min.css" />
     <Content Include="Content\jquery-ui.theme.min.css" />
+    <Content Include="Content\slider.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -190,10 +192,12 @@
     <Content Include="Scripts\admin_error_window.js" />
     <Content Include="Scripts\all_locations_table.js" />
     <Content Include="Scripts\all_statuses_table.js" />
+    <Content Include="Scripts\bootstrap-slider.js" />
     <Content Include="Scripts\bootstrap-switch.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ClassDiagram1.cd" />
+    <Content Include="Content\slider.less" />
     <None Include="Properties\PublishProfiles\CloudStaff.pubxml" />
     <None Include="Properties\PublishProfiles\Default Package.pubxml" />
     <None Include="Properties\PublishProfiles\Default.pubxml" />
@@ -204,12 +208,14 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-ui.min.js" />
+    <Content Include="Scripts\less.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\remove-user_autocomplete.js" />
     <Content Include="Scripts\remove_location_autocomplete.js" />
     <Content Include="Scripts\remove_status_autocomplete.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\time_slider.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

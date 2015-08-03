@@ -109,5 +109,98 @@ namespace ABLCloudStaff.Controllers
 
             return Json(locationDict, JsonRequestBehavior.AllowGet);
         }
+
+        /// <summary>
+        /// Returns the current system time. 
+        /// </summary>
+        /// <remarks>
+        /// This is requested from the server (rather than clientside) in order to achieve consistency.
+        /// </remarks>
+        /// <returns>Json string object with time details.</returns>
+        public JsonResult GetSystemTime()
+        {
+            DateTime now = DateTime.Now;
+
+            TimeInfo data = new TimeInfo
+            {
+                year = now.Year.ToString(),
+                month = now.Month.ToString(),
+                day = now.Day.ToString(),
+                hour = now.Hour.ToString(),
+                minute = now.Minute.ToString(),
+                second = now.Second.ToString()
+            };
+
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }        
+
+        /// <summary>
+        /// Return a list of TimeInfo objects, in half hour intervals, from now until 12am midnight.
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult GetRemainderOfToday()
+        {
+            List<TimeInfo> timeIntervals = new List<TimeInfo>();
+
+            DateTime now = DateTimeUtilities.RoundUp(DateTime.Now, TimeSpan.FromMinutes(30));
+            DateTime thisMidnight = DateTime.Now.AddDays(1).Date;
+
+            while(now <= thisMidnight)
+            {
+                TimeInfo ti = new TimeInfo();
+
+                // Create a new TimeInfo object and add it to the list
+                if(now.Minute == 0)
+                {
+                    ti = new TimeInfo
+                    {
+                        numeric_repr = now.Hour.ToString() + "00",  // 24hr time
+                        year = now.Year.ToString(),
+                        month = now.Month.ToString(),
+                        day = now.Day.ToString(),
+                        hour = now.Hour.ToString(),
+                        minute = now.Minute.ToString(),
+                        second = now.Second.ToString()
+                    };
+                }
+                else
+                {
+                    ti = new TimeInfo
+                    {
+                        numeric_repr = (now.Hour.ToString() + now.Minute.ToString()),
+                        year = now.Year.ToString(),
+                        month = now.Month.ToString(),
+                        day = now.Day.ToString(),
+                        hour = now.Hour.ToString(),
+                        minute = now.Minute.ToString(),
+                        second = now.Second.ToString()
+                    };
+                }
+                
+                timeIntervals.Add(ti);
+
+                // Increment the current time by 30 minutes.
+                now = now.AddMinutes(30);
+            }
+
+            // Convert our list to something that can be Json-ified
+            IEnumerable<TimeInfo> data = timeIntervals;
+
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+    }
+
+    /// <summary>
+    /// Object to hold a timestamp, transportable via json.
+    /// </summary>
+    public class TimeInfo
+    {
+        public string numeric_repr;
+        public string year;
+        public string month;
+        public string day;
+        public string hour;
+        public string minute;
+        public string second;
     }
 }

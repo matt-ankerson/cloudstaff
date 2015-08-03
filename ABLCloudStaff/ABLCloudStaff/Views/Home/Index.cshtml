@@ -7,27 +7,36 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet/less" type="text/css" href="../../Content/slider.less" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="../../Scripts/less.js"></script>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../Content/Site.css">
     <link rel="stylesheet" href="../../Content/bootstrap-switch.css">
+    <link rel="stylesheet" href="../../Content/slider.css"/>
     <script src="../../Scripts/bootstrap-switch.min.js"></script>
     <script type="text/javascript" src="../../Scripts/init_modal.js"></script>
-
+    <script src="../../Scripts/bootstrap-slider.js"></script>
+    <script src="../../Scripts/time_slider.js"></script>
+    
     <title>CloudStaff</title>
 
     <script type="text/javascript">
+        less.watch();
+
         $(document).ready(function () {
 
             // Init toggle switches
             $("[name='staff-state']").bootstrapSwitch();
 
         });
-        // Refresh page every 300 seconds
+        
+        // Refresh page every 300 seconds, providing the modal isn't visible
         setInterval(function () {
-            window.location.href='/Home/Index';
+                window.location.href = '/Home/Index';
         }, 300000);
+
     </script>
 
 </head>
@@ -103,52 +112,63 @@
         <div class="container">
 
         <!-- Modal -->
-        <div class="modal fade" id="myModal" role="dialog">
-            <div class="modal-dialog">
+            <div class="modal fade" id="myModal" role="dialog" data-backdrop="static">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header" style="padding:35px 50px;">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 id="modal-title"></h4>
+                        </div>
+                        <!-- Modal Content -->
+                        <div class="modal-body" style="padding:40px 50px;">
+                            <form id="form-update-status-or-location" action="/Home/SubmitStatusOrLocationUpdate" method="post" role="form">
+                                <div class="form-group container-fluid">
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            <label for="status-list"><span class="glyphicon glyphicon-user"></span> Status</label>
+                                            <br />
+                                            <!-- Status Dropdown -->
+                                            <select id="status-list" class="form-control" name="statusID">
+                                                <!-- Statuses go here. -->
+                                            </select>
+                                        </div>
 
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header" style="padding:35px 50px;">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 id="modal-title"></h4>
-                    </div>
-                    <!-- Modal Content -->
-                    <div class="modal-body" style="padding:40px 50px;">
-                        <form id="form-update-status-or-location" action="/Home/SubmitStatusOrLocationUpdate" method="post" role="form">
-
-                            <div class="form-group">
-
-                                <div id="core_status_selection" class="container-fluid">
-                                    <label for="status-list"><span class="glyphicon glyphicon-user"></span> Status</label>
+                                        <div class="col-xs-6">
+                                            <label for="location-list"><span class="glyphicon glyphicon-map-marker"></span> Location</label>
+                                            <br />
+                                            <!-- Location Dropdown -->
+                                            <select id="location-list" class="form-control" name="locationID">
+                                                <!-- Locations go here. -->
+                                            </select>
+                                        </div>
+                                    </div>
                                     <br />
-                                    <!-- Status Dropdown -->
-                                    <select id="status-list" class="form-control" name="statusID">
-                                        <!-- Statuses go here. -->
-                                    </select>
+                                    <div class="row">
+                                        <div class="col-xs-12" id="time_display">
+                                            <label for="time_slider">Return at: <span id="time_slider_val">0</span></label>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <input id="time_slider" class="form-control" data-slider-id='time_slider' type="text" data-slider-orientation="horizontal"
+                                                    data-slider-min="0" data-slider-max="20" data-slider-step="1" value="0" data-slider-value="0" />
+                                        </div>
+                                    </div>
+                                    <br />
                                 </div>
 
-                                <div id="core_location_selection" class="container-fluid">
-                                    <label for="location-list"><span class="glyphicon glyphicon-map-marker"></span> Location</label>
-                                    <br />
-                                    <!-- Location Dropdown -->
-                                    <select id="location-list" class="form-control" name="locationID">
-                                        <!-- Locations go here. -->
-                                    </select>
-                                </div>   
-
-                            </div>  
-                                           
-                            <button id="update-singular-user-state" type="submit" class="btn btn-success btn-block"><span class="glyphicon glyphicon-floppy-disk"></span> Save & Update</button>
-                        </form>
-                    </div>
-                    <!-- Modal Footer -->
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+                                <button id="update-singular-user-state" type="submit" class="btn btn-success btn-block"><span class="glyphicon glyphicon-floppy-disk"></span> Save & Update</button>
+                            </form>
+                        </div>
+                        <!-- Modal Footer -->
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+                        </div>
                     </div>
                 </div>
-
             </div>
-        </div>
         <!-- /modal -->
      </div>
     </div>

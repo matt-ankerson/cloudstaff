@@ -65,12 +65,9 @@ input[type="checkbox"].input-validation-error {
     display: inline;
 }
 
-#core_status_selection {
-    float: left;
-}
 
-#core_location_selection {
-    float: right;
+#time_display {
+    text-align: center;
 }
 
 /* For the Toggle switches */
