@@ -207,7 +207,7 @@ namespace ABLCloudStaff.Board_Logic
         /// </summary>
         /// <param name="userID">The core instance to modify</param>
         /// <param name="newStatusID">The id of the new Status</param>
-        public static void UpdateStatus(int userID, int newStatusID)
+        public static void UpdateStatus(int userID, int newStatusID, string returnTime = "")
         {
             Core currentCore = new Core();
             Status newStatus = new Status();
@@ -249,6 +249,23 @@ namespace ABLCloudStaff.Board_Logic
                         currentCore.StatusID = newStatus.StatusID;
                         currentCore.Status = newStatus;
                         currentCore.StateStart = DateTime.Now;
+
+                        // If a return time was supplied, save that to the core instance too.
+                        // Mind that if the status is the DEFAULT status, then it makes no sense to assign a return time.
+                        if((!string.IsNullOrEmpty(returnTime)) && (newStatusID != Constants.DEFAULT_STATUS))
+                        {
+                            // Parse the returnTime to a valid datetime
+                            DateTime theReturnTime = DateTime.Parse(returnTime);
+                            currentCore.IntendedEndTime = theReturnTime;
+                        }
+                        else
+                        {
+                            // If the new status is our default status, remove the intended return time
+                            if (newStatusID == Constants.DEFAULT_STATUS)
+                            {
+                                currentCore.IntendedEndTime = null;
+                            }
+                        }     
 
                         // Commit to the database
                         context.SaveChanges();

@@ -62,10 +62,12 @@ $(document).ready(function () {
         // Hide the button
         $("#cancel_time").hide();
         // Set the time back to undefined
-        $("#time_value").val(0);
+        $("#time_value").val("");
         $("#time_slider_val").text("Not applicable");
         // Set the slider back to the start
         $("#time_slider").val(0);
     });
+
+    // If the current selected status is "In Office", then there's no need to present the option to set a time span.
 
 });

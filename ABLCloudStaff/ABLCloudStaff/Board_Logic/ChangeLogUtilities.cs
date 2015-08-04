@@ -79,10 +79,6 @@ namespace ABLCloudStaff.Board_Logic
 
             try
             {
-                // Ensure that this is a valid status change
-                if (newStatusID == oldStatusID)
-                    throw new Exception("Status IDs are identical");
-
                 changeLog.UserID = userID;
                 changeLog.NewStatusID = newStatusID;
                 changeLog.OldStatusID = oldStatusID;

@@ -30,10 +30,11 @@ namespace ABLCloudStaff.Controllers
         /// </summary>
         /// <returns>An ActionResult object</returns>
         [HttpPost]
-        public ActionResult SubmitStatusOrLocationUpdate(string userID, string statusID, string locationID)
+        public ActionResult SubmitStatusOrLocationUpdate(string userID, string statusID, string locationID, string returnTime)
         {
             try
             {
+                // If no userID is supplied, silently ignore this request.
                 if (userID != null)
                 {
                     // Convert our parameters into a useful data type
@@ -41,8 +42,8 @@ namespace ABLCloudStaff.Controllers
                     int actualStatusID = Convert.ToInt32(statusID);
                     int actualLocationID = Convert.ToInt32(locationID);
 
-                    // Perform the update
-                    CoreUtilities.UpdateStatus(actualUserID, actualStatusID);
+                    // Perform the update. ReturnTime is handled as an optional field. 
+                    CoreUtilities.UpdateStatus(actualUserID, actualStatusID, returnTime);
                     CoreUtilities.UpdateLocation(actualUserID, actualLocationID);
                 }
             }
@@ -150,34 +151,17 @@ namespace ABLCloudStaff.Controllers
                 TimeInfo ti = new TimeInfo();
 
                 // Create a new TimeInfo object and add it to the list
-                if(now.Minute == 0)
+                ti = new TimeInfo
                 {
-                    ti = new TimeInfo
-                    {
-                        numeric_repr = now.Hour.ToString() + ":00",  // 24hr time
-                        dateString = now.ToString(),
-                        year = now.Year.ToString(),
-                        month = now.Month.ToString(),
-                        day = now.Day.ToString(),
-                        hour = now.Hour.ToString(),
-                        minute = now.Minute.ToString(),
-                        second = now.Second.ToString()
-                    };
-                }
-                else
-                {
-                    ti = new TimeInfo
-                    {
-                        numeric_repr = (now.Hour.ToString() + ":" + now.Minute.ToString()),
-                        dateString = now.ToString(),
-                        year = now.Year.ToString(),
-                        month = now.Month.ToString(),
-                        day = now.Day.ToString(),
-                        hour = now.Hour.ToString(),
-                        minute = now.Minute.ToString(),
-                        second = now.Second.ToString()
-                    };
-                }
+                    numeric_repr = now.ToShortTimeString(),
+                    dateString = now.ToString(),
+                    year = now.Year.ToString(),
+                    month = now.Month.ToString(),
+                    day = now.Day.ToString(),
+                    hour = now.Hour.ToString(),
+                    minute = now.Minute.ToString(),
+                    second = now.Second.ToString()
+                };
                 
                 timeIntervals.Add(ti);
 
