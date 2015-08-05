@@ -207,16 +207,14 @@ namespace ABLCloudStaff.Board_Logic
         /// </summary>
         /// <param name="userID">The core instance to modify</param>
         /// <param name="newStatusID">The id of the new Status</param>
-        public static void UpdateStatus(int userID, int newStatusID)
+        /// <param name="returnTime">The time at which this user intends to return from this status</param>
+        public static void UpdateStatus(int userID, int newStatusID, string returnTime = "")
         {
             Core currentCore = new Core();
             Status newStatus = new Status();
 
             int previousStatusID;
             DateTime previousStateInitTime;
-
-            // Assume an update is necessary
-            bool updateNecessary = true;
 
             try
             {
@@ -235,30 +233,51 @@ namespace ABLCloudStaff.Board_Logic
                         currentCore.StateStart.Second, 
                         currentCore.StateStart.Millisecond);
 
-                    // Is this update necessary?
-                    if (previousStatusID == newStatusID)
-                    {
-                        updateNecessary = false;
-                    }
-                    else  // If the statusIDs are different, go ahead with the update.
-                    {
-                        // Get the new status from the status table
-                        newStatus = context.Statuses.Where(s => s.StatusID == newStatusID).FirstOrDefault();
+                    // Proceed with update
 
-                        // Assign the new status to our Core instance
-                        currentCore.StatusID = newStatus.StatusID;
-                        currentCore.Status = newStatus;
-                        currentCore.StateStart = DateTime.Now;
+                    // Get the new status from the status table
+                    newStatus = context.Statuses.Where(s => s.StatusID == newStatusID).FirstOrDefault();
 
-                        // Commit to the database
-                        context.SaveChanges();
+                    // Assign the new status to our Core instance
+                    currentCore.StatusID = newStatus.StatusID;
+                    currentCore.Status = newStatus;
+                    currentCore.StateStart = DateTime.Now;
+
+                    // If a return time was not supplied, remove returnTime from the Core instance
+                    if(string.IsNullOrEmpty(returnTime))
+                    {
+                        // check if exists
+                        if (currentCore.IntendedEndTime != null)
+                        {
+                            // remove the returnTime
+                            currentCore.IntendedEndTime = null;
+                        }
                     }
+                    else    // if a return time was supplied, save it to the core instance
+                    {
+                        // Parse the returnTime to a valid datetime
+                        DateTime theReturnTime = DateTime.Parse(returnTime);
+                        currentCore.IntendedEndTime = theReturnTime;
+                    }
+
+                    // BUT: if the statusID supplied is the DEFAULT status, then it's essential that we remove returnTime from the core instance if it exists
+                    if(newStatusID == Constants.DEFAULT_STATUS)
+                    {
+                        // check if exists
+                        if(currentCore.IntendedEndTime != null)
+                        {
+                            // remove the returnTime
+                            currentCore.IntendedEndTime = null;
+                        }
+                    }    
+
+                    // Commit to the database
+                    context.SaveChanges();
                 }
+                
 
                 // Submit to change-log
-                // But, we don't want to log a change if the status hasn't actually changed.
-                if(updateNecessary)
-                    ChangeLogUtilities.LogStatusChange(userID, newStatusID, previousStatusID, previousStateInitTime);
+                ChangeLogUtilities.LogStatusChange(userID, newStatusID, previousStatusID, previousStateInitTime);
                 
             }
             catch (Exception ex)

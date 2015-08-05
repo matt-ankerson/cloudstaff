@@ -7,27 +7,37 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+   <!-- <link rel="stylesheet/less" type="text/css" href="../../Content/slider.less" /> -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="../../Scripts/less.js"></script>
+    <script src="../../Scripts/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../Content/Site.css">
     <link rel="stylesheet" href="../../Content/bootstrap-switch.css">
+    <link rel="stylesheet" href="../../Content/slider.css"/>
     <script src="../../Scripts/bootstrap-switch.min.js"></script>
     <script type="text/javascript" src="../../Scripts/init_modal.js"></script>
-
+    <script src="../../Scripts/bootstrap-slider.js"></script>
+    <script src="../../Scripts/time_slider.js"></script>
+    
     <title>CloudStaff</title>
 
     <script type="text/javascript">
+        less.watch();
+
         $(document).ready(function () {
 
             // Init toggle switches
             $("[name='staff-state']").bootstrapSwitch();
 
         });
-        // Refresh page every 300 seconds
+        
+        // Refresh page every 300 seconds, providing the modal isn't visible
         setInterval(function () {
-            window.location.href='/Home/Index';
+                window.location.href = '/Home/Index';
         }, 300000);
+
     </script>
 
 </head>
@@ -47,6 +57,7 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Status Board", "Index", "Home")</li>
                     <li>@Html.ActionLink("Administration", "Admin", "Admin")</li>
+                    <li><a href="http://goo.gl/forms/dOYZerw6Hz" target="_blank">Submit Feedback <span class="glyphicon glyphicon-list-alt"></span></a></li>
                 </ul>
             </div>
         </div>
@@ -64,17 +75,42 @@
                         <div id="@core.UserID" class="panel-group staff-modules">
                             <div class="panel-default panel staff-modules-panels">
                                 <div class="panel-heading staff-name">
-                                    <p class="staff-name-text">@core.User.FirstName @core.User.LastName</p>
-                                    <p>
-                                        <small>
-                                            @core.Status.Name 
-                                            <br /> 
-                                            @if(core.Location != null)
-                                            {
-                                                @core.Location.Name
-                                            }
-                                        </small>
-                                    </p>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <p class="staff-name-text">
+                                                <b>@core.User.FirstName @core.User.LastName</b>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            <p>
+                                                <small>
+                                                    @core.Status.Name
+                                                    <br />
+                                                    @if (core.LocationID != 1)
+                                                    {
+                                                        @core.Location.Name
+                                                    }
+                                                    else
+                                                    {
+                                                        <br />
+                                                    }
+                                                </small>
+                                            </p>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <p>
+                                                @if (core.IntendedEndTime != null)
+                                                {
+                                                    DateTime eta = (DateTime)core.IntendedEndTime;
+                                                    <small><i>ETA </i><span class="glyphicon glyphicon-time"></span><br />@eta.ToShortTimeString()</small>
+                                                }
+                                            </p>
+                                        </div>
+                                    </div>
+                                    
+                                    
                                 </div>
                                 <div class="panel-body">
                                     <div class="container-switch">
@@ -103,47 +139,67 @@
         <div class="container">
 
         <!-- Modal -->
-        <div class="modal fade" id="myModal" role="dialog">
-            <div class="modal-dialog">
+            <div class="modal fade" id="myModal" role="dialog" data-backdrop="static">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header" style="padding:35px 50px;">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 id="modal-title"></h4>
+                        </div>
+                        <!-- Modal Content -->
+                        <div class="modal-body" style="padding:40px 50px;">
+                            <form id="form-update-status-or-location" action="/Home/SubmitStatusOrLocationUpdate" method="post" role="form">
+                                <div class="form-group container-fluid">
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            <label for="status-list"><span class="glyphicon glyphicon-user"></span> Status</label>
+                                            <br />
+                                            <!-- Status Dropdown -->
+                                            <select id="status-list" class="form-control" name="statusID">
+                                                <!-- Statuses go here. -->
+                                            </select>
+                                        </div>
 
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header" style="padding:35px 50px;">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 id="modal-title"></h4>
-                    </div>
-                    <!-- Modal Content -->
-                    <div class="modal-body" style="padding:40px 50px;">
-                        <form id="form-update-status-or-location" action="/Home/SubmitStatusOrLocationUpdate" method="post" role="form">
-                            <div class="form-group">
-                                <label for="usrname"><span class="glyphicon glyphicon-user"></span> Status</label>
-                                <br />
-                                <!-- Status Dropdown -->
-                                <select id="status-list" class="form-control" name="statusID">
-                                    <!-- Statuses go here. -->
-                                </select>
-                                <!-- /Status Dropdown -->
-                            </div>
-                            <div class="form-group">
-                                <label for="psw"><span class="glyphicon glyphicon-map-marker"></span> Location</label>
-                                <br />
-                                <!-- Location Dropdown -->
-                                <select id="location-list" class="form-control" name="locationID">
-                                    <!-- Locations go here. -->
-                                </select>
-                                <!-- /Location Dropdown -->
-                            </div>
-                            <button id="update-singular-user-state" type="submit" class="btn btn-success btn-block"><span class="glyphicon glyphicon-floppy-disk"></span> Save & Update</button>
-                        </form>
-                    </div>
-                    <!-- Modal Footer -->
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+                                        <div class="col-xs-6">
+                                            <label for="location-list"><span class="glyphicon glyphicon-map-marker"></span> Location</label>
+                                            <br />
+                                            <!-- Location Dropdown -->
+                                            <select id="location-list" class="form-control" name="locationID">
+                                                <!-- Locations go here. -->
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-xs-8" id="time_display">
+                                            <label for="time_slider">Return <span class="glyphicon glyphicon-time"> </span> <span id="time_slider_val">Not applicable</span></label>
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <button id="cancel_time" class="btn btn-default form-control">Cancel</button>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <input id="time_slider" class="form-control" data-slider-id='time_slider' type="text" data-slider-orientation="horizontal" />
+                                            <!-- Hidden field for datetime information -->
+                                            <input type="hidden" id="time_value" name="returnTime" value=""/>
+                                        </div>
+                                    </div>
+                                    <br />
+                                </div>
+
+                                <button id="update-singular-user-state" type="submit" class="btn btn-success btn-block"><span class="glyphicon glyphicon-floppy-disk"></span> Save & Update</button>
+                            </form>
+                        </div>
+                        <!-- Modal Footer -->
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+                        </div>
                     </div>
                 </div>
-
             </div>
-        </div>
         <!-- /modal -->
      </div>
     </div>
