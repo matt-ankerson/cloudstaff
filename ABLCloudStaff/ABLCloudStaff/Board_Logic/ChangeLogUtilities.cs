@@ -118,10 +118,6 @@ namespace ABLCloudStaff.Board_Logic
 
             try
             {
-                // Ensure that this is a valid status change
-                if (newLocID == oldLocID)
-                    throw new Exception("Location IDs are identical");
-
                 changeLog.UserID = userID;
                 changeLog.NewLocationID = newLocID;
                 changeLog.OldLocationID = oldLocID;
