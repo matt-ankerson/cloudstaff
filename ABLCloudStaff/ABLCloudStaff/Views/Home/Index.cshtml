@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="../../Content/bootstrap-switch.css">
     <link rel="stylesheet" href="../../Content/slider.css"/>
     <script src="../../Scripts/bootstrap-switch.min.js"></script>
+    <script src="../../Scripts/swipe_to_change_status.js"></script>
     <script type="text/javascript" src="../../Scripts/init_modal.js"></script>
     <script src="../../Scripts/bootstrap-slider.js"></script>
     <script src="../../Scripts/time_slider.js"></script>
@@ -57,7 +58,7 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Status Board", "Index", "Home")</li>
                     <li>@Html.ActionLink("Administration", "Admin", "Admin")</li>
-                    <li><a href="http://goo.gl/forms/dOYZerw6Hz" target="_blank">Submit Feedback <span class="glyphicon glyphicon-list-alt"></span></a></li>
+                    <li><a href="http://goo.gl/forms/u1cbZStRaA" target="_blank">Submit Feedback <span class="glyphicon glyphicon-list-alt"></span></a></li>
                 </ul>
             </div>
         </div>
@@ -67,15 +68,19 @@
         <div class="row">
 
             <!-- We require a variable to uniquely identify each module (UserID) -->
-            <!-- This comment is for no reason. -->
 
             @foreach(var core in @Model)
             {
                 <div class="col-md-2">
                     <div class="container-fluid">
-                        <div id="@core.UserID" class="panel-group staff-modules">
+                        <!-- When clicked, this is the invoker. -->
+                        <div class="panel-group top-half-of-panel">
+                            <!-- Useful fields for initialising the change modal -->
+                            <input type="hidden" class="thisUsersStatusID" value="@core.StatusID" />
+                            <input type="hidden" class="thisUsersLocationID" value="@core.LocationID" />
+
                             <div class="panel-default panel staff-modules-panels">
-                                <div class="panel-heading staff-name">
+                                <div id="@core.UserID" class="panel-heading staff-name staff-modules">
                                     <div class="row">
                                         <div class="col-xs-12">
                                             <p class="staff-name-text">
@@ -113,16 +118,16 @@
                                     
                                     
                                 </div>
-                                <div class="panel-body">
+                                <div class="panel-body default-cursur">
                                     <div class="container-switch">
                                         <p>
                                         @if (core.Status.Available == true)
                                         {
-                                            <input type="checkbox" name="staff-state" disabled="disabled" checked data-on-color="success" data-off-color="warning" data-on-text="In" data-off-text="Out">
+                                            <input type="checkbox" name="staff-state" value="@core.UserID" checked data-on-color="success" data-off-color="warning" data-on-text="In" data-off-text="Out">
                                         }
                                         else
                                         {
-                                            <input type="checkbox" name="staff-state" disabled="disabled" data-on-color="success" data-off-color="warning" data-off-text="Out" data-on-text="In">
+                                            <input type="checkbox" name="staff-state" value="@core.UserID" data-on-color="success" data-off-color="warning" data-off-text="Out" data-on-text="In">
                                         }
                                         </p>
                                     </div>

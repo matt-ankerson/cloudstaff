@@ -57,6 +57,48 @@ namespace ABLCloudStaff.Controllers
         }
 
         /// <summary>
+        /// Regardless of other circumstances, set the status to the default status 'in office'
+        /// </summary>
+        /// <param name="userID">The user to apply this change to</param>
+        /// <returns>Indicates success or failure.</returns>
+        public JsonResult SetStatusIn(string userID)
+        {
+            string data = null;
+
+            if(!string.IsNullOrEmpty(userID))
+            {
+                // Convert to a usable type
+                int actualUserID = Convert.ToInt32(userID);
+                CoreUtilities.UpdateStatusIn(actualUserID);
+
+                data = "request-ok";
+            }
+
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// Regardless of other circumstances, set the status to 'out of office'
+        /// </summary>
+        /// <param name="userID">The user to apply this change to.</param>
+        /// <returns>Indicates success or failure.</returns>
+        public JsonResult SetStatusOut(string userID)
+        {
+            string data = null;
+
+            if (!string.IsNullOrEmpty(userID))
+            {
+                // Convert to a usable type
+                int actualUserID = Convert.ToInt32(userID);
+                CoreUtilities.UpdateStatusOut(actualUserID);
+
+                data = "request-ok";
+            }
+
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
         /// Get all statuses available to a specific user
         /// </summary>
         /// <param name="userID">The user to search on</param>

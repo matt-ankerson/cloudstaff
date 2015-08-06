@@ -261,7 +261,7 @@ namespace ABLCloudStaff.Board_Logic
                     }
 
                     // BUT: if the statusID supplied is the DEFAULT status, then it's essential that we remove returnTime from the core instance if it exists
-                    if(newStatusID == Constants.DEFAULT_STATUS)
+                    if(newStatusID == Constants.DEFAULT_IN_STATUS)
                     {
                         // check if exists
                         if(currentCore.IntendedEndTime != null)
@@ -344,6 +344,90 @@ namespace ABLCloudStaff.Board_Logic
                 if (updateNecessary)
                     ChangeLogUtilities.LogLocationChange(userID, newLocID, previousLocationID, previousStateInitTime);
 
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Set the given user's core to the default status and remove any abnormalities from the core instance.
+        /// </summary>
+        /// <param name="userID">User to apply the change to</param>
+        public static void UpdateStatusIn(int userID)
+        {
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    // Get the appropriate core instance
+                    Core thisCore = context.Cores.Where(x => x.UserID == userID).FirstOrDefault();
+                    if (thisCore == null)
+                        throw new Exception("User does not exist.");
+
+                    // Grab some of the old information for making an addition to the log
+                    int previousStatusID = thisCore.StatusID;
+                    int previousLocationID = thisCore.LocationID;
+                    DateTime previousStateInitTime = thisCore.StateStart;
+
+                    // Modify the core instance accordingly
+                    thisCore.StatusID = Constants.DEFAULT_IN_STATUS;
+                    thisCore.LocationID = Constants.DEFAULT_LOCATION;
+                    thisCore.StateStart = DateTime.Now;
+                    thisCore.IntendedEndTime = null;
+
+                    // Save changes
+                    context.SaveChanges();
+
+                    // Submit to the changelog if necessary.
+                    if (previousStatusID != thisCore.StatusID)
+                        ChangeLogUtilities.LogStatusChange(userID, thisCore.StatusID, previousStatusID, previousStateInitTime);
+                    if (previousLocationID != thisCore.LocationID)
+                        ChangeLogUtilities.LogLocationChange(userID, thisCore.LocationID, previousLocationID, previousStateInitTime);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Set the given user's status to 'out of office', remove any abnormalities from the core instance
+        /// </summary>
+        /// <param name="userID">The user to apply the change to.</param>
+        public static void UpdateStatusOut(int userID)
+        {
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    // Get the appropriate core instance
+                    Core thisCore = context.Cores.Where(x => x.UserID == userID).FirstOrDefault();
+                    if (thisCore == null)
+                        throw new Exception("User does not exist.");
+
+                    // Grab some of the old information for making an addition to the log
+                    int previousStatusID = thisCore.StatusID;
+                    int previousLocationID = thisCore.LocationID;
+                    DateTime previousStateInitTime = thisCore.StateStart;
+
+                    // Modify the core instance accordingly
+                    thisCore.StatusID = Constants.DEFAULT_OUT_STATUS;
+                    thisCore.LocationID = Constants.DEFAULT_LOCATION;
+                    thisCore.StateStart = DateTime.Now;
+                    thisCore.IntendedEndTime = null;
+
+                    // Save changes
+                    context.SaveChanges();
+
+                    // Submit to the changelog if necessary.
+                    if (previousStatusID != thisCore.StatusID)
+                        ChangeLogUtilities.LogStatusChange(userID, thisCore.StatusID, previousStatusID, previousStateInitTime);
+                    if (previousLocationID != thisCore.LocationID)
+                        ChangeLogUtilities.LogLocationChange(userID, thisCore.LocationID, previousLocationID, previousStateInitTime);
+                }
             }
             catch (Exception ex)
             {

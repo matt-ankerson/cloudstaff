@@ -99,7 +99,7 @@ namespace ABLCloudStaff.Board_Logic
                 }
 
                 // Add a core instance for this user, with defaults for status and location.
-                CoreUtilities.AddCore(userID, Constants.DEFAULT_STATUS, Constants.DEFAULT_LOCATION);
+                CoreUtilities.AddCore(userID, Constants.DEFAULT_IN_STATUS, Constants.DEFAULT_LOCATION);
             }
             catch (Exception ex)
             {

@@ -81,12 +81,17 @@ input[type="checkbox"].input-validation-error {
     vertical-align: middle;
 }
 
-.staff-modules {
+/*.staff-modules */
+.top-half-of-panel{
     cursor: pointer;
     margin-top: 40px;
     box-shadow:1px 1px 5px 5px rgba(0,0,0,0.5);
  -webkit-box-shadow:2px 2px 10px 10px rgba(0,0,0,0.5);
  -moz-box-shadow:2px 2px 10px 10px rgba(0,0,0,0.5);
+}
+
+.default-cursur {
+    cursor: default;
 }
 
 .staff-modules-panels {

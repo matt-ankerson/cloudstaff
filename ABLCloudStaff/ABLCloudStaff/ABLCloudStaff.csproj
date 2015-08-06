@@ -215,6 +215,7 @@
     <Content Include="Scripts\remove_status_autocomplete.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\swipe_to_change_status.js" />
     <Content Include="Scripts\time_slider.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
