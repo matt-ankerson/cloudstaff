@@ -14,8 +14,14 @@ $(document).ready(function () {
         // This function exists within the click function so it can have access to the
         // element which was clicked.
         $('#myModal').on('shown.bs.modal', function (e) {
+
             // Get the name of the selected user
             this_user = invoker.find(".staff-name-text").text();
+
+            // Get the status, location (and ETA) of the person who was clicked.
+            thisUsersStatusID = invoker.find(".thisUsersStatusID").val();
+            thisUsersLocationID = invoker.find(".thisUsersLocationID").val();
+
             // Change the modal title.
             $("#modal-title").text(this_user);
 
@@ -49,7 +55,15 @@ $(document).ready(function () {
                 var list = data;
                 // Populate the Dropdown list for statuses
                 $.each(list, function (index, item) {
-                    $("#status-list").append('<option value="' + index + '">' + item + '</option>');
+                    // If the status index is equal to 'thisUsersStatusID', make the option selected
+                    if (index == thisUsersStatusID)
+                    {
+                        $("#status-list").append('<option value="' + index + '" selected>' + item + '</option>');
+                    }
+                    else
+                    {
+                        $("#status-list").append('<option value="' + index + '">' + item + '</option>');
+                    }
                 });
             }
 
@@ -57,7 +71,15 @@ $(document).ready(function () {
                 var list = data;
                 // Populate the Dropdown list for locations
                 $.each(list, function (index, item) {
-                    $("#location-list").append('<option value="' + index + '">' + item + '</option>');
+                    // if the location index is equal to 'thisUsersLocationID', make the option selected.
+                    if (index == thisUsersLocationID)
+                    {
+                        $("#location-list").append('<option value="' + index + '" selected>' + item + '</option>');
+                    }
+                    else
+                    {
+                        $("#location-list").append('<option value="' + index + '">' + item + '</option>');
+                    }
                 });
             }
 
