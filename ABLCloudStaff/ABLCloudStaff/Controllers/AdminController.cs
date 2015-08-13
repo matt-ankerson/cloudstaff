@@ -461,49 +461,4 @@ namespace ABLCloudStaff.Controllers
             return Json(data, JsonRequestBehavior.AllowGet);
         }
 	}
-
-    /// <summary>
-    /// Object to hold change-log information (status or location)
-    /// </summary>
-    public class ChangeLogInfo
-    {
-        public string firstName;
-        public string lastName;
-        public string oldState;
-        public string newState;
-        public string stateChangeTimestamp;
-        public string prevStateInitTimestamp;
-    }
-
-    /// <summary>
-    /// Object to hold information about a user in verbose detail
-    /// </summary>
-    public class UserInfo
-    {
-        public string userID;
-        public string firstName;
-        public string lastName;
-        public string userType;
-        public string userTypeID;
-        public string isActive;
-    }
-
-    /// <summary>
-    /// Object to hold information about a status 
-    /// </summary>
-    public class StatusInfo
-    {
-        public string statusID;
-        public string name;
-        public string worksite;
-    }
-
-    /// <summary>
-    /// Object to hold information about a Location
-    /// </summary>
-    public class LocationInfo
-    {
-        public string locationID;
-        public string name;
-    }
 }

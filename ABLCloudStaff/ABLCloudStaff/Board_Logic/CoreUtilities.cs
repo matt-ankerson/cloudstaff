@@ -71,7 +71,7 @@ namespace ABLCloudStaff.Board_Logic
             {
                 using (var context = new ABLCloudStaffContext())
                 {
-                    thisInstance = context.Cores.Where(c => c.UserID == userID).FirstOrDefault();
+                    thisInstance = context.Cores.Include("User").Include("Status").Include("Location").Where(c => c.UserID == userID).FirstOrDefault();
                 }
             }
             catch (Exception ex)

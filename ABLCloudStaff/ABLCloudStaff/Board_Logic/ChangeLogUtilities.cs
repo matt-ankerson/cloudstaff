@@ -142,4 +142,17 @@ namespace ABLCloudStaff.Board_Logic
             }
         }
     }
+
+    /// <summary>
+    /// Object to hold change-log information (status or location)
+    /// </summary>
+    public class ChangeLogInfo
+    {
+        public string firstName;
+        public string lastName;
+        public string oldState;
+        public string newState;
+        public string stateChangeTimestamp;
+        public string prevStateInitTimestamp;
+    }
 }

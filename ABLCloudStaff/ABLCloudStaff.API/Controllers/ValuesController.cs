@@ -4,6 +4,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using ABLCloudStaff.Board_Logic;
+using ABLCloudStaff.Models;
 
 namespace ABLCloudStaff.API.Controllers
 {
@@ -13,6 +15,13 @@ namespace ABLCloudStaff.API.Controllers
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
+        }
+
+        [HttpGet]
+        public List<User> FooBar()
+        {
+            List<User> users = UserUtilities.GetAllUsers();
+            return users;
         }
 
         // GET api/values/5

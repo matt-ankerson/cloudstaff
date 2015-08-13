@@ -287,4 +287,16 @@ namespace ABLCloudStaff.Board_Logic
             }
         }
     }
+    /// <summary>
+    /// Object to hold information about a user in verbose detail
+    /// </summary>
+    public class UserInfo
+    {
+        public string userID;
+        public string firstName;
+        public string lastName;
+        public string userType;
+        public string userTypeID;
+        public string isActive;
+    }
 }
