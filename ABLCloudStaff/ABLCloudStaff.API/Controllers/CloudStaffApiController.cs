@@ -20,12 +20,22 @@ namespace ABLCloudStaff.API.Controllers
         /// <param name="userID">The user to get information for.</param>
         /// <returns>List containting information relavent for this user.</returns>
         [HttpGet]
-        public Core GetUserInfo(int userID)
+        public CoreInfo GetUserInfo(int userID)
         {
-            Core thisCore = CoreUtilities.GetCoreInstanceByUserID(userID);
+            Core c = CoreUtilities.GetCoreInstanceByUserID(userID);
 
             // Use an anonymous type to encapsulate the data we want to send via json/xml
-            return thisCore;
+            CoreInfo data = new CoreInfo
+            {
+                userID = c.UserID.ToString(),
+                statusID = c.StatusID.ToString(),
+                status = c.Status.Name,
+                locationID = c.LocationID.ToString(),
+                location = c.Location.Name,
+                returnTime = c.IntendedEndTime.ToString()
+            };
+
+            return data;
         }
 
 

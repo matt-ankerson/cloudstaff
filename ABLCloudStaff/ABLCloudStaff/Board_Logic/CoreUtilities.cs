@@ -500,4 +500,18 @@ namespace ABLCloudStaff.Board_Logic
             }
         }
     }
+
+    /// <summary>
+    /// A serializable object for encapsulating the main components of the core object
+    /// </summary>
+    /// <remarks>Used for returning data via the api</remarks>
+    public class CoreInfo
+    {
+        public string userID;
+        public string statusID;
+        public string status;
+        public string locationID;
+        public string location;
+        public string returnTime;
+    }
 }
