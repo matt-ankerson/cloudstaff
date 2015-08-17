@@ -118,7 +118,7 @@ namespace ABLCloudStaff.API.Controllers
         /// <remarks>
         /// POSTing format is as follows:
         /// Head:
-        /// http://localhost:3022/api/cloudstaffapi/poststatusorlocationupdate1
+        /// http://localhost:3022/api/cloudstaffapi/poststatusorlocationupdate
         /// User-Agent: Fiddler
         /// Type: POST
         /// Content-Type: application/json 
@@ -131,34 +131,22 @@ namespace ABLCloudStaff.API.Controllers
         [HttpPost]
         public void PostStatusOrLocationUpdate([FromBody] CoreInfo coreInfo)
         {
+            try
+            {
+                // Convert string fields to usable types
+                int userID = Convert.ToInt32(coreInfo.userID);
+                int statusID = Convert.ToInt32(coreInfo.statusID);
+                int locationID = Convert.ToInt32(coreInfo.locationID);
 
-        }
+                // Perform the update. ReturnTime is handled as an optional field. 
+                CoreUtilities.UpdateStatus(userID, statusID, coreInfo.returnTime);
+                CoreUtilities.UpdateLocation(userID, locationID);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Update Failed: " + ex.Message);
+            }
 
-        // GET api/<controller>
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/<controller>/5
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<controller>
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/<controller>/5
-        public void Delete(int id)
-        {
         }
     }
 }
