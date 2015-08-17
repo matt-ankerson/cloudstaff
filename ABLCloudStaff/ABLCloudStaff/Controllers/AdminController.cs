@@ -198,7 +198,7 @@ namespace ABLCloudStaff.Controllers
             // Build the flat StatusInfo list
             foreach(Status s in statuses)
             {
-                StatusInfo si = new StatusInfo { name = s.Name, statusID = s.StatusID.ToString(), worksite = s.Available.ToString() };
+                StatusInfo si = new StatusInfo { name = s.Name, statusID = s.StatusID.ToString(), available = s.Available.ToString() };
                 statusInfos.Add(si);
             }
 

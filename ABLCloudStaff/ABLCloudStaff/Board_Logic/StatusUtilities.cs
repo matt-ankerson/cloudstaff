@@ -228,6 +228,6 @@ namespace ABLCloudStaff.Board_Logic
     {
         public string statusID;
         public string name;
-        public string worksite;
+        public string available;
     }
 }
