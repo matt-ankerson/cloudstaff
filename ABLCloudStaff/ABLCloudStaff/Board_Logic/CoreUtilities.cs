@@ -71,7 +71,7 @@ namespace ABLCloudStaff.Board_Logic
             {
                 using (var context = new ABLCloudStaffContext())
                 {
-                    thisInstance = context.Cores.Where(c => c.UserID == userID).FirstOrDefault();
+                    thisInstance = context.Cores.Include("User").Include("Status").Include("Location").Where(c => c.UserID == userID).FirstOrDefault();
                 }
             }
             catch (Exception ex)
@@ -499,5 +499,19 @@ namespace ABLCloudStaff.Board_Logic
 
             }
         }
+    }
+
+    /// <summary>
+    /// A serializable object for encapsulating the main components of the core object
+    /// </summary>
+    /// <remarks>Used for returning data via the api</remarks>
+    public class CoreInfo
+    {
+        public string userID;
+        public string statusID;
+        public string status;
+        public string locationID;
+        public string location;
+        public string returnTime;
     }
 }

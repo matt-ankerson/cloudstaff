@@ -220,4 +220,14 @@ namespace ABLCloudStaff.Board_Logic
             }
         }
     }
+
+    /// <summary>
+    /// Object to hold information about a status 
+    /// </summary>
+    public class StatusInfo
+    {
+        public string statusID;
+        public string name;
+        public string available;
+    }
 }

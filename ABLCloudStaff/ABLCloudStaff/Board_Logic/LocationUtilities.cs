@@ -211,4 +211,13 @@ namespace ABLCloudStaff.Board_Logic
             }
         }
     }
+
+    /// <summary>
+    /// Object to hold information about a Location
+    /// </summary>
+    public class LocationInfo
+    {
+        public string locationID;
+        public string name;
+    }
 }
