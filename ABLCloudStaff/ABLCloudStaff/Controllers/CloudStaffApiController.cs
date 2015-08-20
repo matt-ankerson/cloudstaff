@@ -122,6 +122,7 @@ namespace ABLCloudStaff.Controllers
         /// <remarks>
         /// POSTing format is as follows:
         /// Head:
+        /// (input appropriate url beginning)
         /// http://localhost:3022/api/cloudstaffapi/poststatusorlocationupdate
         /// User-Agent: Fiddler
         /// Type: POST
@@ -129,7 +130,7 @@ namespace ABLCloudStaff.Controllers
         /// Host: localhost:3022
         /// Content-Length: 73
         /// Body:
-        /// {'userID': '1', 'statusID': '1', 'locationID': '1', 'returnTime': '1' 
+        /// {'userID': '1', 'statusID': '1', 'locationID': '1', 'returnTime': '1' }
         /// </remarks>
         /// <param name="coreInfo">The new core info for the given user</param>
         [HttpPost]
