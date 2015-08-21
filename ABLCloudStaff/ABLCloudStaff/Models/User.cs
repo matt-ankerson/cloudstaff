@@ -18,7 +18,8 @@ namespace ABLCloudStaff.Models
         public string LastName { get; set; }
         public int UserTypeID { get; set; }
         public bool IsActive { get; set; }
-        public int? AuthenticationID { get; set; }
+        public int? AuthenticationID { get; set; }  // The inclusion of Authentication is optional because
+                                                    // we would like the user model to double for visitors.
 
         public virtual List<UserStatus> UserStatuses { get; set; }
         public virtual List<UserLocation> UserLocations { get; set; }
