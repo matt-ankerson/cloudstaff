@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace ABLCloudStaff.Board_Logic
+namespace ABLCloudStaff.Biz_Logic
 {
     /// <summary>
     /// Repository for important constant values

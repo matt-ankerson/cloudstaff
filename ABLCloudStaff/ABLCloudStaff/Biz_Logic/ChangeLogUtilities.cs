@@ -5,7 +5,7 @@ using System.Web;
 using ABLCloudStaff.Models;
 using System.Data.Entity;
 
-namespace ABLCloudStaff.Board_Logic
+namespace ABLCloudStaff.Biz_Logic
 {
     /// <summary>
     /// Provides utilities necessary for logging a change of state or location by any user of the system.
