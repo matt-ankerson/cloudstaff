@@ -47,7 +47,7 @@ namespace ABLCloudStaff.Biz_Logic
             {
                 using (var context = new ABLCloudStaffContext())
                 {
-                    user = context.Users.Where(u => u.UserID == userID).FirstOrDefault();
+                    user = context.Users.Include("Authentication").Where(u => u.UserID == userID).FirstOrDefault();
                 }
             }
             catch (Exception e)

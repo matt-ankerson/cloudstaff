@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ABLCloudStaff.Models;
 using ABLCloudStaff.Biz_Logic;
 
-namespace ABLCloudStaff.Tests.Board_Logic
+namespace ABLCloudStaff.Tests.Biz_Logic
 {
     [TestClass]
     public class CoreUtilitiesTest

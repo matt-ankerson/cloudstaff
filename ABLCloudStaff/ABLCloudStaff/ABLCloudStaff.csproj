@@ -148,6 +148,7 @@
     <Compile Include="Biz_Logic\Constants.cs" />
     <Compile Include="Biz_Logic\CoreUtilities.cs" />
     <Compile Include="Biz_Logic\DateTimeUtilities.cs" />
+    <Compile Include="Biz_Logic\EncryptionUtilities.cs" />
     <Compile Include="Biz_Logic\LocationUtilities.cs" />
     <Compile Include="Biz_Logic\StatusUtilities.cs" />
     <Compile Include="Biz_Logic\UserUtilities.cs" />
