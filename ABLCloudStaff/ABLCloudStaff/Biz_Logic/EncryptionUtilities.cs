@@ -41,7 +41,7 @@ namespace ABLCloudStaff.Biz_Logic
         /// <returns></returns>
         public static string HashPassword(string plainText, byte[] saltValue=null)
         {
-            SHA1 algorithm = SHA1.Create();
+            SHA256 algorithm = SHA256.Create();
 
             // Convert text to a byte array and get a salt
             byte[] plainTextBytes = Encoding.UTF8.GetBytes(plainText);
