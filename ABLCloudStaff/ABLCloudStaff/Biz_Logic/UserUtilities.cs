@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using ABLCloudStaff.Models;
 
-namespace ABLCloudStaff.Board_Logic
+namespace ABLCloudStaff.Biz_Logic
 {
     /// <summary>
     /// Provides utilities necessary for fetching and manipulating user info.
@@ -47,7 +47,7 @@ namespace ABLCloudStaff.Board_Logic
             {
                 using (var context = new ABLCloudStaffContext())
                 {
-                    user = context.Users.Where(u => u.UserID == userID).FirstOrDefault();
+                    user = context.Users.Include("Authentication").Where(u => u.UserID == userID).FirstOrDefault();
                 }
             }
             catch (Exception e)

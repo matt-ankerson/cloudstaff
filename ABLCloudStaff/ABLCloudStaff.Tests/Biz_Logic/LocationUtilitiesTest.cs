@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ABLCloudStaff.Models;
-using ABLCloudStaff.Board_Logic;
+using ABLCloudStaff.Biz_Logic;
 
-namespace ABLCloudStaff.Tests.Board_Logic
+namespace ABLCloudStaff.Tests.Biz_Logic
 {
     [TestClass]
     public class LocationUtilitiesTest

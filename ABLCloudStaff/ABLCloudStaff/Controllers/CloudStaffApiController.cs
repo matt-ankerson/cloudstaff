@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using ABLCloudStaff.Board_Logic;
+using ABLCloudStaff.Biz_Logic;
 using ABLCloudStaff.Models;
 
 namespace ABLCloudStaff.Controllers
@@ -130,7 +130,7 @@ namespace ABLCloudStaff.Controllers
         /// Host: localhost:3022
         /// Content-Length: 73
         /// Body:
-        /// {'userID': '1', 'statusID': '1', 'locationID': '1', 'returnTime': '1' }
+        /// {'userID': '1', 'statusID': '1', 'locationID': '1', 'returnTime': '26-Aug-15 11:59:54 AM' }
         /// </remarks>
         /// <param name="coreInfo">The new core info for the given user</param>
         [HttpPost]

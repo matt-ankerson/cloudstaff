@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
 using ABLCloudStaff.Models;
-using ABLCloudStaff.Board_Logic;
+using ABLCloudStaff.Biz_Logic;
 
 namespace ABLCloudStaff.Controllers
 {

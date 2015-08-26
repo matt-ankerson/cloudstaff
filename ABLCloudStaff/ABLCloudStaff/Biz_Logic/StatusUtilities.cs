@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using ABLCloudStaff.Models;
 
-namespace ABLCloudStaff.Board_Logic
+namespace ABLCloudStaff.Biz_Logic
 {
     /// <summary>
     /// Provides utilities necessary for fetching and manipulating info from the Status, UserStatus and User tables.
