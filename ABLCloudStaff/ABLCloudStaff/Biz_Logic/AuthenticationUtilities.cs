@@ -27,14 +27,167 @@ namespace ABLCloudStaff.Biz_Logic
         {
             // User and Authentication share an optional 1 to 1 relationship.
 
-            // We first set up required fields in the User table:
-            // Given a userID, we need to pull up that user and set thier AuthenticationID to thier UserID.
+            try
+            {
+                // We first set up required fields in the User table:
+                // Given a userID, we need to pull up that user and set thier AuthenticationID to thier UserID.
+                using (var context = new ABLCloudStaffContext())
+                {
+                    User u = context.Users.Where(x => x.UserID == userID).FirstOrDefault();
+                    u.AuthenticationID = userID;
+                    context.SaveChanges();
+                }
 
-            // Next we add a new Authentication instance with the given information. Password and Token need to be hashed. 
-            //  (Token might be null, in which case, leave it null.)
-            // The UserID field in the Authentication instance is set to the userID that was passed in.
+                // Next we add a new Authentication instance with the given information. Password and Token need to be hashed. 
+                //  (Token might be null, in which case, leave it null.)
+                // The UserID field in the Authentication instance is set to the userID that was passed in.
+                using (var context = new ABLCloudStaffContext())
+                {
+                    // Hash the password
+                    byte[] passwordHash = Convert.FromBase64String(EncryptionUtilities.HashPassword(password));
 
-            // Now the 1 to 1 relationship is set up
+                    // Hash the token if not null
+                    if (token != null)
+                    {
+                        byte[] tokenHash = Convert.FromBase64String(EncryptionUtilities.HashPassword(token));
+                        Authentication auth = new Authentication { UserID = userID, UserName = userName, Password = passwordHash, Token = tokenHash };
+                    }
+                    else
+                    {
+                        Authentication auth = new Authentication { UserID = userID, UserName = userName, Password = passwordHash };
+                    } 
+                }
+
+                // Now the 1 to 1 relationship is set up
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Couldn't add authentication: " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Verify given user credentials, returns empty string if successful.
+        /// </summary>
+        /// <param name="userID">The user to check</param>
+        /// <param name="userName">Username to check</param>
+        /// <param name="password">Password to check</param>
+        /// <returns>Empty string or message containing reason for failure.</returns>
+        public static string AuthenticateUsernamePassword(int userID, string userName, string password)
+        {
+            string response = "";
+
+            try
+            {
+                // Pull up the user indicated by the given userID
+                User u = UserUtilities.GetUser(userID);
+
+                // Check username and password
+                if (userName.Equals(u.Authentication.UserName))
+                {
+                    // Username matches, now check password
+                    if (!VerifyPassword(userID, password))
+                    {
+                        response = "Password is incorrect.";
+                    }
+                }
+                else
+                {
+                    response = "Username is invalid.";
+                }
+            }
+            catch (Exception ex)
+            {
+                response = "Authentication Failed.";
+                throw new Exception("Authentication Failed: " + ex.Message);
+            }
+
+            return response;
+        }
+
+        /// <summary>
+        /// Authenticate a given api token against one already stored in the db. Return appropriate response.
+        /// </summary>
+        /// <param name="userID">The user to authenticate against.</param>
+        /// <param name="token">The token to try</param>
+        /// <returns>Empty string for success, or reason for failure.</returns>
+        public static string AuthenticateUserIDToken(int userID, string token)
+        {
+            string response = "";
+
+            try
+            {
+                // Pull up the user indicated by the given userID
+                User u = UserUtilities.GetUser(userID);
+                
+                // Check that a token exists already in the db
+                if (u.Authentication.Token != null)
+                {
+                    string existing = Convert.ToBase64String(u.Authentication.Token);
+
+                    if(VerifyHashedPassword(token, existing))
+                    {
+                        // Success!
+                    }
+                    else
+                    {
+                        response = "Invalid token.";
+                    }
+                }
+                else
+                {
+                    response = "User has no token.";
+                }
+            }
+            catch (Exception ex)
+            {
+                response = "Authentication failed due to an error.";
+                throw new Exception("Authentication Failed: " + ex.Message);
+            }
+
+            return response;
+        }
+
+        /// <summary>
+        /// Issue and store a new api token for a user who doesn't already own one.
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns>The new api token.</returns>
+        public static string IssueApiToken(int userID)
+        {
+            string response = "";
+
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    // Check whether or not this user already has a api token
+                    User u = context.Users.Include("Authentication").Where(x => x.UserID == userID).FirstOrDefault();
+
+                    if (u.Authentication.Token == null)
+                    {
+                        // Generate a new token
+                        string newToken = EncryptionUtilities.GenerateApiToken();
+
+                        // Save the new token
+                        u.Authentication.Token = Convert.FromBase64String(newToken);
+
+                        // Return the new token
+                        response = newToken;
+                    }
+                    else
+                    {
+                        // Return the token that already exists
+                        response = Convert.ToBase64String(u.Authentication.Token);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Couldn't generate token: " + ex.Message);
+            }
+
+            return response;
         }
 
         /// <summary>

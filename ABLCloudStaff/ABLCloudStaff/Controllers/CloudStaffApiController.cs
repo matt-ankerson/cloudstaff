@@ -16,11 +16,15 @@ namespace ABLCloudStaff.Controllers
     {
         /// <summary>
         /// Get current status, location and time allotted for the indicated user
+        /// <remarks>
+        /// Sample request:
+        /// http://localhost:1169/api/cloudstaffapi/getuserinfo/?userID=5&apiToken=XXXXXXXXXXX
+        /// </remarks>
         /// </summary>
         /// <param name="userID">The user to get information for.</param>
         /// <returns>Information relavent for this user.</returns>
         [HttpGet]
-        public CoreInfo GetUserInfo(int userID)
+        public HttpResponseMessage GetUserInfo(int userID, string apiToken)
         {
             // Call to the application business logic
             Core c = CoreUtilities.GetCoreInstanceByUserID(userID);
@@ -36,7 +40,10 @@ namespace ABLCloudStaff.Controllers
                 returnTime = c.IntendedEndTime.ToString()
             };
 
-            return data;
+            // Write the core info data to the response body.
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, data);
+
+            return response;
         }
 
         /// <summary>
@@ -44,7 +51,7 @@ namespace ABLCloudStaff.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public TimeInfo GetCurrentTime()
+        public HttpResponseMessage GetCurrentTime()
         {
             DateTime now = DateTime.Now;
 
@@ -61,16 +68,23 @@ namespace ABLCloudStaff.Controllers
                 second = now.Second.ToString()
             };
 
-            return data;
+            // Write the time info data to the response body.
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, data);
+
+            return response;
         }
 
         /// <summary>
         /// Get all available statuses for the given user
+        /// <remarks>
+        /// Sample request:
+        /// http://localhost:1169/api/cloudstaffapi/getavailablestatuses/?userID=5&apiToken=XXXXXXXXXXX
+        /// </remarks>
         /// </summary>
         /// <param name="userID">The user to query for</param>
         /// <returns>List of available statuses</returns>
         [HttpGet]
-        public List<StatusInfo> GetAvailableStatuses(int userID)
+        public HttpResponseMessage GetAvailableStatuses(int userID, string apiToken)
         {
             // Call to the application business logic
             List<Status> rawStatuses = StatusUtilities.GetAvailableStatuses(userID);
@@ -87,16 +101,23 @@ namespace ABLCloudStaff.Controllers
                 });
             }
 
-            return data;
+            // Write the status info data to the response body.
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, data);
+
+            return response;
         }
 
         /// <summary>
         /// Get all locations available to the given user
+        /// <remarks>
+        /// Sample request:
+        /// http://localhost:1169/api/cloudstaffapi/getavailablelocations/?userID=5&apiToken=XXXXXXXXXXX
+        /// </remarks>
         /// </summary>
         /// <param name="userID">The user to query on</param>
         /// <returns>List of location info objects</returns>
         [HttpGet]
-        public List<LocationInfo> GetAvailableLocations(int userID)
+        public HttpResponseMessage GetAvailableLocations(int userID, string apiToken)
         {
             // Call to the application business logic
             List<Location> rawLocations = LocationUtilities.GetAvailableLocations(userID);
@@ -112,7 +133,10 @@ namespace ABLCloudStaff.Controllers
                 });
             }
 
-            return data;
+            // Write the location info data to the response body.
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, data);
+
+            return response;
         }
 
         /// <summary>
@@ -134,7 +158,7 @@ namespace ABLCloudStaff.Controllers
         /// </remarks>
         /// <param name="coreInfo">The new core info for the given user</param>
         [HttpPost]
-        public void PostStatusOrLocationUpdate([FromBody] CoreInfo coreInfo)
+        public HttpResponseMessage PostStatusOrLocationUpdate([FromBody] CoreInfo coreInfo, [FromUri]string apiToken)
         {
             try
             {
@@ -146,10 +170,15 @@ namespace ABLCloudStaff.Controllers
                 // Perform the update. ReturnTime is handled as an optional field. 
                 CoreUtilities.UpdateStatus(userID, statusID, coreInfo.returnTime);
                 CoreUtilities.UpdateLocation(userID, locationID);
+
+                // Return status code 200.
+                return Request.CreateResponse(HttpStatusCode.OK, "");
+
             }
             catch (Exception ex)
             {
-                throw new Exception("Update Failed: " + ex.Message);
+                // Report the error
+                return Request.CreateResponse(HttpStatusCode.BadRequest, "Cannot update, inspect the validity of your request.");
             }
 
         }

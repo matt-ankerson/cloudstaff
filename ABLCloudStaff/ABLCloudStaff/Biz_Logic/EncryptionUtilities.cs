@@ -28,8 +28,21 @@ namespace ABLCloudStaff.Biz_Logic
             byte[] buff = new byte[Constants.SALT_SIZE];
             rng.GetBytes(buff);
 
-            // Return a Base64 string representation of the random number.
             return buff;
+        }
+
+        /// <summary>
+        /// Generate and return a new api token
+        /// </summary>
+        /// <returns>A freshly baked api token.</returns>
+        public static string GenerateApiToken()
+        {
+            Random rand = new Random();
+            byte[] randomBytes = new byte[Constants.TOKEN_LENGTH];
+            rand.NextBytes(randomBytes);
+
+            // Return a bse46 string representation of the randomly generated string.
+            return Convert.ToBase64String(randomBytes);
         }
 
         /// <summary>
