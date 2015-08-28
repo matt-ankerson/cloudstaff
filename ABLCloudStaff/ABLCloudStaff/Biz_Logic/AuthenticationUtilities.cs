@@ -18,6 +18,34 @@ namespace ABLCloudStaff.Biz_Logic
     public static class AuthenticationUtilities
     {
         /// <summary>
+        /// Return the userID that maps to a given username. Return 0 if no user exists.
+        /// </summary>
+        /// <param name="userName">The username to search on.</param>
+        /// <returns>The appropriate userID.</returns>
+        public static int GetUserIDOnUserName(string userName)
+        {
+            // Initialise to 0, this is an invalid userID.
+            int userID = 0;
+
+            using (var context = new ABLCloudStaffContext())
+            {
+                try
+                {
+                    // Pull up the Authentication instance by the given username. We assume uniqueness.
+                    Authentication authInstance = context.Authentications.Where(x => x.UserName == userName).FirstOrDefault();
+
+                    userID = authInstance.UserID;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            }
+
+            return userID;
+        }
+
+        /// <summary>
         /// Add a new Authentication instance to the model.
         /// </summary>
         /// <param name="userName"></param>
@@ -33,6 +61,13 @@ namespace ABLCloudStaff.Biz_Logic
                 // Given a userID, we need to pull up that user and set thier AuthenticationID to thier UserID.
                 using (var context = new ABLCloudStaffContext())
                 {
+                    // Before we do anything:
+                    // Enforce UserName uniqueness. - Check for this.
+                    List<string> existingUsernames = context.Authentications.Select(x => x.UserName).ToList();
+
+                    if (existingUsernames.Contains(userName))
+                        throw new Exception("Username must be unique.");
+
                     User u = context.Users.Where(x => x.UserID == userID).FirstOrDefault();
                     u.AuthenticationID = userID;
                     context.SaveChanges();

@@ -15,6 +15,19 @@ namespace ABLCloudStaff.Controllers
     public class CloudStaffApiController : ApiController
     {
         /// <summary>
+        /// Issue and save a new api token for the indicated user, refuse if credentials invalid.
+        /// </summary>
+        /// <param name="username">The username of this user.</param>
+        /// <param name="password">The password for this user.</param>
+        /// <returns>A response message containing the token, or a message detailing the error.</returns>
+        [HttpGet]
+        public HttpResponseMessage Register(string username, string password)
+        {
+            // TODO
+            return null;
+        }
+
+        /// <summary>
         /// Get current status, location and time allotted for the indicated user
         /// <remarks>
         /// Sample request:
@@ -26,22 +39,45 @@ namespace ABLCloudStaff.Controllers
         [HttpGet]
         public HttpResponseMessage GetUserInfo(int userID, string apiToken)
         {
-            // Call to the application business logic
-            Core c = CoreUtilities.GetCoreInstanceByUserID(userID);
+            HttpResponseMessage response;
 
-            // Use a serializable type to encapsulate the data we want to send via json/xml
-            CoreInfo data = new CoreInfo
+            // Authenticate this user
+            string authResult = AuthenticationUtilities.AuthenticateUserIDToken(userID, apiToken);
+
+            if (authResult == "")
             {
-                userID = c.UserID.ToString(),
-                statusID = c.StatusID.ToString(),
-                status = c.Status.Name,
-                locationID = c.LocationID.ToString(),
-                location = c.Location.Name,
-                returnTime = c.IntendedEndTime.ToString()
-            };
+                // User was successfully authenticated.
 
-            // Write the core info data to the response body.
-            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, data);
+                try
+                {
+                    // Call to the application business logic
+                    Core c = CoreUtilities.GetCoreInstanceByUserID(userID);
+
+                    // Use a serializable type to encapsulate the data we want to send via json/xml
+                    CoreInfo data = new CoreInfo
+                    {
+                        userID = c.UserID.ToString(),
+                        statusID = c.StatusID.ToString(),
+                        status = c.Status.Name,
+                        locationID = c.LocationID.ToString(),
+                        location = c.Location.Name,
+                        returnTime = c.IntendedEndTime.ToString()
+                    };
+
+                    // Write the core info data to the response body.
+                    response = Request.CreateResponse(HttpStatusCode.OK, data);
+                }
+                catch (Exception ex)
+                {
+                    // Report the error
+                    response = Request.CreateResponse(HttpStatusCode.InternalServerError, ex.Message);
+                }
+            }
+            else
+            {
+                // There was an issue.
+                response = Request.CreateResponse(HttpStatusCode.Unauthorized, authResult);
+            }
 
             return response;
         }
@@ -53,23 +89,32 @@ namespace ABLCloudStaff.Controllers
         [HttpGet]
         public HttpResponseMessage GetCurrentTime()
         {
-            DateTime now = DateTime.Now;
+            HttpResponseMessage response;
 
-            // Use a serialisable type to encapsulate the data we want to send via xml/json
-            TimeInfo data = new TimeInfo
+            try
             {
-                numeric_repr = now.ToShortTimeString(),
-                dateString = now.ToString(),
-                year = now.Year.ToString(),
-                month = now.Month.ToString(),
-                day = now.Day.ToString(),
-                hour = now.Hour.ToString(),
-                minute = now.Minute.ToString(),
-                second = now.Second.ToString()
-            };
+                DateTime now = DateTime.Now;
 
-            // Write the time info data to the response body.
-            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, data);
+                // Use a serialisable type to encapsulate the data we want to send via xml/json
+                TimeInfo data = new TimeInfo
+                {
+                    numeric_repr = now.ToShortTimeString(),
+                    dateString = now.ToString(),
+                    year = now.Year.ToString(),
+                    month = now.Month.ToString(),
+                    day = now.Day.ToString(),
+                    hour = now.Hour.ToString(),
+                    minute = now.Minute.ToString(),
+                    second = now.Second.ToString()
+                };
+
+                // Write the time info data to the response body.
+                response = Request.CreateResponse(HttpStatusCode.OK, data);
+            }
+            catch (Exception ex)
+            {
+                response = Request.CreateResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
 
             return response;
         }
@@ -86,23 +131,46 @@ namespace ABLCloudStaff.Controllers
         [HttpGet]
         public HttpResponseMessage GetAvailableStatuses(int userID, string apiToken)
         {
-            // Call to the application business logic
-            List<Status> rawStatuses = StatusUtilities.GetAvailableStatuses(userID);
-            List<StatusInfo> data = new List<StatusInfo>();
+            HttpResponseMessage response;
 
-            // Build list of statusinfos
-            foreach (var s in rawStatuses)
+            // Authenticate this user
+            string authResult = AuthenticationUtilities.AuthenticateUserIDToken(userID, apiToken);
+
+            if (authResult == "")
             {
-                data.Add(new StatusInfo
-                {
-                    name = s.Name,
-                    statusID = s.StatusID.ToString(),
-                    available = s.Available.ToString()
-                });
-            }
+                // User was successfully authenticated.
 
-            // Write the status info data to the response body.
-            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, data);
+                try
+                {
+                    // Call to the application business logic
+                    List<Status> rawStatuses = StatusUtilities.GetAvailableStatuses(userID);
+                    List<StatusInfo> data = new List<StatusInfo>();
+
+                    // Build list of statusinfos
+                    foreach (var s in rawStatuses)
+                    {
+                        data.Add(new StatusInfo
+                        {
+                            name = s.Name,
+                            statusID = s.StatusID.ToString(),
+                            available = s.Available.ToString()
+                        });
+                    }
+
+                    // Write the status info data to the response body.
+                    response = Request.CreateResponse(HttpStatusCode.OK, data);
+                }
+                catch (Exception ex)
+                {
+                    // Report the error
+                    response = Request.CreateResponse(HttpStatusCode.InternalServerError, ex.Message);
+                }
+            }
+            else
+            {
+                // There was an issue.
+                response = Request.CreateResponse(HttpStatusCode.Unauthorized, authResult);
+            }
 
             return response;
         }
@@ -119,22 +187,45 @@ namespace ABLCloudStaff.Controllers
         [HttpGet]
         public HttpResponseMessage GetAvailableLocations(int userID, string apiToken)
         {
-            // Call to the application business logic
-            List<Location> rawLocations = LocationUtilities.GetAvailableLocations(userID);
-            List<LocationInfo> data = new List<LocationInfo>();
+            HttpResponseMessage response;
 
-            // Build a list of locationInfos
-            foreach (var l in rawLocations)
+            // Authenticate this user
+            string authResult = AuthenticationUtilities.AuthenticateUserIDToken(userID, apiToken);
+
+            if (authResult == "")
             {
-                data.Add(new LocationInfo
-                {
-                    locationID = l.LocationID.ToString(),
-                    name = l.Name
-                });
-            }
+                // User was successfully authenticated.
 
-            // Write the location info data to the response body.
-            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, data);
+                try
+                {
+                    // Call to the application business logic
+                    List<Location> rawLocations = LocationUtilities.GetAvailableLocations(userID);
+                    List<LocationInfo> data = new List<LocationInfo>();
+
+                    // Build a list of locationInfos
+                    foreach (var l in rawLocations)
+                    {
+                        data.Add(new LocationInfo
+                        {
+                            locationID = l.LocationID.ToString(),
+                            name = l.Name
+                        });
+                    }
+
+                    // Write the location info data to the response body.
+                    response = Request.CreateResponse(HttpStatusCode.OK, data);
+                }
+                catch (Exception ex)
+                {
+                    // Report the error
+                    response = Request.CreateResponse(HttpStatusCode.InternalServerError, ex.Message);
+                }
+            }
+            else
+            {
+                // There was an issue
+                response = Request.CreateResponse(HttpStatusCode.Unauthorized, authResult);
+            }
 
             return response;
         }
@@ -147,7 +238,7 @@ namespace ABLCloudStaff.Controllers
         /// POSTing format is as follows:
         /// Head:
         /// (input appropriate url beginning)
-        /// http://localhost:3022/api/cloudstaffapi/poststatusorlocationupdate
+        /// http://localhost:3022/api/cloudstaffapi/poststatusorlocationupdate/?apiToken=XXXXXXXXX
         /// User-Agent: Fiddler
         /// Type: POST
         /// Content-Type: application/json 
@@ -160,27 +251,42 @@ namespace ABLCloudStaff.Controllers
         [HttpPost]
         public HttpResponseMessage PostStatusOrLocationUpdate([FromBody] CoreInfo coreInfo, [FromUri]string apiToken)
         {
-            try
+            HttpResponseMessage response;
+
+            // Convert string fields to usable types
+            int userID = Convert.ToInt32(coreInfo.userID);
+            int statusID = Convert.ToInt32(coreInfo.statusID);
+            int locationID = Convert.ToInt32(coreInfo.locationID);
+
+            // Authenticate this user
+            string authResult = AuthenticationUtilities.AuthenticateUserIDToken(userID, apiToken);
+
+            if (authResult == "")
             {
-                // Convert string fields to usable types
-                int userID = Convert.ToInt32(coreInfo.userID);
-                int statusID = Convert.ToInt32(coreInfo.statusID);
-                int locationID = Convert.ToInt32(coreInfo.locationID);
+                // Authentication was successful. Try to perform the update.
 
-                // Perform the update. ReturnTime is handled as an optional field. 
-                CoreUtilities.UpdateStatus(userID, statusID, coreInfo.returnTime);
-                CoreUtilities.UpdateLocation(userID, locationID);
+                try
+                {
+                    // Perform the update. ReturnTime is handled as an optional field. 
+                    CoreUtilities.UpdateStatus(userID, statusID, coreInfo.returnTime);
+                    CoreUtilities.UpdateLocation(userID, locationID);
 
-                // Return status code 200.
-                return Request.CreateResponse(HttpStatusCode.OK, "");
-
+                    // Return status code 200.
+                    response = Request.CreateResponse(HttpStatusCode.OK, "");
+                }
+                catch (Exception ex)
+                {
+                    // Report the error.
+                    response = Request.CreateResponse(HttpStatusCode.BadRequest, ex.Message);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                // Report the error
-                return Request.CreateResponse(HttpStatusCode.BadRequest, "Cannot update, inspect the validity of your request.");
+                // There was an issue.
+                response = Request.CreateResponse(HttpStatusCode.Unauthorized, authResult);
             }
 
+            return response;
         }
     }
 }
