@@ -6,7 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Data.Entity;
+using System.Text;
 using ABLCloudStaff.Models;
+using ABLCloudStaff.Biz_Logic;
 
 namespace ABLCloudStaff.Models
 {
@@ -17,6 +19,8 @@ namespace ABLCloudStaff.Models
     {
         // Create the context
         private ABLCloudStaffContext dbContext = new ABLCloudStaffContext();
+        // Number of users that will be initialised (important for the authentication table population.)
+        private const int N_USERS = 34;
 
         protected override void Seed(ABLCloudStaffContext context)
         {
@@ -27,9 +31,28 @@ namespace ABLCloudStaff.Models
             PopulateStatuses();
             PopulateLocations();
             PopulateUsers();
+            PopulateAuthentication();
             PopulateUserLocation();
             PopulateUserStatus();
             PopulateCore();
+        }
+
+        /// <summary>
+        /// Seed the Authentication table
+        /// </summary>
+        public void PopulateAuthentication()
+        {
+            List<Authentication> auths = new List<Authentication>();
+
+            for (int i = 0; i < N_USERS; i++)
+            {
+                string password = EncryptionUtilities.HashPassword("P@ssw0rd");
+                auths.Add(new Authentication { UserID = i + 1, UserName = "CloudStaff" + (i + 1).ToString(), Password = password });
+            }
+
+            foreach (Authentication a in auths)
+                dbContext.Authentications.Add(a);
+            dbContext.SaveChanges();
         }
 
         /// <summary>
@@ -105,40 +128,40 @@ namespace ABLCloudStaff.Models
         {
             List<User> users = new List<User>
             {
-                new User { FirstName = "Anna", LastName = "Campbell", UserTypeID = 1, IsActive = true },
-                new User { FirstName = "Bram", LastName = "Visser", UserTypeID = 1, IsActive = true },
-                new User { FirstName = "Bruno", LastName = "Santos", UserTypeID = 1, IsActive = true },
-                new User { FirstName = "Daniel", LastName = "Martin-Collado", UserTypeID = 1, IsActive = true },
-                new User { FirstName = "Fiona", LastName = "Hely", UserTypeID = 1, IsActive = true },
-                new User { FirstName = "Gemma", LastName = "Jenkins", UserTypeID = 1, IsActive = true },
-                new User { FirstName = "Bruce", LastName = "McCorkindale", UserTypeID = 1, IsActive = true },
-                new User { FirstName = "Gertje", LastName = "Petersen", UserTypeID = 1, IsActive = true },
-                new User { FirstName = "Grace", LastName = "Johnstone", UserTypeID = 1, IsActive = true },
-                new User { FirstName = "Cheryl", LastName = "King", UserTypeID = 2, IsActive = true },
-                new User { FirstName = "Hadyn", LastName = "Craig", UserTypeID = 1, IsActive = true },
-                new User { FirstName = "Jason", LastName = "Archer", UserTypeID = 1, IsActive = true },
-                new User { FirstName = "Joanne", LastName = "Kerslake", UserTypeID = 1, IsActive = true },
-                new User { FirstName = "Jonathan", LastName = "Chuah", UserTypeID = 1, IsActive = true },
-                new User { FirstName = "Jude", LastName = "Sise", UserTypeID = 1, IsActive = true },
-                new User { FirstName = "Katarzyna", LastName = "Stachowicz", UserTypeID = 1, IsActive = true },
-                new User { FirstName = "Kevin", LastName = "Wilson", UserTypeID = 1, IsActive = true },
-                new User { FirstName = "Luke", LastName = "Proctor", UserTypeID = 1, IsActive = true },
-                new User { FirstName = "Mark", LastName = "Teviotdale", UserTypeID = 2, IsActive = true },
-                new User { FirstName = "Melanie", LastName = "Joubert", UserTypeID = 1, IsActive = true },
-                new User { FirstName = "Nadia", LastName = "McLean", UserTypeID = 1, IsActive = true },
-                new User { FirstName = "Nana", LastName = "Bortsie-Aryee", UserTypeID = 1, IsActive = true },
-                new User { FirstName = "Natalie", LastName = "Howes", UserTypeID = 1, IsActive = true },
-                new User { FirstName = "Neville", LastName = "Jopson", UserTypeID = 1, IsActive = true },
-                new User { FirstName = "Nicola", LastName = "Dennis", UserTypeID = 1, IsActive = true },
-                new User { FirstName = "Peter", LastName = "Amer", UserTypeID = 1, IsActive = true },
-                new User { FirstName = "Peter", LastName = "Fennessy", UserTypeID = 1, IsActive = true },
-                new User { FirstName = "Peter", LastName = "O'Neill", UserTypeID = 1, IsActive = true },
-                new User { FirstName = "Peter", LastName = "Wong", UserTypeID = 1, IsActive = true },
-                new User { FirstName = "Sammy", LastName = "Wong", UserTypeID = 1, IsActive = true },
-                new User { FirstName = "Simon", LastName = "Glennie", UserTypeID = 1, IsActive = true },
-                new User { FirstName = "Simon", LastName = "Ryan", UserTypeID = 2, IsActive = true },
-                new User { FirstName = "Robyn", LastName = "Simpson", UserTypeID = 2, IsActive = true },
-                new User { FirstName = "Tim", LastName = "Byne", UserTypeID = 1, IsActive = true }
+                new User { FirstName = "Anna", LastName = "Campbell", UserTypeID = 1, IsActive = true, AuthenticationID = 1 },
+                new User { FirstName = "Bram", LastName = "Visser", UserTypeID = 1, IsActive = true, AuthenticationID = 2 },
+                new User { FirstName = "Bruno", LastName = "Santos", UserTypeID = 1, IsActive = true, AuthenticationID = 3 },
+                new User { FirstName = "Daniel", LastName = "Martin-Collado", UserTypeID = 1, IsActive = true, AuthenticationID = 4 },
+                new User { FirstName = "Fiona", LastName = "Hely", UserTypeID = 1, IsActive = true, AuthenticationID = 5 },
+                new User { FirstName = "Gemma", LastName = "Jenkins", UserTypeID = 1, IsActive = true, AuthenticationID = 6 },
+                new User { FirstName = "Bruce", LastName = "McCorkindale", UserTypeID = 1, IsActive = true, AuthenticationID = 7 },
+                new User { FirstName = "Gertje", LastName = "Petersen", UserTypeID = 1, IsActive = true, AuthenticationID = 8 },
+                new User { FirstName = "Grace", LastName = "Johnstone", UserTypeID = 1, IsActive = true, AuthenticationID = 9 },
+                new User { FirstName = "Cheryl", LastName = "King", UserTypeID = 2, IsActive = true, AuthenticationID = 10 },
+                new User { FirstName = "Hadyn", LastName = "Craig", UserTypeID = 1, IsActive = true, AuthenticationID = 11 },
+                new User { FirstName = "Jason", LastName = "Archer", UserTypeID = 1, IsActive = true, AuthenticationID = 12 },
+                new User { FirstName = "Joanne", LastName = "Kerslake", UserTypeID = 1, IsActive = true, AuthenticationID = 13 },
+                new User { FirstName = "Jonathan", LastName = "Chuah", UserTypeID = 1, IsActive = true, AuthenticationID = 14 },
+                new User { FirstName = "Jude", LastName = "Sise", UserTypeID = 1, IsActive = true, AuthenticationID = 15 },
+                new User { FirstName = "Katarzyna", LastName = "Stachowicz", UserTypeID = 1, IsActive = true, AuthenticationID = 16 },
+                new User { FirstName = "Kevin", LastName = "Wilson", UserTypeID = 1, IsActive = true, AuthenticationID = 17 },
+                new User { FirstName = "Luke", LastName = "Proctor", UserTypeID = 1, IsActive = true, AuthenticationID = 18 },
+                new User { FirstName = "Mark", LastName = "Teviotdale", UserTypeID = 2, IsActive = true, AuthenticationID = 19 },
+                new User { FirstName = "Melanie", LastName = "Joubert", UserTypeID = 1, IsActive = true, AuthenticationID = 20 },
+                new User { FirstName = "Nadia", LastName = "McLean", UserTypeID = 1, IsActive = true, AuthenticationID = 21 },
+                new User { FirstName = "Nana", LastName = "Bortsie-Aryee", UserTypeID = 1, IsActive = true, AuthenticationID = 22 },
+                new User { FirstName = "Natalie", LastName = "Howes", UserTypeID = 1, IsActive = true, AuthenticationID = 23 },
+                new User { FirstName = "Neville", LastName = "Jopson", UserTypeID = 1, IsActive = true, AuthenticationID = 24 },
+                new User { FirstName = "Nicola", LastName = "Dennis", UserTypeID = 1, IsActive = true, AuthenticationID = 25 },
+                new User { FirstName = "Peter", LastName = "Amer", UserTypeID = 1, IsActive = true, AuthenticationID = 26 },
+                new User { FirstName = "Peter", LastName = "Fennessy", UserTypeID = 1, IsActive = true, AuthenticationID = 27 },
+                new User { FirstName = "Peter", LastName = "O'Neill", UserTypeID = 1, IsActive = true, AuthenticationID = 28 },
+                new User { FirstName = "Peter", LastName = "Wong", UserTypeID = 1, IsActive = true, AuthenticationID = 29 },
+                new User { FirstName = "Sammy", LastName = "Wong", UserTypeID = 1, IsActive = true, AuthenticationID = 30 },
+                new User { FirstName = "Simon", LastName = "Glennie", UserTypeID = 1, IsActive = true, AuthenticationID = 31 },
+                new User { FirstName = "Simon", LastName = "Ryan", UserTypeID = 2, IsActive = true, AuthenticationID = 32 },
+                new User { FirstName = "Robyn", LastName = "Simpson", UserTypeID = 2, IsActive = true, AuthenticationID = 33 },
+                new User { FirstName = "Tim", LastName = "Byne", UserTypeID = 1, IsActive = true, AuthenticationID = 34 }
             };
 
             foreach (User u in users)

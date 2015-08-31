@@ -21,8 +21,8 @@ namespace ABLCloudStaff.Models
         [Key, ForeignKey("User")]
         public int UserID { get; set; }
         public string UserName { get; set; }
-        public byte[] Password { get; set; }
-        public byte[] Token { get; set; }      // api key
+        public string Password { get; set; }
+        public string Token { get; set; }      // api key
         
         public virtual User User { get; set; }
     }

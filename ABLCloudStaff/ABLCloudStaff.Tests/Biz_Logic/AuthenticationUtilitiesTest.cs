@@ -26,7 +26,7 @@ namespace ABLCloudStaff.Tests.Biz_Logic
         {
             // Arrange
             string originalPassword = "Password";
-            string testPassword = "Wrong";
+            string testPassword = "123456789";
 
             // Act
             string hashOfOriginal = EncryptionUtilities.HashPassword(originalPassword);
