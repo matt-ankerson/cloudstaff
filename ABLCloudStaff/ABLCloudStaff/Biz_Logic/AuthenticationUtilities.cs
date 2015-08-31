@@ -18,9 +18,9 @@ namespace ABLCloudStaff.Biz_Logic
     public static class AuthenticationUtilities
     {
         /// <summary>
-        /// Return the userID that maps to a given username. Return 0 if no user exists.
+        /// Return the userID that maps to a given userName. Return 0 if no user exists.
         /// </summary>
-        /// <param name="userName">The username to search on.</param>
+        /// <param name="userName">The userName to search on.</param>
         /// <returns>The appropriate userID.</returns>
         public static int GetUserIDOnUserName(string userName)
         {
@@ -31,7 +31,7 @@ namespace ABLCloudStaff.Biz_Logic
             {
                 try
                 {
-                    // Pull up the Authentication instance by the given username. We assume uniqueness.
+                    // Pull up the Authentication instance by the given userName. We assume uniqueness.
                     Authentication authInstance = context.Authentications.Where(x => x.UserName == userName).FirstOrDefault();
 
                     userID = authInstance.UserID;
@@ -79,18 +79,20 @@ namespace ABLCloudStaff.Biz_Logic
                 using (var context = new ABLCloudStaffContext())
                 {
                     // Hash the password
-                    byte[] passwordHash = Convert.FromBase64String(EncryptionUtilities.HashPassword(password));
+                    string passwordHash = EncryptionUtilities.HashPassword(password);
 
                     // Hash the token if not null
                     if (token != null)
                     {
-                        byte[] tokenHash = Convert.FromBase64String(EncryptionUtilities.HashPassword(token));
+                        string tokenHash = EncryptionUtilities.HashPassword(token);
                         Authentication auth = new Authentication { UserID = userID, UserName = userName, Password = passwordHash, Token = tokenHash };
                     }
                     else
                     {
                         Authentication auth = new Authentication { UserID = userID, UserName = userName, Password = passwordHash };
-                    } 
+                    }
+
+                    context.SaveChanges();
                 }
 
                 // Now the 1 to 1 relationship is set up
@@ -117,7 +119,7 @@ namespace ABLCloudStaff.Biz_Logic
                 // Pull up the user indicated by the given userID
                 User u = UserUtilities.GetUser(userID);
 
-                // Check username and password
+                // Check userName and password
                 if (userName.Equals(u.Authentication.UserName))
                 {
                     // Username matches, now check password
@@ -158,7 +160,7 @@ namespace ABLCloudStaff.Biz_Logic
                 // Check that a token exists already in the db
                 if (u.Authentication.Token != null)
                 {
-                    string existing = Convert.ToBase64String(u.Authentication.Token);
+                    string existing = u.Authentication.Token;
 
                     if(VerifyHashedPassword(token, existing))
                     {
@@ -204,16 +206,20 @@ namespace ABLCloudStaff.Biz_Logic
                         // Generate a new token
                         string newToken = EncryptionUtilities.GenerateApiToken();
 
-                        // Save the new token
-                        u.Authentication.Token = Convert.FromBase64String(newToken);
+                        // Hash the new token
+                        string newTokenHashed = EncryptionUtilities.HashPassword(newToken);
 
-                        // Return the new token
+                        // Save the new hashed token
+                        u.Authentication.Token = newTokenHashed;
+                        context.SaveChanges();
+
+                        // Return the unhashed version of the token
                         response = newToken;
                     }
                     else
                     {
                         // Return the token that already exists
-                        response = Convert.ToBase64String(u.Authentication.Token);
+                        response = u.Authentication.Token;
                     }
                 }
             }
@@ -243,9 +249,9 @@ namespace ABLCloudStaff.Biz_Logic
                 if(user != null)
                 {
                     // Get the password already stored in the db
-                    byte[] userPassword = user.Authentication.Password;
+                    string userPassword = user.Authentication.Password;
                     // Assess whether or not the passwords match.
-                    passwordsMatch = VerifyHashedPassword(password, Convert.ToBase64String(userPassword));
+                    passwordsMatch = VerifyHashedPassword(password, userPassword);
                 }
             }
             catch (Exception ex)
@@ -264,17 +270,28 @@ namespace ABLCloudStaff.Biz_Logic
         /// <returns>Boolean value indicating success or failure.</returns>
         public static bool VerifyHashedPassword(string password, string correctHash)
         {
-            // Extract the parameters from the hash.
+            // Extract the parameters from the provided correct hash.
             char[] delimeter = { ':' };
             string[] split = correctHash.Split(delimeter);
 
             // The hash precedes the salt.
-            byte[] hash = Convert.FromBase64String(split[0]);
-            byte[] salt = Convert.FromBase64String(split[1]);
+            byte[] salt = EncryptionUtilities.GetBytes(split[1]);
 
+            // Hash the new password using the same salt used for the correct hash.
             string testHash = EncryptionUtilities.HashPassword(password, salt);
 
-            return testHash.Equals(correctHash);
+            // Compare the new hash with the correct hash.
+            bool result = testHash.Equals(correctHash);
+            return result;
         }
+    }
+
+    /// <summary>
+    /// Encapsulates information for an api register response.
+    /// </summary>
+    public class RegisterInfo
+    {
+        public int UserID { get; set; }
+        public string ApiToken { get; set; }
     }
 }

@@ -16,15 +16,53 @@ namespace ABLCloudStaff.Controllers
     {
         /// <summary>
         /// Issue and save a new api token for the indicated user, refuse if credentials invalid.
+        /// <remarks>
+        /// Sample Request:
+        /// http://localhost:1169/api/cloudstaffapi/register/?userName=CloudStaff5&password=P@ssw0rd
+        /// </remarks>
         /// </summary>
-        /// <param name="username">The username of this user.</param>
+        /// <param name="userName">The userName of this user.</param>
         /// <param name="password">The password for this user.</param>
         /// <returns>A response message containing the token, or a message detailing the error.</returns>
         [HttpGet]
-        public HttpResponseMessage Register(string username, string password)
+        public HttpResponseMessage Register(string userName, string password)
         {
-            // TODO
-            return null;
+            HttpResponseMessage response;
+            string newApiToken;
+
+            try
+            {
+                // Pull up the userID for the given user.
+                // We're relying on usernames being unique.
+                int userID = AuthenticationUtilities.GetUserIDOnUserName(userName);
+
+                // If userID is 0, throw an exception.
+                if (userID == 0)
+                    throw new Exception("Supplied username is invalid.");
+
+                // Authenticate the userName and password
+                string authResponse = AuthenticationUtilities.AuthenticateUsernamePassword(userID, userName, password);
+
+                // If authResponse contains an error message, throw an exception to deal with that.
+                if (authResponse != "")
+                    throw new Exception(authResponse);
+
+                // Generate a token, save it and return it.
+                newApiToken = AuthenticationUtilities.IssueApiToken(userID);
+
+                // Create the succesful response.
+                // A successful response contains the api token and the userID for this user.
+                RegisterInfo data = new RegisterInfo { UserID = userID, ApiToken = newApiToken };
+
+                response = Request.CreateResponse(HttpStatusCode.OK, data);
+            }
+            catch (Exception ex)
+            {
+                // Create a response to report the problem.
+                response = Request.CreateResponse(HttpStatusCode.Unauthorized, ex.Message);
+            }
+
+            return response;
         }
 
         /// <summary>

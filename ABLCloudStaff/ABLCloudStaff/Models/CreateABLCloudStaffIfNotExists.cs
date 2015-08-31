@@ -46,8 +46,8 @@ namespace ABLCloudStaff.Models
 
             for (int i = 0; i < N_USERS; i++)
             {
-                byte[] password = Encoding.UTF8.GetBytes(EncryptionUtilities.HashPassword("P@ssw0rd"));
-                auths.Add(new Authentication { UserID = i + 1, UserName = "CloudStaff" + i.ToString(), Password = password });
+                string password = EncryptionUtilities.HashPassword("P@ssw0rd");
+                auths.Add(new Authentication { UserID = i + 1, UserName = "CloudStaff" + (i + 1).ToString(), Password = password });
             }
 
             foreach (Authentication a in auths)
