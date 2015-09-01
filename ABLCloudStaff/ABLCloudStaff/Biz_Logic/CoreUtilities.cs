@@ -514,4 +514,10 @@ namespace ABLCloudStaff.Biz_Logic
         public string location;
         public string returnTime;
     }
+
+    public class CoreUpdateErrorInfo
+    {
+        public string Message { get; set; }
+        public string Detail { get; set; }
+    }
 }

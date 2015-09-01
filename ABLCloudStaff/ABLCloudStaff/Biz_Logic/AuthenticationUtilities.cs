@@ -34,7 +34,9 @@ namespace ABLCloudStaff.Biz_Logic
                     // Pull up the Authentication instance by the given userName. We assume uniqueness.
                     Authentication authInstance = context.Authentications.Where(x => x.UserName == userName).FirstOrDefault();
 
-                    userID = authInstance.UserID;
+                    // Check that the auth instance isn't null.
+                    if (authInstance != null)
+                        userID = authInstance.UserID;
                 }
                 catch (Exception ex)
                 {
@@ -198,29 +200,21 @@ namespace ABLCloudStaff.Biz_Logic
             {
                 using (var context = new ABLCloudStaffContext())
                 {
-                    // Check whether or not this user already has a api token
+                    // Get the indicated user.
                     User u = context.Users.Include("Authentication").Where(x => x.UserID == userID).FirstOrDefault();
 
-                    if (u.Authentication.Token == null)
-                    {
-                        // Generate a new token
-                        string newToken = EncryptionUtilities.GenerateApiToken();
+                    // Generate a new token
+                    string newToken = EncryptionUtilities.GenerateApiToken();
 
-                        // Hash the new token
-                        string newTokenHashed = EncryptionUtilities.HashPassword(newToken);
+                    // Hash the new token
+                    string newTokenHashed = EncryptionUtilities.HashPassword(newToken);
 
-                        // Save the new hashed token
-                        u.Authentication.Token = newTokenHashed;
-                        context.SaveChanges();
+                    // Save the new hashed token
+                    u.Authentication.Token = newTokenHashed;
+                    context.SaveChanges();
 
-                        // Return the unhashed version of the token
-                        response = newToken;
-                    }
-                    else
-                    {
-                        // Return the token that already exists
-                        response = u.Authentication.Token;
-                    }
+                    // Return the unhashed version of the token
+                    response = newToken;
                 }
             }
             catch (Exception ex)
@@ -293,5 +287,14 @@ namespace ABLCloudStaff.Biz_Logic
     {
         public int UserID { get; set; }
         public string ApiToken { get; set; }
+    }
+
+    /// <summary>
+    /// Encapsulates information for a helpful authentication error.
+    /// </summary>
+    public class AuthErrorInfo
+    {
+        public string Message { get; set; }
+        public string Detail { get; set; }
     }
 }

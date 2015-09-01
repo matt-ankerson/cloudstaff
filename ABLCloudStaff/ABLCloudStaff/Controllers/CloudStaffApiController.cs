@@ -58,8 +58,9 @@ namespace ABLCloudStaff.Controllers
             }
             catch (Exception ex)
             {
+                AuthErrorInfo data = new AuthErrorInfo { Message = "Failed to authenticate", Detail = ex.Message };
                 // Create a response to report the problem.
-                response = Request.CreateResponse(HttpStatusCode.Unauthorized, ex.Message);
+                response = Request.CreateResponse(HttpStatusCode.Unauthorized, data);
             }
 
             return response;
@@ -114,7 +115,8 @@ namespace ABLCloudStaff.Controllers
             else
             {
                 // There was an issue.
-                response = Request.CreateResponse(HttpStatusCode.Unauthorized, authResult);
+                AuthErrorInfo data = new AuthErrorInfo { Message = "Failed to authenticate", Detail = authResult };
+                response = Request.CreateResponse(HttpStatusCode.Unauthorized, data);
             }
 
             return response;
@@ -207,7 +209,8 @@ namespace ABLCloudStaff.Controllers
             else
             {
                 // There was an issue.
-                response = Request.CreateResponse(HttpStatusCode.Unauthorized, authResult);
+                AuthErrorInfo data = new AuthErrorInfo { Message = "Failed to authenticate", Detail = authResult };
+                response = Request.CreateResponse(HttpStatusCode.Unauthorized, data);
             }
 
             return response;
@@ -261,8 +264,9 @@ namespace ABLCloudStaff.Controllers
             }
             else
             {
-                // There was an issue
-                response = Request.CreateResponse(HttpStatusCode.Unauthorized, authResult);
+                // There was an issue.
+                AuthErrorInfo data = new AuthErrorInfo { Message = "Failed to authenticate", Detail = authResult };
+                response = Request.CreateResponse(HttpStatusCode.Unauthorized, data);
             }
 
             return response;
@@ -315,13 +319,15 @@ namespace ABLCloudStaff.Controllers
                 catch (Exception ex)
                 {
                     // Report the error.
-                    response = Request.CreateResponse(HttpStatusCode.BadRequest, ex.Message);
+                    CoreUpdateErrorInfo data = new CoreUpdateErrorInfo { Message = "Bad request, inspect your input parameters", Detail = ex.Message };
+                    response = Request.CreateResponse(HttpStatusCode.BadRequest, data);
                 }
             }
             else
             {
                 // There was an issue.
-                response = Request.CreateResponse(HttpStatusCode.Unauthorized, authResult);
+                AuthErrorInfo data = new AuthErrorInfo { Message = "Failed to authenticate", Detail = authResult };
+                response = Request.CreateResponse(HttpStatusCode.Unauthorized, data);
             }
 
             return response;
