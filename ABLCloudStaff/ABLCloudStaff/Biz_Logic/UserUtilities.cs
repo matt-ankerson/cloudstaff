@@ -286,6 +286,37 @@ namespace ABLCloudStaff.Biz_Logic
                 throw new Exception(ex.Message);
             }
         }
+
+        /// <summary>
+        /// Assess whether the indicated user is active or not. Return a boolean active.
+        /// </summary>
+        /// <param name="userID">The user to query for.</param>
+        /// <returns>Boolean indicative of activeness.</returns>
+        public static bool IsActive(int userID)
+        {
+            // Assume false
+            bool active = false;
+
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    User u = context.Users.Where(x => x.UserID == userID).FirstOrDefault();
+
+                    if (u != null)
+                    {
+                        active = u.IsActive;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return active;
+        }
+
     }
     /// <summary>
     /// Object to hold information about a user in verbose detail

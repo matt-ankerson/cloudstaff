@@ -40,6 +40,10 @@ namespace ABLCloudStaff.Controllers
                 if (userID == 0)
                     throw new Exception("Supplied username is invalid.");
 
+                // If the supplied user is disabled, throw an exception.
+                if (!UserUtilities.IsActive(userID))
+                    throw new Exception("This user has been disabled, contact your system administrator.");
+
                 // Authenticate the userName and password
                 string authResponse = AuthenticationUtilities.AuthenticateUsernamePassword(userID, userName, password);
 
