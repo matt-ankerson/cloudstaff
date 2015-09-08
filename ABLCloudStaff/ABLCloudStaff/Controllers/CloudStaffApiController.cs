@@ -93,6 +93,10 @@ namespace ABLCloudStaff.Controllers
 
                 try
                 {
+                    // If the supplied user is disabled, throw an exception.
+                    if (!UserUtilities.IsActive(userID))
+                        throw new Exception("This user has been disabled, contact your system administrator.");
+
                     // Call to the application business logic
                     Core c = CoreUtilities.GetCoreInstanceByUserID(userID);
 
@@ -186,6 +190,10 @@ namespace ABLCloudStaff.Controllers
 
                 try
                 {
+                    // If the supplied user is disabled, throw an exception.
+                    if (!UserUtilities.IsActive(userID))
+                        throw new Exception("This user has been disabled, contact your system administrator.");
+
                     // Call to the application business logic
                     List<Status> rawStatuses = StatusUtilities.GetAvailableStatuses(userID);
                     List<StatusInfo> data = new List<StatusInfo>();
@@ -243,6 +251,10 @@ namespace ABLCloudStaff.Controllers
 
                 try
                 {
+                    // If the supplied user is disabled, throw an exception.
+                    if (!UserUtilities.IsActive(userID))
+                        throw new Exception("This user has been disabled, contact your system administrator.");
+
                     // Call to the application business logic
                     List<Location> rawLocations = LocationUtilities.GetAvailableLocations(userID);
                     List<LocationInfo> data = new List<LocationInfo>();
@@ -313,6 +325,10 @@ namespace ABLCloudStaff.Controllers
 
                 try
                 {
+                    // If the supplied user is disabled, throw an exception.
+                    if (!UserUtilities.IsActive(userID))
+                        throw new Exception("This user has been disabled, contact your system administrator.");
+
                     // Perform the update. ReturnTime is handled as an optional field. 
                     CoreUtilities.UpdateStatus(userID, statusID, coreInfo.returnTime);
                     CoreUtilities.UpdateLocation(userID, locationID);
