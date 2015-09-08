@@ -132,3 +132,9 @@ input[type="checkbox"].input-validation-error {
 #edit-user-modal-title {
     background-color: lightgray;
 }
+
+/* Login Form */
+#login_form {
+    margin-left: 0px;
+    margin-right: 0px;
+}

@@ -9,10 +9,53 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>LoginAdmin</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="../../Scripts/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../Content/Site.css">
+    <link rel="stylesheet" href="../../Content/jquery-ui.min.css" />
+    <title>Login</title>
 </head>
 <body>
-    <div> 
+    <!-- Was there an error? -->
+    @if (ViewBag.Message != null)
+    {
+        <div class="row" id="admin_error_window">
+            <div class="container-fluid">
+                <div class="col-md-12">
+                    <div class="container well">
+                        @ViewBag.Message
+                        <button type="button" id="admin_error_window_close" class="btn btn-danger pull-right">&times;</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-6 col-xs-offset-3 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+                <div class="well" id="login_form">
+                    <!-- Login Form. -->
+                    <form id="add-user-form" action="/Admin/AddNewUser" method="post" role="form">
+                        <h3>Login</h3>
+                        <p>You must login to see the administration controls.</p>
+                        <div class="form-group container">
+                            <label for="username_input">Username</label>
+                            <input type="text" id="username_input" class="form-control" placeholder="CloudStaff1" name="username" required />
+                            <br />
+                            <label for="password_input">Password</label>
+                            <input type="text" id="password_input" class="form-control" placeholder="" name="password" required />
+                            <br />
+                            <!-- Submit and Cancel buttons -->
+                            <button id="login_submit" type="submit" class="btn btn-success"><span class="glyphicon glyphicon-check"></span> Login</button>
+                            &nbsp;
+                            <button id="login_cancel" type="button" class="btn btn-danger"> &times; Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>
