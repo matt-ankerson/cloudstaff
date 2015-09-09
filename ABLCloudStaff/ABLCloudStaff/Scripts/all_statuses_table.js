@@ -24,11 +24,11 @@ $(document).ready(function () {
             $("#all-statuses-table").append('<tr>' +
                 '<td>' + list[i].statusID + '</td>' +
                 '<td>' + list[i].name + '</td>' +
-                '<td>' + list[i].worksite + '</td>' +
+                '<td>' + list[i].available + '</td>' +
                 '<td>' + '<button id="' + list[i].statusID + '" class="edit-status-button btn btn-default">' +
                 '<span class="glyphicon glyphicon-pencil"></span>' +
                 '<input type="hidden" id="name-value" value="' + list[i].name + '" />' +
-                '<input type="hidden" id="worksite-value" value="' + list[i].worksite + '" />' +
+                '<input type="hidden" id="worksite-value" value="' + list[i].available + '" />' +
                 '</button>' + '</td>' +
                 '</tr>');
         }

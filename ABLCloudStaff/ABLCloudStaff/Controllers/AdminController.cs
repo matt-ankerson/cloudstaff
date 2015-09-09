@@ -14,7 +14,19 @@ namespace ABLCloudStaff.Controllers
         // GET: /Admin/
         public ActionResult Admin()
         {
-            return View();
+            // Check Session for username
+            string user = Session["username"].ToString();
+
+            // If we have a username in session:
+            if (!string.IsNullOrEmpty(user))
+            {
+                return View();
+            }
+            else
+            {
+                // Otherwise, redirect to the login form.
+                return RedirectToAction("LoginAdmin", "LoginAdmin");
+            }
         }
 
         /// <summary>
@@ -37,7 +49,7 @@ namespace ABLCloudStaff.Controllers
             // ... and all default statuses and locations.
             UserUtilities.AddUser(firstName, lastName, actualUserTypeID, actualActive);
 
-            return View("Admin");
+            return RedirectToAction("Admin", "Admin");
         }
 
         /// <summary>
@@ -54,8 +66,8 @@ namespace ABLCloudStaff.Controllers
                 int actualUserID = Convert.ToInt32(userID);
                 UserUtilities.FlagUserDeleted(actualUserID);
             }
-            
-            return View("Admin");
+
+            return RedirectToAction("Admin", "Admin");
         }
 
         /// <summary>
@@ -133,9 +145,9 @@ namespace ABLCloudStaff.Controllers
 
                 // Perform the update
                 UserUtilities.UpdateUser(actualUserID, firstName, lastName, actualUserTypeID, actualIsActive);
-            } 
+            }
 
-            return View("Admin");
+            return RedirectToAction("Admin", "Admin");
         }
 
         /// <summary>
@@ -164,7 +176,7 @@ namespace ABLCloudStaff.Controllers
                 StatusUtilities.UpdateStatus(actualStatusID, name, actualAvailable);
             }
 
-            return View("Admin");
+            return RedirectToAction("Admin", "Admin");
         }
 
         /// <summary>
@@ -183,7 +195,7 @@ namespace ABLCloudStaff.Controllers
                 LocationUtilities.UpdateLocation(actualLocationID, name);
             }
 
-            return View("Admin");
+            return RedirectToAction("Admin", "Admin");
         }
 
         /// <summary>
@@ -288,7 +300,8 @@ namespace ABLCloudStaff.Controllers
                     StatusUtilities.AddStatusForAllUsers(statusName, actualAvailable);
                 }         
             }
-            return View("Admin");
+
+            return RedirectToAction("Admin", "Admin");
         }
 
         /// <summary>
@@ -316,7 +329,7 @@ namespace ABLCloudStaff.Controllers
                 }
             }
 
-            return View("Admin");
+            return RedirectToAction("Admin", "Admin");
         }
 
         /// <summary>
@@ -345,7 +358,7 @@ namespace ABLCloudStaff.Controllers
                 }
             }
 
-            return View("Admin");
+            return RedirectToAction("Admin", "Admin");
         }
 
         /// <summary>
@@ -381,7 +394,7 @@ namespace ABLCloudStaff.Controllers
                 }
             }
 
-            return View("Admin");
+            return RedirectToAction("Admin", "Admin");
         }
 
         /// <summary>

@@ -15,6 +15,7 @@ namespace ABLCloudStaff.Biz_Logic
         public const int DEFAULT_LOCATION = 1;
         public const int SALT_SIZE = 4;
         public const int TOKEN_LENGTH = 20;
+        public const string ADMIN_TYPE = "Admin";
         public static readonly int[] DEFAULT_STATUSES = { 1, 2, 3, 4, 5, 6 };
         public static readonly int[] DEFAULT_LOCATIONS = { 1, 2, 3, 4 };
         public static readonly string CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";

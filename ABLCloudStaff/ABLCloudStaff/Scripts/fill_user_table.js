@@ -119,7 +119,7 @@ $(document).ready(function () {
                 }
 
                 function get_usertypes_errorFunc(error) {
-                    alert('error' + error.responseText);
+                    alert('Error getting user types: ' + error.responseText);
                 }
 
                 $("#edit-user-modal-title").text("Edit: " + firstName + " " + lastName);

@@ -278,6 +278,30 @@ namespace ABLCloudStaff.Biz_Logic
             bool result = testHash.Equals(correctHash);
             return result;
         }
+
+        /// <summary>
+        /// Get the user type for the indicated user.
+        /// </summary>
+        /// <param name="userID">The user to query for.</param>
+        /// <returns>String, representing the type of this user.</returns>
+        public static string GetUserType(int userID)
+        {
+            string userType = "";
+
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    userType = context.Users.Include("UserType").Where(x => x.UserID == userID).Select(x => x.UserType.Type).FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return userType;
+        }
     }
 
     /// <summary>

@@ -49,8 +49,9 @@ namespace ABLCloudStaff.Controllers
                 throw new Exception(ex.Message);
             }
 
-            List<Core> coreInfo = CoreUtilities.GetAllCoreInstances();
-            return View("Index", coreInfo);
+            //List<Core> coreInfo = CoreUtilities.GetAllCoreInstances();
+            //return View("Index", coreInfo);
+            return RedirectToAction("Index", "Home");
         }
 
         /// <summary>
