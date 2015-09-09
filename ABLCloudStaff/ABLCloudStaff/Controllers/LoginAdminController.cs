@@ -31,7 +31,7 @@ namespace ABLCloudStaff.Controllers
 
             try
             {
-                // Get the userID for this user, this will allow us to authenticate correctly.
+                // Get the userID for this username, this will allow us to authenticate correctly.
                 int userID = AuthenticationUtilities.GetUserIDOnUserName(username);
 
                 // If userID is 0, throw an exception.
@@ -41,7 +41,7 @@ namespace ABLCloudStaff.Controllers
                     throw new Exception("Supplied username is invalid.");
                 }
 
-                // Check the type of this user, throw exception if not admin.
+                // Check the type of this username, throw exception if not admin.
                 string userType = AuthenticationUtilities.GetUserType(userID);
 
                 if (userType != Constants.ADMIN_TYPE)

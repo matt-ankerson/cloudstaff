@@ -11,7 +11,7 @@ using System.ComponentModel.DataAnnotations;
 namespace ABLCloudStaff.Models
 {
     /// <summary>
-    /// Model class to hold authentication details for a single user
+    /// Model class to hold authentication details for a single username
     /// </summary>
     /// <remarks>
     /// Authentication has a 1 - 1 relationship with the User table

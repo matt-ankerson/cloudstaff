@@ -12,9 +12,9 @@ namespace ABLCloudStaff.Biz_Logic
     public static class LocationUtilities
     {
         /// <summary>
-        /// Gets all locations available for a specific user
+        /// Gets all locations available for a specific username
         /// </summary>
-        /// <param name="userID">The user to search on</param>
+        /// <param name="userID">The username to search on</param>
         /// <returns>A list containing all relavent locations.</returns>
         public static List<Location> GetAvailableLocations(int userID)
         {
@@ -114,7 +114,7 @@ namespace ABLCloudStaff.Biz_Logic
                     // Loop over the users
                     foreach (User u in allUsers)
                     {
-                        // Add a UserLocation object for this new locationID for every user.
+                        // Add a UserLocation object for this new locationID for every username.
                         UserLocation ul = new UserLocation { UserID = u.UserID, LocationID = latestLocationID, DateAdded = DateTime.Now };
                         context.UserLocations.Add(ul);
                         context.SaveChanges();
@@ -150,7 +150,7 @@ namespace ABLCloudStaff.Biz_Logic
                     // Pull out the locationID of the recently added location.
                     int latestLocationID = context.Locations.OrderBy(x => x.LocationID).Select(x => x.LocationID).ToList().LastOrDefault();
 
-                    // Add a UserLocation object for this new locationID for the indicated user.
+                    // Add a UserLocation object for this new locationID for the indicated username.
                     UserLocation ul = new UserLocation { UserID = userID, LocationID = latestLocationID, DateAdded = DateTime.Now };
                     context.UserLocations.Add(ul);
                     context.SaveChanges();

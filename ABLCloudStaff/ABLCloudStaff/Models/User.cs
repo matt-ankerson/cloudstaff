@@ -10,7 +10,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace ABLCloudStaff.Models
 {
     /// <summary>
-    /// Holds information relavent to a generic user of the system
+    /// Holds information relavent to a generic username of the system
     /// </summary>
     /// <remarks>
     /// User has a 1 - 1 relationship with the Authentication table
@@ -23,7 +23,7 @@ namespace ABLCloudStaff.Models
         public int UserTypeID { get; set; }
         public bool IsActive { get; set; }
         public int? AuthenticationID { get; set; }  // The inclusion of Authentication is optional because
-                                                    // we would like the user model to double for visitors.
+                                                    // we would like the username model to double for visitors.
 
         public virtual List<UserStatus> UserStatuses { get; set; }
         public virtual List<UserLocation> UserLocations { get; set; }

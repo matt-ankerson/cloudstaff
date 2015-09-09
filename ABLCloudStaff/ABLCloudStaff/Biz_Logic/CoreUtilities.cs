@@ -62,7 +62,7 @@ namespace ABLCloudStaff.Biz_Logic
         /// Get a single Core instance by UserID
         /// </summary>
         /// <param name="userID">The UserID to search on</param>
-        /// <returns>The Core instance for the given user</returns>
+        /// <returns>The Core instance for the given username</returns>
         public static Core GetCoreInstanceByUserID(int userID)
         {
             Core thisInstance;
@@ -207,7 +207,7 @@ namespace ABLCloudStaff.Biz_Logic
         /// </summary>
         /// <param name="userID">The core instance to modify</param>
         /// <param name="newStatusID">The id of the new Status</param>
-        /// <param name="returnTime">The time at which this user intends to return from this status</param>
+        /// <param name="returnTime">The time at which this username intends to return from this status</param>
         public static void UpdateStatus(int userID, int newStatusID, string returnTime = "")
         {
             Core currentCore = new Core();
@@ -352,7 +352,7 @@ namespace ABLCloudStaff.Biz_Logic
         }
 
         /// <summary>
-        /// Set the given user's core to the default status and remove any abnormalities from the core instance.
+        /// Set the given username's core to the default status and remove any abnormalities from the core instance.
         /// </summary>
         /// <param name="userID">User to apply the change to</param>
         public static void UpdateStatusIn(int userID)
@@ -394,9 +394,9 @@ namespace ABLCloudStaff.Biz_Logic
         }
 
         /// <summary>
-        /// Set the given user's status to 'out of office', remove any abnormalities from the core instance
+        /// Set the given username's status to 'out of office', remove any abnormalities from the core instance
         /// </summary>
-        /// <param name="userID">The user to apply the change to.</param>
+        /// <param name="userID">The username to apply the change to.</param>
         public static void UpdateStatusOut(int userID)
         {
             try
@@ -436,9 +436,9 @@ namespace ABLCloudStaff.Biz_Logic
         }
 
         /// <summary>
-        /// Add a new Core instance, for a new user.
+        /// Add a new Core instance, for a new username.
         /// </summary>
-        /// <param name="userID">The new user id, this user must exist.</param>
+        /// <param name="userID">The new username id, this username must exist.</param>
         /// <param name="statusID">The status id, this status must exist.</param>
         /// <param name="locationID">The location id, this location must exist.</param>
         public static void AddCore(int userID, int statusID, int locationID)
@@ -447,11 +447,11 @@ namespace ABLCloudStaff.Biz_Logic
             {
                 using (var context = new ABLCloudStaffContext())
                 {
-                    // We need to ensure that the given user, status and location all exist.
+                    // We need to ensure that the given username, status and location all exist.
                     List<int> existingUsers = context.Users.Select(x => x.UserID).ToList();
                     List<int> existingStatuses = context.Statuses.Select(x => x.StatusID).ToList();
                     List<int> existingLocations = context.Locations.Select(x => x.LocationID).ToList();
-                    // We also need to make sure that this user doesn't already have a core instance.
+                    // We also need to make sure that this username doesn't already have a core instance.
                     List<int> existingCores = context.Cores.Select(x => x.UserID).ToList();
 
                     if (!existingUsers.Contains(userID))

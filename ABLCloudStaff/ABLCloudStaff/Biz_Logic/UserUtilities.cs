@@ -7,7 +7,7 @@ using ABLCloudStaff.Models;
 namespace ABLCloudStaff.Biz_Logic
 {
     /// <summary>
-    /// Provides utilities necessary for fetching and manipulating user info.
+    /// Provides utilities necessary for fetching and manipulating username info.
     /// </summary>
     public static class UserUtilities
     {
@@ -35,10 +35,10 @@ namespace ABLCloudStaff.Biz_Logic
         }
 
         /// <summary>
-        /// Gets a single user
+        /// Gets a single username
         /// </summary>
-        /// <param name="userID">Which user do you want?</param>
-        /// <returns>The appropriate user</returns>
+        /// <param name="userID">Which username do you want?</param>
+        /// <returns>The appropriate username</returns>
         public static User GetUser(int userID)
         {
             User user = new User();
@@ -59,12 +59,12 @@ namespace ABLCloudStaff.Biz_Logic
         }
 
         /// <summary>
-        /// Add a new user to the User table
+        /// Add a new username to the User table
         /// </summary>
         /// <param name="firstName">Users first name</param>
         /// <param name="lastName">Users last name</param>
         /// <param name="userType">General, Visior or Admin</param>
-        /// <param name="isDeleted">Indicate whether or not to make this user Active</param>
+        /// <param name="isDeleted">Indicate whether or not to make this username Active</param>
         public static void AddUser(string firstName, string lastName, int userType, bool isDeleted)
         {
             try
@@ -73,7 +73,7 @@ namespace ABLCloudStaff.Biz_Logic
 
                 using (var context = new ABLCloudStaffContext())
                 {
-                    // Create the new user and add it to the db
+                    // Create the new username and add it to the db
                     User newUser = new User {FirstName = firstName, LastName = lastName, UserTypeID = userType, IsActive = isDeleted };
                     context.Users.Add(newUser);
                     context.SaveChanges();      
@@ -86,7 +86,7 @@ namespace ABLCloudStaff.Biz_Logic
                     userID = context.Users.OrderBy(x => x.UserID).Select(x => x.UserID).ToList().LastOrDefault();
                 }
 
-                // Add default statuses and locations for the new user.
+                // Add default statuses and locations for the new username.
                 // Statuses
                 foreach (var statusID in Constants.DEFAULT_STATUSES)
                 {
@@ -98,7 +98,7 @@ namespace ABLCloudStaff.Biz_Logic
                     AddUserLocation(userID, locationID);
                 }
 
-                // Add a core instance for this user, with defaults for status and location.
+                // Add a core instance for this username, with defaults for status and location.
                 CoreUtilities.AddCore(userID, Constants.DEFAULT_IN_STATUS, Constants.DEFAULT_LOCATION);
             }
             catch (Exception ex)
@@ -108,9 +108,9 @@ namespace ABLCloudStaff.Biz_Logic
         }
 
         /// <summary>
-        /// Make a status available for the given user
+        /// Make a status available for the given username
         /// </summary>
-        /// <param name="userID">The user to add the status to</param>
+        /// <param name="userID">The username to add the status to</param>
         /// <param name="statusID">The status we'd like to add.</param>
         public static void AddUserStatus(int userID, int statusID)
         {
@@ -118,7 +118,7 @@ namespace ABLCloudStaff.Biz_Logic
             {
                 using (var context = new ABLCloudStaffContext())
                 {
-                    // Ensure that both the user and status actually exist
+                    // Ensure that both the username and status actually exist
                     List<int> allUsers = context.Users.Select(x => x.UserID).ToList();
                     List<int> allStatuses = context.Statuses.Select(x => x.StatusID).ToList();
 
@@ -141,9 +141,9 @@ namespace ABLCloudStaff.Biz_Logic
         }
 
         /// <summary>
-        /// Make a given location available for a given user.
+        /// Make a given location available for a given username.
         /// </summary>
-        /// <param name="userID">The user to add the location to</param>
+        /// <param name="userID">The username to add the location to</param>
         /// <param name="locationID">The location to add</param>
         public static void AddUserLocation(int userID, int locationID)
         {
@@ -151,7 +151,7 @@ namespace ABLCloudStaff.Biz_Logic
             {
                 using (var context = new ABLCloudStaffContext())
                 {
-                    // Ensure that both the user and location actually exist
+                    // Ensure that both the username and location actually exist
                     List<int> allUsers = context.Users.Select(x => x.UserID).ToList();
                     List<int> allLocations = context.Locations.Select(x => x.LocationID).ToList();
 
@@ -174,14 +174,14 @@ namespace ABLCloudStaff.Biz_Logic
         }
 
         /// <summary>
-        /// Remove the indicated user from the database
+        /// Remove the indicated username from the database
         /// </summary>
         /// <param name="userID">User to delete</param>
         public static void DeleteUser(int userID)
         {
             try
             {
-                // Remove the core instance for this user
+                // Remove the core instance for this username
                 CoreUtilities.DeleteCore(userID);
 
                 using (var context = new ABLCloudStaffContext())
@@ -202,14 +202,14 @@ namespace ABLCloudStaff.Biz_Logic
         }
 
         /// <summary>
-        /// Set the IsDeleted flag on the indicated user to True
+        /// Set the IsDeleted flag on the indicated username to True
         /// </summary>
-        /// <param name="userID">The user to flag as deleted</param>
+        /// <param name="userID">The username to flag as deleted</param>
         public static void FlagUserDeleted(int userID)
         {
             try
             {
-                // Remove the core instance for this user
+                // Remove the core instance for this username
                 CoreUtilities.DeleteCore(userID);
 
                 using (var context = new ABLCloudStaffContext())
@@ -230,7 +230,7 @@ namespace ABLCloudStaff.Biz_Logic
         }
 
         /// <summary>
-        /// Get all available user types
+        /// Get all available username types
         /// </summary>
         /// <returns>A lis of type UserType</returns>
         public static List<UserType> GetAllUserTypes()
@@ -253,26 +253,26 @@ namespace ABLCloudStaff.Biz_Logic
         }
 
         /// <summary>
-        /// Update an existing user
+        /// Update an existing username
         /// </summary>
-        /// <param name="userID">The user to update</param>
+        /// <param name="userID">The username to update</param>
         /// <param name="newFirstName">New firstname</param>
         /// <param name="newLastName">New Lastname</param>
-        /// <param name="newUserTypeID">New user type</param>
-        /// <param name="newIsActive">Indicates whether the user is to be active or not</param>
+        /// <param name="newUserTypeID">New username type</param>
+        /// <param name="newIsActive">Indicates whether the username is to be active or not</param>
         public static void UpdateUser(int userID, string newFirstName, string newLastName, int newUserTypeID, bool newIsActive)
         {
             try
             {
                 using (var context = new ABLCloudStaffContext())
                 {
-                    // Get the appropriate user:
+                    // Get the appropriate username:
                     User userToModify = context.Users.Where(x => x.UserID == userID).FirstOrDefault();
 
                     if (userToModify == null)
-                        throw new Exception("Bad UserID, user does not exist.");
+                        throw new Exception("Bad UserID, username does not exist.");
 
-                    // Update the fields on this user
+                    // Update the fields on this username
                     userToModify.FirstName = newFirstName;
                     userToModify.LastName = newLastName;
                     userToModify.UserTypeID = newUserTypeID;
@@ -288,9 +288,9 @@ namespace ABLCloudStaff.Biz_Logic
         }
 
         /// <summary>
-        /// Assess whether the indicated user is active or not. Return a boolean active.
+        /// Assess whether the indicated username is active or not. Return a boolean active.
         /// </summary>
-        /// <param name="userID">The user to query for.</param>
+        /// <param name="userID">The username to query for.</param>
         /// <returns>Boolean indicative of activeness.</returns>
         public static bool IsActive(int userID)
         {
@@ -319,7 +319,7 @@ namespace ABLCloudStaff.Biz_Logic
 
     }
     /// <summary>
-    /// Object to hold information about a user in verbose detail
+    /// Object to hold information about a username in verbose detail
     /// </summary>
     public class UserInfo
     {

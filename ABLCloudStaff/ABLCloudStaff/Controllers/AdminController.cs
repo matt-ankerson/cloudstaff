@@ -15,22 +15,29 @@ namespace ABLCloudStaff.Controllers
         public ActionResult Admin()
         {
             // Check Session for username
-            string user = Session["username"].ToString();
+            string username = null;
+            
+            try
+            {
+                username = Session["username"].ToString();
+            }
+            catch (Exception ex) { }
 
             // If we have a username in session:
-            if (!string.IsNullOrEmpty(user))
+            if (string.IsNullOrEmpty(username))
             {
-                return View();
+                // There is no username in session, redirect to the login screen.
+                return RedirectToAction("LoginAdmin", "LoginAdmin");
             }
             else
             {
-                // Otherwise, redirect to the login form.
-                return RedirectToAction("LoginAdmin", "LoginAdmin");
+                // We have a username in session, return the admin screen.
+                return View();
             }
         }
 
         /// <summary>
-        /// Accept parameters necessary for adding a user.
+        /// Accept parameters necessary for adding a username.
         /// </summary>
         /// <returns>An ActionResult object</returns>
         [HttpPost]
@@ -45,7 +52,7 @@ namespace ABLCloudStaff.Controllers
                 actualActive = false;
 
             // Perform the insertion.
-            // This will also add a new core instance to the database for the new user
+            // This will also add a new core instance to the database for the new username
             // ... and all default statuses and locations.
             UserUtilities.AddUser(firstName, lastName, actualUserTypeID, actualActive);
 
@@ -53,14 +60,14 @@ namespace ABLCloudStaff.Controllers
         }
 
         /// <summary>
-        /// Delete a user and their dependencies
+        /// Delete a username and their dependencies
         /// </summary>
-        /// <param name="userID">The user to delete</param>
+        /// <param name="userID">The username to delete</param>
         /// <returns></returns>
         [HttpPost]
         public ActionResult RemoveUser(string userID)
         {
-            // If we have a user ID
+            // If we have a username ID
             if (!string.IsNullOrEmpty(userID))
             {
                 int actualUserID = Convert.ToInt32(userID);
@@ -71,7 +78,7 @@ namespace ABLCloudStaff.Controllers
         }
 
         /// <summary>
-        /// Get all user's names and IDs currently in database
+        /// Get all username's names and IDs currently in database
         /// </summary>
         /// <returns>A Dictionary of users</returns>
         public JsonResult GetAllUsers()
@@ -100,7 +107,7 @@ namespace ABLCloudStaff.Controllers
             // Get all our users (regardless of deleted status)
             List<User> allUsers = UserUtilities.GetAllUsers();
 
-            // Iterate our users and build our list of stringified user information
+            // Iterate our users and build our list of stringified username information
             foreach (User user in allUsers)
             {
                 UserInfo ui = new UserInfo();
@@ -110,7 +117,7 @@ namespace ABLCloudStaff.Controllers
                 ui.userType = user.UserType.Type;
                 ui.userTypeID = user.UserTypeID.ToString();
                 ui.isActive = user.IsActive.ToString();
-                // Add to the list of verbose user details
+                // Add to the list of verbose username details
                 userInfo.Add(ui);
             }
 
@@ -120,12 +127,12 @@ namespace ABLCloudStaff.Controllers
         }
 
         /// <summary>
-        /// Accept parameters necessary to update a user's information
+        /// Accept parameters necessary to update a username's information
         /// </summary>
-        /// <param name="userID">The user's userID</param>
+        /// <param name="userID">The username's userID</param>
         /// <param name="firstName">String to set the firstName</param>
         /// <param name="lastName">String to set the lastName</param>
-        /// <param name="userType">String to set the user type ID</param>
+        /// <param name="userType">String to set the username type ID</param>
         /// <param name="isActive">String to indicate IsActive status</param>
         /// <returns>ActionResult object</returns>
         [HttpPost]
@@ -277,7 +284,7 @@ namespace ABLCloudStaff.Controllers
         /// </summary>
         /// <param name="statusName">The name of the status in question</param>
         /// <param name="available">Indicates whether or not this status is considered 'in office'</param>
-        /// <param name="userID">If not null, add the status just for this user.</param>
+        /// <param name="userID">If not null, add the status just for this username.</param>
         /// <returns>ActionResult object</returns>
         public ActionResult AddStatus(string statusName, string available, string userID)
         {
@@ -289,7 +296,7 @@ namespace ABLCloudStaff.Controllers
                 if (available == "on")
                     actualAvailable = true;
 
-                // If we've got a userID, then we need to add the status ONLY for that user.
+                // If we've got a userID, then we need to add the status ONLY for that username.
                 if (!string.IsNullOrEmpty(userID))
                 {
                     actualUserID = Convert.ToInt32(userID);
@@ -308,7 +315,7 @@ namespace ABLCloudStaff.Controllers
         /// Add a new location
         /// </summary>
         /// <param name="locationName">The name of this location</param>
-        /// <param name="userID">Optional, indicates the user to assign the location to.</param>
+        /// <param name="userID">Optional, indicates the username to assign the location to.</param>
         /// <returns>ActionResult object</returns>
         public ActionResult AddLocation(string locationName, string userID)
         {
@@ -317,7 +324,7 @@ namespace ABLCloudStaff.Controllers
             if (!string.IsNullOrEmpty(locationName))
             {
 
-                // If we've got a userID, then we need to add the lacation ONLY for that user.
+                // If we've got a userID, then we need to add the lacation ONLY for that username.
                 if (!string.IsNullOrEmpty(userID))
                 {
                     actualUserID = Convert.ToInt32(userID);
@@ -461,12 +468,12 @@ namespace ABLCloudStaff.Controllers
         }
 
         /// <summary>
-        /// Gets all possible user types
+        /// Gets all possible username types
         /// </summary>
         /// <returns>A list of type UserType</returns>
         public JsonResult GetUserTypes()
         {
-            // Get all user types
+            // Get all username types
             List<UserType> userTypes = UserUtilities.GetAllUserTypes();
 
             IEnumerable<UserType> data = userTypes;

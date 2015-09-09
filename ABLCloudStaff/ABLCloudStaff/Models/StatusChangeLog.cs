@@ -8,7 +8,7 @@ using System.Web;
 namespace ABLCloudStaff.Models
 {
     /// <summary>
-    /// Every time a user changes status, it is logged here
+    /// Every time a username changes status, it is logged here
     /// </summary>
     public class StatusChangeLog
     {

@@ -12,7 +12,7 @@ namespace ABLCloudStaff.Controllers
     public class HomeController : Controller
     {
         /// <summary>
-        /// Get state information on each user, push to the core/home view
+        /// Get state information on each username, push to the core/home view
         /// </summary>
         /// <returns>An ActionResult object</returns>
         public ActionResult Index()
@@ -23,7 +23,7 @@ namespace ABLCloudStaff.Controllers
         }
 
         /// <summary>
-        /// Push a status and location to the database for a specific user
+        /// Push a status and location to the database for a specific username
         /// </summary>
         /// <returns>An ActionResult object</returns>
         [HttpPost]
@@ -57,7 +57,7 @@ namespace ABLCloudStaff.Controllers
         /// <summary>
         /// Regardless of other circumstances, set the status to the default status 'in office'
         /// </summary>
-        /// <param name="userID">The user to apply this change to</param>
+        /// <param name="userID">The username to apply this change to</param>
         /// <returns>Indicates success or failure.</returns>
         public JsonResult SetStatusIn(string userID)
         {
@@ -78,7 +78,7 @@ namespace ABLCloudStaff.Controllers
         /// <summary>
         /// Regardless of other circumstances, set the status to 'out of office'
         /// </summary>
-        /// <param name="userID">The user to apply this change to.</param>
+        /// <param name="userID">The username to apply this change to.</param>
         /// <returns>Indicates success or failure.</returns>
         public JsonResult SetStatusOut(string userID)
         {
@@ -97,9 +97,9 @@ namespace ABLCloudStaff.Controllers
         }
 
         /// <summary>
-        /// Get all statuses available to a specific user
+        /// Get all statuses available to a specific username
         /// </summary>
-        /// <param name="userID">The user to search on</param>
+        /// <param name="userID">The username to search on</param>
         /// <returns>JSON containing the relavent statuses</returns>
         public JsonResult GetStatusesAjax(string userID)
         {
@@ -109,7 +109,7 @@ namespace ABLCloudStaff.Controllers
             {
                 int thisUserID = Convert.ToInt32(userID);
 
-                // Get the list of statuses available for this user.
+                // Get the list of statuses available for this username.
                 List<Status> statuses = StatusUtilities.GetAvailableStatuses(thisUserID);
                 // Pull out the actual status names for the string list
                 foreach (var status in statuses)
@@ -124,9 +124,9 @@ namespace ABLCloudStaff.Controllers
         }
 
         /// <summary>
-        /// Get all the Locations available to a specific user
+        /// Get all the Locations available to a specific username
         /// </summary>
-        /// <param name="userID">The user to search on.</param>
+        /// <param name="userID">The username to search on.</param>
         /// <returns>Json containing the relavent locations</returns>
         public JsonResult GetLocationsAjax(string userID)
         {
@@ -136,7 +136,7 @@ namespace ABLCloudStaff.Controllers
             {
                 int thisUserID = Convert.ToInt32(userID);
 
-                // Get the list of Locations available to this user
+                // Get the list of Locations available to this username
                 List<Location> locations = LocationUtilities.GetAvailableLocations(thisUserID);
 
                 // Pull out the actual location names for the string list

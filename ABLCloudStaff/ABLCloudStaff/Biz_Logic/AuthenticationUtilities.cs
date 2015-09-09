@@ -18,7 +18,7 @@ namespace ABLCloudStaff.Biz_Logic
     public static class AuthenticationUtilities
     {
         /// <summary>
-        /// Return the userID that maps to a given userName. Return 0 if no user exists.
+        /// Return the userID that maps to a given userName. Return 0 if no username exists.
         /// </summary>
         /// <param name="userName">The userName to search on.</param>
         /// <returns>The appropriate userID.</returns>
@@ -60,7 +60,7 @@ namespace ABLCloudStaff.Biz_Logic
             try
             {
                 // We first set up required fields in the User table:
-                // Given a userID, we need to pull up that user and set thier AuthenticationID to thier UserID.
+                // Given a userID, we need to pull up that username and set thier AuthenticationID to thier UserID.
                 using (var context = new ABLCloudStaffContext())
                 {
                     // Before we do anything:
@@ -106,9 +106,9 @@ namespace ABLCloudStaff.Biz_Logic
         }
 
         /// <summary>
-        /// Verify given user credentials, returns empty string if successful.
+        /// Verify given username credentials, returns empty string if successful.
         /// </summary>
-        /// <param name="userID">The user to check</param>
+        /// <param name="userID">The username to check</param>
         /// <param name="userName">Username to check</param>
         /// <param name="password">Password to check</param>
         /// <returns>Empty string or message containing reason for failure.</returns>
@@ -118,7 +118,7 @@ namespace ABLCloudStaff.Biz_Logic
 
             try
             {
-                // Pull up the user indicated by the given userID
+                // Pull up the username indicated by the given userID
                 User u = UserUtilities.GetUser(userID);
 
                 // Check userName and password
@@ -147,7 +147,7 @@ namespace ABLCloudStaff.Biz_Logic
         /// <summary>
         /// Authenticate a given api token against one already stored in the db. Return appropriate response.
         /// </summary>
-        /// <param name="userID">The user to authenticate against.</param>
+        /// <param name="userID">The username to authenticate against.</param>
         /// <param name="token">The token to try</param>
         /// <returns>Empty string for success, or reason for failure.</returns>
         public static string AuthenticateUserIDToken(int userID, string token)
@@ -156,7 +156,7 @@ namespace ABLCloudStaff.Biz_Logic
 
             try
             {
-                // Pull up the user indicated by the given userID
+                // Pull up the username indicated by the given userID
                 User u = UserUtilities.GetUser(userID);
                 
                 // Check that a token exists already in the db
@@ -188,7 +188,7 @@ namespace ABLCloudStaff.Biz_Logic
         }
 
         /// <summary>
-        /// Issue and store a new api token for a user who doesn't already own one.
+        /// Issue and store a new api token for a username who doesn't already own one.
         /// </summary>
         /// <param name="userID"></param>
         /// <returns>The new api token.</returns>
@@ -200,7 +200,7 @@ namespace ABLCloudStaff.Biz_Logic
             {
                 using (var context = new ABLCloudStaffContext())
                 {
-                    // Get the indicated user.
+                    // Get the indicated username.
                     User u = context.Users.Include("Authentication").Where(x => x.UserID == userID).FirstOrDefault();
 
                     // Generate a new token
@@ -226,9 +226,9 @@ namespace ABLCloudStaff.Biz_Logic
         }
 
         /// <summary>
-        /// Verify a given password against a given user's already stored password.
+        /// Verify a given password against a given username's already stored password.
         /// </summary>
-        /// <param name="userID">The user in question.</param>
+        /// <param name="userID">The username in question.</param>
         /// <param name="password">The password given in this request.</param>
         /// <returns>Boolean value indicating success or failure.</returns>
         public static bool VerifyPassword(int userID, string password)
@@ -237,7 +237,7 @@ namespace ABLCloudStaff.Biz_Logic
 
             try
             {
-                // Get the user in question
+                // Get the username in question
                 User user = UserUtilities.GetUser(userID);
 
                 if(user != null)
@@ -250,7 +250,7 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception("Couldn't get password for user " + userID.ToString() + " " + ex.Message);
+                throw new Exception("Couldn't get password for username " + userID.ToString() + " " + ex.Message);
             }
 
             return passwordsMatch;
@@ -280,10 +280,10 @@ namespace ABLCloudStaff.Biz_Logic
         }
 
         /// <summary>
-        /// Get the user type for the indicated user.
+        /// Get the username type for the indicated username.
         /// </summary>
-        /// <param name="userID">The user to query for.</param>
-        /// <returns>String, representing the type of this user.</returns>
+        /// <param name="userID">The username to query for.</param>
+        /// <returns>String, representing the type of this username.</returns>
         public static string GetUserType(int userID)
         {
             string userType = "";

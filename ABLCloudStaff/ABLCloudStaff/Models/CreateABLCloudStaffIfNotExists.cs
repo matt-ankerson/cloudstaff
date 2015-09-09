@@ -77,7 +77,7 @@ namespace ABLCloudStaff.Models
         /// </summary>
         public void PopulateCore()
         {
-            // We need core information entered for each user
+            // We need core information entered for each username
             List<Core> cores = new List<Core>
             {
                 new Core {UserID = 1, StatusID = 1, LocationID = 1, StateStart = DateTime.Now},
@@ -213,7 +213,7 @@ namespace ABLCloudStaff.Models
         /// </summary>
         public void PopulateUserStatus()
         {
-            // Add each status to each user
+            // Add each status to each username
 
             List<UserStatus> userStatuses = new List<UserStatus>
             {
