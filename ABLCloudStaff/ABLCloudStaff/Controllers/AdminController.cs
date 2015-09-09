@@ -37,6 +37,22 @@ namespace ABLCloudStaff.Controllers
         }
 
         /// <summary>
+        /// Destroy the session's username variable and redirect to the main board.
+        /// </summary>
+        /// <returns>Redirect to Action (Main board)</returns>
+        public ActionResult Logout()
+        {
+            try
+            {
+                // Destroy the session variable.
+                Session["username"] = null;
+            }
+            catch (Exception ex) { }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        /// <summary>
         /// Accept parameters necessary for adding a username.
         /// </summary>
         /// <returns>An ActionResult object</returns>

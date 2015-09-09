@@ -40,7 +40,7 @@
                     <!-- Login Form. -->
                     <form id="add-user-form" action="/LoginAdmin/Login" method="post" role="form">
                         <h3>Login</h3>
-                        <p>You must login to see the administration controls.</p>
+                        <p>You must login to use the administration controls.</p>
                         <div class="form-group container">
                             <label for="username_input">Username</label>
                             <input type="text" id="username_input" class="form-control" placeholder="CloudStaff1" name="username" required />
@@ -51,7 +51,7 @@
                             <!-- Submit and Cancel buttons -->
                             <button id="login_submit" type="submit" class="btn btn-success"><span class="glyphicon glyphicon-check"></span> Login</button>
                             &nbsp;
-                            <button id="login_cancel" type="button" class="btn btn-danger"> &times; Cancel</button>
+                            <button id="login_cancel" type="button" onclick="location.href='/Home/Index';" class="btn btn-danger"> &times; Cancel</button>
                         </div>
                     </form>
                 </div>

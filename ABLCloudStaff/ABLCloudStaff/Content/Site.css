@@ -1,7 +1,7 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
-    background-color: ThreeDDarkShadow;
+    background-color: #7a7a7a;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -42,6 +42,8 @@ input[type="checkbox"].input-validation-error {
     display: none;
 }
 
+/**************************************/
+
 /* For the modal boxes*/
 
 .modal-header, h4, .close {
@@ -74,14 +76,30 @@ input[type="checkbox"].input-validation-error {
     text-align: center;
 }
 
-/* For the Toggle switches */
+/*********************************/
+
+/* Toggle switches */
 .container-switch {
     height: 35px;
     text-align: center;
     vertical-align: middle;
 }
 
-/*.staff-modules */
+/*********************************/
+
+/* Main Board */
+
+/* Navigation */
+#cloudstaff_title a,
+.nav.navbar-nav li a {
+    color: #0099da;
+}
+
+.navbar.navbar-inverse.navbar-fixed-top {
+    background-color: #e5e5e5;
+}
+
+/* Staff modules */
 .top-half-of-panel{
     cursor: pointer;
     margin-top: 40px;
@@ -101,6 +119,8 @@ input[type="checkbox"].input-validation-error {
 .staff-name {
     white-space: nowrap;
 }
+
+/********************************/
 
 /* Administration screen */
 #admin-foreground {
@@ -133,7 +153,9 @@ input[type="checkbox"].input-validation-error {
     background-color: lightgray;
 }
 
-/* Login Form */
+/***********************************/
+
+/* Login Form for Administration */
 #login_form {
     margin-left: 0px;
     margin-right: 0px;

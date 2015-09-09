@@ -58,6 +58,7 @@ namespace ABLCloudStaff.Controllers
 
                 // Now we know the auth was successful, put the username into session and redirect to Administration.
                 Session["username"] = username;
+                Session.Timeout = Constants.SESSION_TIMEOUT;
 
                 // Return the administration view
                 return RedirectToAction("Admin", "Admin");

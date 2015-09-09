@@ -50,13 +50,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("CloudStaff", "Index", "Home", null, new { @class = "navbar-brand" })
+                <div id="cloudstaff_title">@Html.ActionLink("CloudStaff", "Index", "Home", null, new { @class = "navbar-brand" })</div>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Status Board", "Index", "Home")</li>
                     <li><a href="/Admin/Admin">Administration <span class="glyphicon glyphicon-refresh"></span></a></li>
                     <li><a href="http://goo.gl/forms/u1cbZStRaA" target="_blank">Submit Feedback <span class="glyphicon glyphicon-list-alt"></span></a></li>
+                    <li><a href="/Admin/Logout" class="pull-right">Logout <span class="glyphicon glyphicon-log-out"></span></a></li>
                 </ul>
             </div>
         </div>
