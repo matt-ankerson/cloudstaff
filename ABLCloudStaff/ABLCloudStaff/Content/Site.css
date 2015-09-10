@@ -128,6 +128,12 @@ input[type="checkbox"].input-validation-error {
     white-space: nowrap;
 }
 
+/* Main Board Modal */
+#main-modal-header,
+#modal-title {
+    background-color: #0099da;
+}
+
 /********************************/
 
 /* Administration screen */
