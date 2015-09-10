@@ -94,6 +94,15 @@
   color: #000;
   background: #eeeeee;
 }
+
+/* Custom Switch Colour: */
+
+.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-abacusbio,
+.bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-abacusbio {
+  color: #fff;
+  background: #0099da;  /* This indicates the coloured part. */
+}
+
 .bootstrap-switch .bootstrap-switch-label {
   text-align: center;
   margin-top: -1px;

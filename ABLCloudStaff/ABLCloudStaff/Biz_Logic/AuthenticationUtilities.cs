@@ -88,10 +88,12 @@ namespace ABLCloudStaff.Biz_Logic
                     {
                         string tokenHash = EncryptionUtilities.HashPassword(token);
                         Authentication auth = new Authentication { UserID = userID, UserName = userName, Password = passwordHash, Token = tokenHash };
+                        context.Authentications.Add(auth);
                     }
                     else
                     {
                         Authentication auth = new Authentication { UserID = userID, UserName = userName, Password = passwordHash };
+                        context.Authentications.Add(auth);
                     }
 
                     context.SaveChanges();
@@ -101,7 +103,57 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception("Couldn't add authentication: " + ex.Message);
+                throw new Exception("Couldn't add authentication information - " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Update the authentication instance indicated by the userID.
+        /// </summary>
+        /// <param name="userID">Indicates the Auth instance to update.</param>
+        /// <param name="userName">The new username</param>
+        /// <param name="password">The new password.</param>
+        public static void UpdateAuthentication(int userID, string userName, string password)
+        {
+            // User and Authentication share an optional 1 to 1 relationship.
+
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    // Before we do anything:
+                    // Username must be unique, so check for that. But, don't include this user's existing username.
+
+                    // Get this user's existing username
+                    string existingUsernameForThisUser = context.Authentications.Where(a => a.UserID == userID).Select(a => a.UserName).FirstOrDefault();
+
+                    // Get a list of all existing usernames (not inclusive of this user's existing username.)
+                    List<string> existingUsernames = context.Authentications.Where(x => x.UserName != existingUsernameForThisUser).Select(x => x.UserName).ToList();
+
+                    if (existingUsernames.Contains(userName))
+                        throw new Exception("Username must be unique.");
+
+                    // As an extra step of caution, let's reset the AuthenticationID on the associated User instance
+                    User u = context.Users.Where(x => x.UserID == userID).FirstOrDefault();
+                    u.AuthenticationID = userID;
+
+                    context.SaveChanges();      // Save changes to User instance.
+
+                    // Hash the password before saving in the database.
+                    string passwordHash = EncryptionUtilities.HashPassword(password);
+
+                    // Pull up the Authentication instance.
+                    Authentication auth = context.Authentications.Where(a => a.UserID == userID).FirstOrDefault();
+                    // Update fields.
+                    auth.UserName = userName;
+                    auth.Password = passwordHash;
+
+                    context.SaveChanges();      // Save changes to Authentication instance.       
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Couldn't update authentication information - " + ex.Message);
             }
         }
 

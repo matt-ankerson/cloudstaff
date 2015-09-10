@@ -39,8 +39,26 @@ $(document).ready(function () {
         e.preventDefault();
 
         if ($("#user-type-list").val != null) {
+
+            // Get the form.
             var form = $("#add-user-form");
-            form.submit();
+
+            // Ensure that both passwords match:
+            var password1 = form.find($("password-input"));
+            var password2 = form.find($("password-confirm-input"));
+
+            if (password1.val() == password2.val()) {
+                // Hide the error message
+                var error_message = form.find($("#add_user_password_error"));
+                error_message.hide();
+                // Proceed with submit.
+                form.submit();
+            }
+            else {
+                // Report the problem.
+                var error_message = form.find($("#add_user_password_error"));
+                error_message.show();
+            }
         }
     });
 });

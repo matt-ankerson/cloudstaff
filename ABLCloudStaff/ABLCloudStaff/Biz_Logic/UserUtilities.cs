@@ -23,7 +23,7 @@ namespace ABLCloudStaff.Biz_Logic
             {
                 using (var context = new ABLCloudStaffContext())
                 {
-                    users = context.Users.Include("UserType").OrderBy(x => x.LastName).ToList();
+                    users = context.Users.Include("UserType").Include("Authentication").OrderBy(x => x.FirstName).ToList();
                 }
             }
             catch (Exception e)
@@ -59,13 +59,15 @@ namespace ABLCloudStaff.Biz_Logic
         }
 
         /// <summary>
-        /// Add a new username to the User table
+        /// Add a new user to the User table
         /// </summary>
         /// <param name="firstName">Users first name</param>
         /// <param name="lastName">Users last name</param>
         /// <param name="userType">General, Visior or Admin</param>
         /// <param name="isDeleted">Indicate whether or not to make this username Active</param>
-        public static void AddUser(string firstName, string lastName, int userType, bool isDeleted)
+        /// <param name="password">This user's password.</param>
+        /// <param name="username">This user's username.</param>
+        public static void AddUser(string firstName, string lastName, int userType, bool isDeleted, string username, string password)
         {
             try
             {
@@ -86,7 +88,12 @@ namespace ABLCloudStaff.Biz_Logic
                     userID = context.Users.OrderBy(x => x.UserID).Select(x => x.UserID).ToList().LastOrDefault();
                 }
 
-                // Add default statuses and locations for the new username.
+                // Now that we have the userID for the new user, we need to add some associative information:
+
+                // Add Authentication for the new user,
+                AuthenticationUtilities.AddAuthentication(userID, username, password);
+
+                // Add default statuses and locations for the new user.
                 // Statuses
                 foreach (var statusID in Constants.DEFAULT_STATUSES)
                 {
@@ -100,6 +107,7 @@ namespace ABLCloudStaff.Biz_Logic
 
                 // Add a core instance for this username, with defaults for status and location.
                 CoreUtilities.AddCore(userID, Constants.DEFAULT_IN_STATUS, Constants.DEFAULT_LOCATION);
+
             }
             catch (Exception ex)
             {
@@ -253,7 +261,7 @@ namespace ABLCloudStaff.Biz_Logic
         }
 
         /// <summary>
-        /// Update an existing username
+        /// Update an existing user
         /// </summary>
         /// <param name="userID">The username to update</param>
         /// <param name="newFirstName">New firstname</param>
@@ -264,9 +272,11 @@ namespace ABLCloudStaff.Biz_Logic
         {
             try
             {
+                // Update the fields on the user table.
+
                 using (var context = new ABLCloudStaffContext())
                 {
-                    // Get the appropriate username:
+                    // Get the appropriate user:
                     User userToModify = context.Users.Where(x => x.UserID == userID).FirstOrDefault();
 
                     if (userToModify == null)
@@ -279,7 +289,7 @@ namespace ABLCloudStaff.Biz_Logic
                     userToModify.IsActive = newIsActive;
 
                     context.SaveChanges();
-                }        
+                }  
             }
             catch (Exception ex)
             {
@@ -329,5 +339,6 @@ namespace ABLCloudStaff.Biz_Logic
         public string userType;
         public string userTypeID;
         public string isActive;
+        public string username;
     }
 }

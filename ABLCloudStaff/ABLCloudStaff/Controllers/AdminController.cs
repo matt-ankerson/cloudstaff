@@ -57,20 +57,36 @@ namespace ABLCloudStaff.Controllers
         /// </summary>
         /// <returns>An ActionResult object</returns>
         [HttpPost]
-        public ActionResult AddNewUser(string firstName, string lastName, string userTypeID, string active)
+        public ActionResult AddNewUser(string firstName, string lastName, string userTypeID, string active, string username, string password, string passwordConfirm)
         {
             int actualUserTypeID = Convert.ToInt32(userTypeID);
-            bool actualActive;
 
+            // Is this an acitve user?
+            bool actualActive;
             if (active == "on")
                 actualActive = true;
             else
                 actualActive = false;
 
             // Perform the insertion.
-            // This will also add a new core instance to the database for the new username
-            // ... and all default statuses and locations.
-            UserUtilities.AddUser(firstName, lastName, actualUserTypeID, actualActive);
+            // This will also add:
+            // - A new core instance to the database for the new user.
+            // - All default statuses and locations.
+            // - A new authentication instance for this user to use for the API. (and admin interface if appropriate)
+            try
+            {
+                // Before performing inset, ensure the passwords match.
+                if (!password.Equals(passwordConfirm))
+                    throw new Exception("Passwords do not match.");
+
+                UserUtilities.AddUser(firstName, lastName, actualUserTypeID, actualActive, username, password);
+            }
+            catch (Exception ex)
+            {
+                // Report the error
+                ViewBag.Message = "There was an error: " + ex.Message;
+                return View("Admin");
+            }
 
             return RedirectToAction("Admin", "Admin");
         }
@@ -133,6 +149,7 @@ namespace ABLCloudStaff.Controllers
                 ui.userType = user.UserType.Type;
                 ui.userTypeID = user.UserTypeID.ToString();
                 ui.isActive = user.IsActive.ToString();
+                ui.username = user.Authentication.UserName;
                 // Add to the list of verbose username details
                 userInfo.Add(ui);
             }
@@ -152,7 +169,8 @@ namespace ABLCloudStaff.Controllers
         /// <param name="isActive">String to indicate IsActive status</param>
         /// <returns>ActionResult object</returns>
         [HttpPost]
-        public ActionResult UpdateUser(string userID, string firstName, string lastName, string userType, string isActive)
+        public ActionResult UpdateUser(string userID, string firstName, string lastName, string userType, 
+            string isActive, string username, string password, string passwordCheck)
         {
             // Convert fields to appropriate types
             bool actualIsActive;
@@ -166,8 +184,26 @@ namespace ABLCloudStaff.Controllers
                 else
                     actualIsActive = false;
 
-                // Perform the update
-                UserUtilities.UpdateUser(actualUserID, firstName, lastName, actualUserTypeID, actualIsActive);
+                // Perform the update.
+                // We also need to update the user's associated authentication information.
+                try
+                {
+                    // Before performing inset, ensure the passwords match.
+                    if (!password.Equals(passwordCheck))
+                        throw new Exception("Passwords do not match.");
+
+                    UserUtilities.UpdateUser(actualUserID, firstName, lastName, actualUserTypeID, actualIsActive);
+
+                    // Now update the fields on the associated Authentication instance. (Providing a password was provided)
+                    if (!string.IsNullOrEmpty(password))
+                        AuthenticationUtilities.UpdateAuthentication(actualUserID, username, password);
+                }
+                catch (Exception ex)
+                {
+                    // Report the error
+                    ViewBag.Message = "There was an error: " + ex.Message;
+                    return View("Admin");
+                }
             }
 
             return RedirectToAction("Admin", "Admin");

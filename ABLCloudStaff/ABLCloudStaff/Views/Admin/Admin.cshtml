@@ -30,7 +30,15 @@
     <link rel="stylesheet" href="../../Content/Site.css">
     <link rel="stylesheet" href="../../Content/bootstrap-switch.css">
     <link rel="stylesheet" href="../../Content/jquery-ui.min.css"/>
-    <title>CloudStaff-Admin</title>
+
+    <!-- favicon from AbacusBio website -->
+    <link rel="apple-touch-icon" sizes="144x144" href="http://www.abacusbio.com/themes/abacusbio/assets/images/apple-touch-144x144-icon.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="http://www.abacusbio.com/themes/abacusbio/assets/images/apple-touch-114x114-icon.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="http://www.abacusbio.com/themes/abacusbio/assets/images/apple-touch-72x72-icon.png" />
+    <link rel="apple-touch-icon" href="http://www.abacusbio.com/themes/abacusbio/assets/images/apple-touch-57x57-icon.png" />
+    <link rel="shortcut icon" href="http://www.abacusbio.com/themes/abacusbio/favicon.ico" type="image/x-icon" />
+
+    <title>CloudStaff Admin</title>
 
     <script type="text/javascript">
         jQuery(document).ready(function ($) {
@@ -50,7 +58,16 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <div id="cloudstaff_title">@Html.ActionLink("CloudStaff", "Index", "Home", null, new { @class = "navbar-brand" })</div>
+
+                <div id="cloudstaff_title">
+                    <a href="/Home/Index" class="navbar-brand">
+                        <span>
+                            <img id="title_image" src="http://www.abacusbio.com/themes/abacusbio/assets/images/apple-touch-57x57-icon.png" width="25" height="25" />
+                        </span>
+                        CloudStaff
+                    </a>
+                </div>
+
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -125,6 +142,15 @@
                                                     <br />
                                                     <label for="last-name-input">Last Name</label>
                                                     <input type="text" id="last-name-input" class="form-control" placeholder="Smith" name="lastName" required />
+                                                    <br />
+                                                    <label for="username-input">Username</label>
+                                                    <input type="text" id="username-input" class="form-control" name="username" required />
+                                                    <br />
+                                                    <p id="add_user_password_error" hidden>Passwords must match</p>
+                                                    <label for="password-input">Password</label>
+                                                    <input type="password" id="password-input" class="form-control" name="password" required />
+                                                    <label for="password-confirm-input">Confirm Password</label>
+                                                    <input type="password" id="password-confirm-input" class="form-control" name="passwordConfirm" required />
                                                     <br />
                                                     <label for="user-type-list">User Type</label>
                                                     <select id="user-type-list" class="form-control" name="userTypeID">
@@ -401,6 +427,14 @@
                                         <br />
                                         <label for="edit-user-lastName">Last name</label>
                                         <input id="edit-user-lastName" type="text" name="lastName" class="form-control" disabled="disabled"/>
+                                        <br />
+                                        <label for="edit-user-username">Username</label>
+                                        <input id="edit-user-username" type="text" class="form-control" name="username" disabled="disabled" />
+                                        <br />
+                                        <label for="edit-user-password">New Password</label>
+                                        <input id="edit-user-password" type="password" class="form-control" name="password" disabled="disabled" />
+                                        <label for="edit-user-password-check">Confirm New Password</label>
+                                        <input id="edit-user-password-check" type="password" class="form-control" name="passwordCheck" disabled="disabled" />
                                         <br />
                                         <label for="edit-user-userType">User Type</label>
                                         <select id="edit-user-userType" name="userType" class="form-control">

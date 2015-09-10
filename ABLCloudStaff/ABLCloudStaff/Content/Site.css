@@ -95,6 +95,14 @@ input[type="checkbox"].input-validation-error {
     color: #0099da;
 }
 
+#cloudstaff_title {
+    display: inline;
+}
+
+#title_image {
+    padding-bottom: 3px;
+}
+
 .navbar.navbar-inverse.navbar-fixed-top {
     background-color: #e5e5e5;
 }
@@ -137,6 +145,10 @@ input[type="checkbox"].input-validation-error {
 
 #spn-user-table-loading {
     margin: auto;
+}
+
+#add_user_password_error {
+    color: red;
 }
 
 /* Administration EDIT Modals */

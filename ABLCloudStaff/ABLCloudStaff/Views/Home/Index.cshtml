@@ -21,6 +21,13 @@
     <script src="../../Scripts/bootstrap-slider.js"></script>
     <script src="../../Scripts/time_slider.js"></script>
     <link rel="stylesheet" href="../../Content/Site.css">
+
+    <!-- favicon from AbacusBio website -->
+    <link rel="apple-touch-icon" sizes="144x144" href="http://www.abacusbio.com/themes/abacusbio/assets/images/apple-touch-144x144-icon.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="http://www.abacusbio.com/themes/abacusbio/assets/images/apple-touch-114x114-icon.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="http://www.abacusbio.com/themes/abacusbio/assets/images/apple-touch-72x72-icon.png" />
+    <link rel="apple-touch-icon" href="http://www.abacusbio.com/themes/abacusbio/assets/images/apple-touch-57x57-icon.png" />
+    <link rel="shortcut icon" href="http://www.abacusbio.com/themes/abacusbio/favicon.ico" type="image/x-icon" />
     
     <title>CloudStaff</title>
 
@@ -52,12 +59,21 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <div id="cloudstaff_title">@Html.ActionLink("CloudStaff", "Index", "Home", null, new { @class = "navbar-brand" })</div>
+                
+                <div id="cloudstaff_title">
+                    <a href="/Home/Index" class="navbar-brand">
+                        <span>
+                            <img id="title_image" src="http://www.abacusbio.com/themes/abacusbio/assets/images/apple-touch-57x57-icon.png" width="25" height="25" />
+                        </span>
+                        CloudStaff
+                    </a>
+                </div>
+
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Status Board", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Administration", "Admin", "Admin")</li>
+                    <li><a href="/Admin/Admin">Administration <span class="glyphicon glyphicon-log-in"></span></a></li>
                     <li><a href="http://goo.gl/forms/u1cbZStRaA" target="_blank">Submit Feedback <span class="glyphicon glyphicon-list-alt"></span></a></li>
                 </ul>
             </div>
@@ -127,11 +143,11 @@
                                         <p>
                                         @if (core.Status.Available == true)
                                         {
-                                            <input type="checkbox" name="staff-state" value="@core.UserID" checked data-on-color="success" data-off-color="warning" data-on-text="In" data-off-text="Out">
+                                            <input type="checkbox" name="staff-state" value="@core.UserID" checked data-on-color="abacusbio" data-off-color="warning" data-on-text="In" data-off-text="Out">
                                         }
                                         else
                                         {
-                                            <input type="checkbox" name="staff-state" value="@core.UserID" data-on-color="success" data-off-color="warning" data-off-text="Out" data-on-text="In">
+                                            <input type="checkbox" name="staff-state" value="@core.UserID" data-on-color="abacusbio" data-off-color="warning" data-off-text="Out" data-on-text="In">
                                         }
                                         </p>
                                     </div>

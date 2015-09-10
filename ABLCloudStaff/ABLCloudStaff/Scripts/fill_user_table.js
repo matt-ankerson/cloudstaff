@@ -56,8 +56,10 @@ $(document).ready(function () {
                 '<input type="hidden" id="lastName-value" value="' + list[i].lastName + '" />' +
                 '<input type="hidden" id="userType-value" value="' + list[i].userTypeID + '" />' +
                 '<input type="hidden" id="isActive-value" value="' + list[i].isActive + '" />' +
+                '<input type="hidden" id="username-value" value="' + list[i].username + '" />' +
                 '</button>' + '</td>' +
                 '</tr>');
+            console.log(list[i].username);
         }
 
         //----------------------------------------------------------------------------------------
@@ -80,6 +82,7 @@ $(document).ready(function () {
             var lastName = invoker.find("#lastName-value").val();
             var userTypeID = invoker.find("#userType-value").val();
             var isActive = invoker.find("#isActive-value").val();
+            var username = invoker.find("#username-value").val();
             
             // This will fire when the modal has fully revealed itself.
             $('#edit-user-modal').on('shown.bs.modal', function (e) {
@@ -124,16 +127,20 @@ $(document).ready(function () {
 
                 $("#edit-user-modal-title").text("Edit: " + firstName + " " + lastName);
 
-                // We need to populate and enable all fields on the form
+                // We need to populate and enable all fields on the form (except the password fields, just enable those.)
                 $("#edit-user-firstName").val(firstName).prop('disabled', false);
                 $("#edit-user-lastName").val(lastName).prop('disabled', false);
+                $("#edit-user-username").val(username).prop('disabled', false);
                 $("#edit-user-isActive").prop('disabled', false)
 
                 if (isActive == "True")
                 {
                     $("#edit-user-isActive").prop('checked', true);
                 }
-                
+
+                // Enable the password fields
+                $("#edit-user-password").prop('disabled', false);
+                $("#edit-user-password-check").prop('disabled', false);
             });
         });
         
