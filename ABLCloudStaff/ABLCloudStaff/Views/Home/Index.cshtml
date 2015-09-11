@@ -20,6 +20,7 @@
     <script type="text/javascript" src="../../Scripts/init_modal.js"></script>
     <script src="../../Scripts/bootstrap-slider.js"></script>
     <script src="../../Scripts/time_slider.js"></script>
+    <script src="../../Scripts/link_modifier.js"></script>
     <link rel="stylesheet" href="../../Content/Site.css">
 
     <!-- favicon from AbacusBio website -->
@@ -61,7 +62,7 @@
                 </button>
                 
                 <div id="cloudstaff_title">
-                    <a href="/Home/Index" class="navbar-brand">
+                    <a href="/Home/Index" class="navbar-brand" id="redundant_link">
                         <span>
                             <img id="title_image" src="http://www.abacusbio.com/themes/abacusbio/assets/images/apple-touch-57x57-icon.png" width="25" height="25" />
                         </span>
@@ -89,7 +90,7 @@
 
             @foreach(var core in @Model)
             {
-                <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2">
+                <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-0 col-md-3 col-md-offset-0 col-lg-2 col-lg-offset-0">
                     <div class="container-fluid">
                         <!-- When clicked, this is the invoker. -->
                         <div class="panel-group top-half-of-panel">

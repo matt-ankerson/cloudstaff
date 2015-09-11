@@ -95,16 +95,21 @@ input[type="checkbox"].input-validation-error {
     color: #0099da;
 }
 
-#cloudstaff_title {
-    display: inline;
-}
-
 #title_image {
     padding-bottom: 3px;
 }
 
 .navbar.navbar-inverse.navbar-fixed-top {
     background-color: #e5e5e5;
+}
+
+#cloudstaff_title {
+    display: inline;
+}
+
+#redundant_link,
+#redundant_link:hover {
+    cursor: default;
 }
 
 /* Staff modules */
