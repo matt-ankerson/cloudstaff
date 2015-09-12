@@ -33,13 +33,19 @@ $(document).ready(function () {
         });
 
         function success_func(data, status) {
-            // Invoke a page refresh
-            window.location.href = '/Home/Index';
+            // If the update was performed successfully, we don't need to do anything
+            if (data == 'request-ok') {
+
+            }
+            else {
+                // There was an issue, do a hard refresh of the page. 
+                window.location.href = '/Home/Index';
+            }
         }
 
         function error_func() {
-            alert("Could not perform update");
-            // Invoke a page refesh anyway, so the switch goes back to representing information consistent with server-side
+            // The update was unsuccessful.
+            // Invoke a page refesh, so the switch goes back to representing information consistent with server-side
             window.location.href = '/Home/Index';
         }
     });

@@ -63,13 +63,22 @@ namespace ABLCloudStaff.Controllers
         {
             string data = null;
 
+            // If a userID was provided
             if(!string.IsNullOrEmpty(userID))
             {
                 // Convert to a usable type
                 int actualUserID = Convert.ToInt32(userID);
-                CoreUtilities.UpdateStatusIn(actualUserID);
 
-                data = "request-ok";
+                try
+                {
+                    // Perform the update
+                    CoreUtilities.UpdateStatusIn(actualUserID);
+                    data = "request-ok";
+                }
+                catch (Exception ex)
+                {
+                    data = "request-failed";
+                }
             }
 
             return Json(data, JsonRequestBehavior.AllowGet);
@@ -84,13 +93,22 @@ namespace ABLCloudStaff.Controllers
         {
             string data = null;
 
+            // If there was a userID provided.
             if (!string.IsNullOrEmpty(userID))
             {
                 // Convert to a usable type
                 int actualUserID = Convert.ToInt32(userID);
-                CoreUtilities.UpdateStatusOut(actualUserID);
 
-                data = "request-ok";
+                try
+                {
+                    // Perform the update
+                    CoreUtilities.UpdateStatusOut(actualUserID);
+                    data = "request-ok";
+                }
+                catch (Exception ex)
+                {
+                    data = "request-failed";
+                }    
             }
 
             return Json(data, JsonRequestBehavior.AllowGet);
