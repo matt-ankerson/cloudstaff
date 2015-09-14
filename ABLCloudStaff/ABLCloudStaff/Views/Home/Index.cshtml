@@ -7,18 +7,15 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-   <!-- <link rel="stylesheet/less" type="text/css" href="../../Content/slider.less" /> -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="../../Scripts/less.js"></script>
     <script src="../../Scripts/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../Content/bootstrap-switch.css">
-    <!--<link rel="stylesheet" href="../../Content/slider.css"/>-->
     <script src="../../Scripts/bootstrap-switch.min.js"></script>
     <script src="../../Scripts/swipe_to_change_status.js"></script>
     <script src="../../Scripts/init_modal.js"></script>
-    <!--<script src="../../Scripts/bootstrap-slider.js"></script>-->
     <script src="../../Scripts/mobile-range-slider.js"></script>
     <script src="../../Scripts/time_slider.js"></script>
     <script src="../../Scripts/link_modifier.js"></script>
@@ -114,7 +111,7 @@
                                     <div class="row">
                                         <div class="col-xs-6">
                                             <p>
-                                                <small>
+                                                <small class="status_location_details">
                                                     @core.Status.Name
                                                     <br />
                                                     @if (core.LocationID != 1)
@@ -129,7 +126,7 @@
                                             </p>
                                         </div>
                                         <div class="col-xs-6">
-                                            <p>
+                                            <p class="time_details">
                                                 @if (core.IntendedEndTime != null)
                                                 {
                                                     DateTime eta = (DateTime)core.IntendedEndTime;
@@ -205,7 +202,7 @@
                                             <label for="time_slider">Return <span class="glyphicon glyphicon-time"> </span> <span id="time_slider_val">Not applicable</span></label>
                                         </div>
                                         <div class="col-xs-4">
-                                            <button id="cancel_time" class="btn btn-default form-control">Cancel</button>
+                                            <button id="cancel_time" class="btn btn-default form-control"><span class="glyphicon glyphicon-time"> </span> Cancel</button>
                                         </div>
                                     </div>
                                     <br />

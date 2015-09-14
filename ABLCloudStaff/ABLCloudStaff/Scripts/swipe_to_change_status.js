@@ -33,13 +33,20 @@ $(document).ready(function () {
         });
 
         function success_func(data, status) {
-            // If the update was performed successfully, we don't need to do anything
-            if (data == 'request-ok') {
-
+            // If the update was performed successfully, we need to reflect the changes in the module box.
+            // Check the returned data
+            if (data == 'request-failed') {
+                // There was a silent issue server-side, do a hard refresh of the page. 
+                window.location.href = '/Home/Index';
             }
             else {
-                // There was an issue, do a hard refresh of the page. 
-                window.location.href = '/Home/Index';
+                // Update the module box in question.
+                // The module box's element id is simply the userID to whom it belongs.
+                // Reset the following elements:
+                // - thisUsersStatusID (pull from server)
+                // - thisUsersLocationID (pull from server)
+                // - status_location_details (status contained in 'data', remove location)
+                // - time_details (remove time details)
             }
         }
 

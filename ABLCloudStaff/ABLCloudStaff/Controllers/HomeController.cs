@@ -73,7 +73,10 @@ namespace ABLCloudStaff.Controllers
                 {
                     // Perform the update
                     CoreUtilities.UpdateStatusIn(actualUserID);
-                    data = "request-ok";
+
+                    // Pull out the new status given to this user
+                    Status s = CoreUtilities.GetStatusByUserID(actualUserID);
+                    data = s.Name;
                 }
                 catch (Exception ex)
                 {
@@ -85,7 +88,7 @@ namespace ABLCloudStaff.Controllers
         }
 
         /// <summary>
-        /// Regardless of other circumstances, set the status to 'out of office'
+        /// Regardless of other circumstances, set the status to the default out status.
         /// </summary>
         /// <param name="userID">The username to apply this change to.</param>
         /// <returns>Indicates success or failure.</returns>
@@ -103,7 +106,10 @@ namespace ABLCloudStaff.Controllers
                 {
                     // Perform the update
                     CoreUtilities.UpdateStatusOut(actualUserID);
-                    data = "request-ok";
+
+                    // Pull out the new status given to this user
+                    Status s = CoreUtilities.GetStatusByUserID(actualUserID);
+                    data = s.Name;
                 }
                 catch (Exception ex)
                 {
