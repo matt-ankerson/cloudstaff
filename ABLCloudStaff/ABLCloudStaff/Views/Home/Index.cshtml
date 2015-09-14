@@ -14,17 +14,16 @@
     <script src="../../Scripts/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../Content/bootstrap-switch.css">
-    <link rel="stylesheet" href="../../Content/nouislider.css" />
-    <link rel="stylesheet" href="../../Content/nouislider.pips.css" />
     <!--<link rel="stylesheet" href="../../Content/slider.css"/>-->
     <script src="../../Scripts/bootstrap-switch.min.js"></script>
     <script src="../../Scripts/swipe_to_change_status.js"></script>
-    <script src="../../Scripts/nouislider.js"></script>
     <script src="../../Scripts/init_modal.js"></script>
     <!--<script src="../../Scripts/bootstrap-slider.js"></script>-->
+    <script src="../../Scripts/mobile-range-slider.js"></script>
     <script src="../../Scripts/time_slider.js"></script>
     <script src="../../Scripts/link_modifier.js"></script>
     <link rel="stylesheet" href="../../Content/Site.css">
+    <link rel="stylesheet" href="../../Content/mobile-range-slider.css" />
 
     <!-- favicon from AbacusBio website -->
     <link rel="apple-touch-icon" sizes="144x144" href="http://www.abacusbio.com/themes/abacusbio/assets/images/apple-touch-144x144-icon.png" />
@@ -212,7 +211,14 @@
                                     <br />
                                     <div class="row">
                                         <div class="col-xs-12">
-                                            <input id="time_slider" class="form-control" data-slider-id='time_slider' type="text" data-slider-orientation="horizontal" />
+                                            <!--<input id="time_slider" class="form-control" data-slider-id='time_slider' type="text" data-slider-orientation="horizontal" />-->
+
+                                            <!-- Time slider goes here. -->
+                                            <div id="time_slider" class="slider">
+                                                <div class="track" id="custom_track"></div>
+                                                <div class="knob"></div>
+                                            </div>
+
                                             <!-- Hidden field for datetime information -->
                                             <input type="hidden" id="time_value" name="returnTime" value=""/>
                                         </div>

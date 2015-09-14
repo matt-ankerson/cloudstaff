@@ -139,6 +139,10 @@ input[type="checkbox"].input-validation-error {
     background-color: #0099da;
 }
 
+#custom_track {
+    z-index: 0;
+}
+
 /********************************/
 
 /* Administration screen */

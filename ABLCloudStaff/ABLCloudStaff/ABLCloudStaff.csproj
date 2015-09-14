@@ -196,8 +196,7 @@
     <Content Include="Content\jquery-ui.min.css" />
     <Content Include="Content\jquery-ui.structure.min.css" />
     <Content Include="Content\jquery-ui.theme.min.css" />
-    <Content Include="Content\nouislider.css" />
-    <Content Include="Content\nouislider.pips.css" />
+    <Content Include="Content\mobile-range-slider.css" />
     <Content Include="Content\slider.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -232,8 +231,8 @@
     <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\less.js" />
     <Content Include="Scripts\link_modifier.js" />
+    <Content Include="Scripts\mobile-range-slider.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Scripts\nouislider.js" />
     <Content Include="Scripts\remove-user_autocomplete.js" />
     <Content Include="Scripts\remove_location_autocomplete.js" />
     <Content Include="Scripts\remove_status_autocomplete.js" />
