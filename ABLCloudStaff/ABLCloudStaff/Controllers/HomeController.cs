@@ -61,10 +61,8 @@ namespace ABLCloudStaff.Controllers
         /// <returns>Indicates success or failure.</returns>
         public JsonResult SetStatusIn(string userID)
         {
-            string data = null;
-
             // If a userID was provided
-            if(!string.IsNullOrEmpty(userID))
+            if (!string.IsNullOrEmpty(userID))
             {
                 // Convert to a usable type
                 int actualUserID = Convert.ToInt32(userID);
@@ -74,17 +72,29 @@ namespace ABLCloudStaff.Controllers
                     // Perform the update
                     CoreUtilities.UpdateStatusIn(actualUserID);
 
-                    // Pull out the new status given to this user
-                    Status s = CoreUtilities.GetStatusByUserID(actualUserID);
-                    data = s.Name;
+                    // Pull out the new core instance given to this user.
+                    // Populate a data response with the current information for this user.
+                    Core c = CoreUtilities.GetCoreInstanceByUserID(actualUserID);
+                    CoreInfo data = new CoreInfo
+                    {
+                        userID = c.UserID.ToString(),
+                        statusID = c.StatusID.ToString(),
+                        locationID = c.LocationID.ToString(),
+                        status = c.Status.Name,
+                        location = c.Location.Name
+                    };
+
+                    return Json(data, JsonRequestBehavior.AllowGet);
                 }
                 catch (Exception ex)
                 {
-                    data = "request-failed";
+                    return Json("request-failed", JsonRequestBehavior.AllowGet);
                 }
             }
-
-            return Json(data, JsonRequestBehavior.AllowGet);
+            else
+            {
+                return Json("no userID", JsonRequestBehavior.DenyGet);
+            }
         }
 
         /// <summary>
@@ -94,8 +104,6 @@ namespace ABLCloudStaff.Controllers
         /// <returns>Indicates success or failure.</returns>
         public JsonResult SetStatusOut(string userID)
         {
-            string data = null;
-
             // If there was a userID provided.
             if (!string.IsNullOrEmpty(userID))
             {
@@ -107,17 +115,30 @@ namespace ABLCloudStaff.Controllers
                     // Perform the update
                     CoreUtilities.UpdateStatusOut(actualUserID);
 
-                    // Pull out the new status given to this user
-                    Status s = CoreUtilities.GetStatusByUserID(actualUserID);
-                    data = s.Name;
+                    // Pull out the new core instance given to this user.
+                    // Populate a data response with the current information for this user.
+                    Core c = CoreUtilities.GetCoreInstanceByUserID(actualUserID);
+                    CoreInfo data = new CoreInfo
+                    {
+                        userID = c.UserID.ToString(),
+                        statusID = c.StatusID.ToString(),
+                        locationID = c.LocationID.ToString(),
+                        status = c.Status.Name,
+                        location = c.Location.Name
+                    };
+
+                    return Json(data, JsonRequestBehavior.AllowGet);
                 }
                 catch (Exception ex)
                 {
-                    data = "request-failed";
+                    return Json("request-failed", JsonRequestBehavior.AllowGet);
                 }    
             }
-
-            return Json(data, JsonRequestBehavior.AllowGet);
+            else
+            {
+                return Json("no userID", JsonRequestBehavior.DenyGet);
+            }
+            
         }
 
         /// <summary>

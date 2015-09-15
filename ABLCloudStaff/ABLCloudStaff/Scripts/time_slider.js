@@ -42,7 +42,7 @@ $(document).ready(function () {
                 // Show the cancel button
                 $("#cancel_time").show();
                 $("#cancel_time").css("visibility", "visible");
-                console.log('running');
+                //console.log('running');
             }
             n_changes++;
         };

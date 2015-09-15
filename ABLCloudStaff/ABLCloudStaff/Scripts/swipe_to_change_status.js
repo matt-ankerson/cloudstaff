@@ -42,11 +42,21 @@ $(document).ready(function () {
             else {
                 // Update the module box in question.
                 // The module box's element id is simply the userID to whom it belongs.
+                raw_module = document.getElementById(userID.toString());
+                module = $(raw_module);
                 // Reset the following elements:
-                // - thisUsersStatusID (pull from server)
-                // - thisUsersLocationID (pull from server)
+                // - thisUsersStatusID (get from server)
+                var thisUsersStatusID = module.find(".thisUsersStatusID");
+                thisUsersStatusID.val(data.statusID);
+                // - thisUsersLocationID (get from server)
+                var thisUsersLocationID = module.find('.thisUsersLocationID');
+                thisUsersLocationID.val(data.locationID);
                 // - status_location_details (status contained in 'data', remove location)
+                var status_location_details = module.find('.status_location_details');
+                status_location_details.html(data.status + '<br /><br />');
                 // - time_details (remove time details)
+                var time_details = module.find('.time_details');
+                time_details.html('');
             }
         }
 
