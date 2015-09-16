@@ -60,7 +60,9 @@ $(document).ready(function () {
     }
 
     function errorFunc(error) {
-        alert('error' + error.responseText);
+        //alert('error' + error.responseText);
+        // There was a silent issue server-side, do a hard refresh of the page. 
+        window.location.href = '/Home/Index';
     }
 
     // Click handler for time selection cancel button.

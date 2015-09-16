@@ -408,12 +408,30 @@ namespace ABLCloudStaff.Controllers
                 // If our statusID is freed up:
                 if(!inUseStatusIDs.Contains(actualStatusID))
                 {
-                    // Perform the removal. (This will be a HARD DELETE)
-                    StatusUtilities.DeleteStatus(actualStatusID);
+                    // If this is not a core status:
+                    if ((actualStatusID != Constants.DEFAULT_IN_STATUS) || (actualStatusID != Constants.DEFAULT_IN_STATUS))
+                    {
+                        try
+                        {
+                            // Perform the removal. (This will be a HARD DELETE)
+                            StatusUtilities.DeleteStatus(actualStatusID);
+                        }
+                        catch (Exception ex)
+                        {
+                            ViewBag.Message = "There was a problem removing the requested Status.";
+                            return PartialView("Admin", "Admin");
+                        }
+                    }
+                    else
+                    {
+                        ViewBag.Message = "Cannot remove Status because it is a core Status.";
+                        return PartialView("Admin", "Admin");
+                    }
                 }
                 else
                 {
                     ViewBag.Message = "Cannot remove Status because it is currently in use.";
+                    return PartialView("Admin", "Admin");
                 }
             }
 
@@ -439,17 +457,27 @@ namespace ABLCloudStaff.Controllers
                 {
                     if(actualLocationID != Constants.DEFAULT_LOCATION)
                     {
-                        // Perform the removal. (This will be a HARD DELETE)
-                        LocationUtilities.DeleteLocation(actualLocationID);
+                        try
+                        {
+                            // Perform the removal. (This will be a HARD DELETE)
+                            LocationUtilities.DeleteLocation(actualLocationID);
+                        }
+                        catch (Exception ex)
+                        {
+                            ViewBag.Message = "There was a problem removing the requested location.";
+                            return PartialView("Admin", "Admin");
+                        }
                     }
                     else
                     {
                         ViewBag.Message = "Cannot remove Location because it is a core location.";
+                        return PartialView("Admin", "Admin");
                     }
                 }
                 else
                 {
                     ViewBag.Message = "Cannot remove Location because it is currently in use.";
+                    return PartialView("Admin", "Admin");
                 }
             }
 
