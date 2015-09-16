@@ -217,6 +217,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ClassDiagram1.cd" />
     <Content Include="Content\slider.less" />
+    <None Include="Properties\PublishProfiles\AbacusBio Zip Package.pubxml" />
     <None Include="Properties\PublishProfiles\AbacusBio.pubxml" />
     <None Include="Properties\PublishProfiles\CloudStaff.pubxml" />
     <None Include="Properties\PublishProfiles\Default Package.pubxml" />
