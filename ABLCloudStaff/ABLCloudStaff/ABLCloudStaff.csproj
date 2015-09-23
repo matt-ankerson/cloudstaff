@@ -226,7 +226,6 @@
     <None Include="Properties\PublishProfiles\Default.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\changelog_tables.js" />
-    <Content Include="Scripts\datepicker.js" />
     <Content Include="Scripts\fill_user_table.js" />
     <Content Include="Scripts\init_modal.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -242,7 +241,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\swipe_to_change_status.js" />
-    <Content Include="Scripts\time_slider.js" />
+    <Content Include="Scripts\datetime_selection.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

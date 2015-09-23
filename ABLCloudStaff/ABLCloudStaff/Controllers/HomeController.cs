@@ -224,14 +224,14 @@ namespace ABLCloudStaff.Controllers
         /// Return a list of TimeInfo object, in half hour intervals, from 6am until 12am midnight.
         /// </summary>
         /// <returns></returns>
-        public JsonResult GetAllDayTimes()
+        public JsonResult GetAllDayTimes(string date)
         {
             List<TimeInfo> timeIntervals = new List<TimeInfo>();
 
-            DateTime today = DateTime.Now;
+            DateTime startDay = DateTime.Parse(date);
 
-            DateTime start = new DateTime(today.Year, today.Month, today.Day, Constants.START_OF_DAY, 0, 0);
-            DateTime thisMidnight = DateTime.Now.AddDays(1).Date;
+            DateTime start = new DateTime(startDay.Year, startDay.Month, startDay.Day, Constants.START_OF_DAY, 0, 0);
+            DateTime thisMidnight = start.AddDays(1).Date;
 
             while (start < thisMidnight)
             {
