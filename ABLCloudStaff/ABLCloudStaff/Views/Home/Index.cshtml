@@ -11,6 +11,7 @@
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="../../Scripts/less.js"></script>
     <script src="../../Scripts/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="../../Content/jquery-ui.min.css" />
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../Content/bootstrap-switch.css">
     <script src="../../Scripts/bootstrap-switch.min.js"></script>
@@ -19,6 +20,7 @@
     <script src="../../Scripts/mobile-range-slider.js"></script>
     <script src="../../Scripts/time_slider.js"></script>
     <script src="../../Scripts/link_modifier.js"></script>
+    <script src="../../Scripts/datepicker.js"></script>
     <link rel="stylesheet" href="../../Content/Site.css">
     <link rel="stylesheet" href="../../Content/mobile-range-slider.css" />
 
@@ -199,22 +201,43 @@
                                     <br />
                                     <div class="row">
                                         <div class="col-xs-8" id="time_display">
-                                            <label for="time_slider">Return <span class="glyphicon glyphicon-time"> </span> <span id="time_slider_val">Not applicable</span></label>
+                                            <label for="time_slider">
+                                                Return 
+                                                <span class="glyphicon glyphicon-calendar"> </span>
+                                                <span class="glyphicon glyphicon-time"> </span> | 
+                                                <span id="date_picker_val"> </span>
+                                                <span id="time_slider_val"> </span>
+                                            </label>
                                         </div>
                                         <div class="col-xs-4">
-                                            <button id="cancel_time" class="btn btn-default form-control"><span class="glyphicon glyphicon-time"> </span> Cancel</button>
+                                            <button id="cancel_time" class="btn btn-default form-control">
+                                                <span class="glyphicon glyphicon-calendar"> </span>
+                                                <span class="glyphicon glyphicon-time"> </span> Cancel
+                                            </button>
                                         </div>
                                     </div>
                                     <br />
                                     <div class="row">
-                                        <div class="col-xs-12">
-                                            <!--<input id="time_slider" class="form-control" data-slider-id='time_slider' type="text" data-slider-orientation="horizontal" />-->
+                                        <!-- Datepicker goes here. -->
+                                        <div class="col-xs-1">
+                                            <p><font size="6"><span class="glyphicon glyphicon-calendar"></span></font></p>
+                                        </div>
+                                        <div class="col-xs-11">
+                                            <input type="text" class="form-control" placeholder="touch here..." id="datepicker" />
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="row">
+                                        <!-- Time slider goes here. -->
+                                        <div class="col-xs-1">
+                                            <p><font size="6"><span class="glyphicon glyphicon-time"></span></font></p>
+                                        </div>
+                                        <div class="col-xs-11">
 
-                                            <!-- Time slider goes here. -->
-                                            <div id="time_slider" class="slider">
-                                                <div class="track" id="custom_track"></div>
-                                                <div class="knob"></div>
-                                            </div>
+                                                <div id="time_slider" class="slider">
+                                                    <div class="track" id="custom_track"></div>
+                                                    <div class="knob"></div>
+                                                </div>
 
                                             <!-- Hidden field for datetime information -->
                                             <input type="hidden" id="time_value" name="returnTime" value=""/>

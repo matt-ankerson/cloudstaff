@@ -218,7 +218,49 @@ namespace ABLCloudStaff.Controllers
             };
 
             return Json(data, JsonRequestBehavior.AllowGet);
-        }        
+        } 
+       
+        /// <summary>
+        /// Return a list of TimeInfo object, in half hour intervals, from 6am until 12am midnight.
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult GetAllDayTimes()
+        {
+            List<TimeInfo> timeIntervals = new List<TimeInfo>();
+
+            DateTime today = DateTime.Now;
+
+            DateTime start = new DateTime(today.Year, today.Month, today.Day, Constants.START_OF_DAY, 0, 0);
+            DateTime thisMidnight = DateTime.Now.AddDays(1).Date;
+
+            while (start < thisMidnight)
+            {
+                TimeInfo ti = new TimeInfo();
+
+                // Create a new TimeInfo object and add it to the list
+                ti = new TimeInfo
+                {
+                    numeric_repr = start.ToShortTimeString(),
+                    dateString = start.ToString(),
+                    year = start.Year.ToString(),
+                    month = start.Month.ToString(),
+                    day = start.Day.ToString(),
+                    hour = start.Hour.ToString(),
+                    minute = start.Minute.ToString(),
+                    second = start.Second.ToString()
+                };
+
+                timeIntervals.Add(ti);
+
+                // Increment the current time by 30 minutes.
+                start = start.AddMinutes(30);
+            }
+
+            // Convert our list to something that can be Json-ified
+            IEnumerable<TimeInfo> data = timeIntervals;
+
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
 
         /// <summary>
         /// Return a list of TimeInfo objects, in half hour intervals, from now until 12am midnight.

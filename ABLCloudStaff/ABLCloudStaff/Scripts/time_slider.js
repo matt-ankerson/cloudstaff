@@ -4,16 +4,17 @@
 $(document).ready(function () {
 
     // Get time from the server via ajax in order to populate the values of our slider bar.
+    // -- When a date is selected, we need to offer a full day's time on the time slider.
 
-    var get_time_url = "/Home/GetRemainderOfToday";
+    var get_remaining_time_url = "/Home/GetRemainderOfToday";
 
     $.ajax({
         type: "GET",
-        url: get_time_url,
+        url: get_remaining_time_url,
         data: null,
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        success: success_func,
+        success: remaining_time_success_func,
         error: errorFunc
     });
 
@@ -22,7 +23,7 @@ $(document).ready(function () {
     // Keep a track of the number of times the slider has been changed.
     var n_changes = 0
 
-    function success_func(data, status) {
+    function remaining_time_success_func(data, status) {
         var list = data;
         var tick_list = [];
 
@@ -60,7 +61,6 @@ $(document).ready(function () {
     }
 
     function errorFunc(error) {
-        //alert('error' + error.responseText);
         // There was a silent issue server-side, do a hard refresh of the page. 
         window.location.href = '/Home/Index';
     }
@@ -69,17 +69,20 @@ $(document).ready(function () {
     $("#cancel_time").on('click', function (e) {
         e.preventDefault();
         n_changes = 0
+
         // Hide the button
         $("#cancel_time").hide();
 
         // Set the time back to undefined
         $("#time_value").val("");
-        $("#time_slider_val").text("Not applicable");
+        $("#time_slider_val").text(" ");
+
         // Set the slider back to the start
         time_slider.setValue(0);    // this will increment n_changes
         n_changes = 0
+
+        // Remove the day selection from the input box and display span
+        $("#datepicker").val("");
+        $("#date_picker_val").text(" ");
     });
-
-    // If the current selected status is "In Office", then there's no need to present the option to set a time span.
-
 });
