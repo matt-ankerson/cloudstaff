@@ -27,6 +27,9 @@ $(document).ready(function () {
 
     // Function fired when date is selected.
     function date_selected(date_text, inst) {
+        
+        // Hide the datepicker
+        date_picker.datepicker('hide');
 
         // Update the return day display:
         $("#date_picker_val").text(date_text);
@@ -138,7 +141,8 @@ $(document).ready(function () {
 
     function all_day_time_success_func(data, status) {
         // Save the all day intervals
-        all_day_intervals = data;
+        all_day_intervals = data
+        refresh_time_slider(all_day_intervals);
     }
 
     function errorFunc(error) {

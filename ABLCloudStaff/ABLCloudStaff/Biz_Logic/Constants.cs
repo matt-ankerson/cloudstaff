@@ -18,7 +18,7 @@ namespace ABLCloudStaff.Biz_Logic
         public const string ADMIN_TYPE = "Admin";
         public const int SESSION_TIMEOUT = 10;
         public const int START_OF_DAY = 6;      // 6am
-        public const int END_OF_DAY = 18;       // 6pm
+        public const int END_OF_DAY = 24;       // 12am <--- it is imperative that this be changed to 18 when debugging is finished
         public const int WORKDAY_DURATION = 12; // hours
         public static readonly int[] DEFAULT_STATUSES = { 1, 2, 3, 4, 5, 6 };
         public static readonly int[] DEFAULT_LOCATIONS = { 1, 2, 3, 4 };
