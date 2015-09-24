@@ -231,6 +231,7 @@ namespace ABLCloudStaff.Controllers
             DateTime startDay = DateTime.Parse(date);
 
             DateTime start = new DateTime(startDay.Year, startDay.Month, startDay.Day, Constants.START_OF_DAY, 0, 0);
+            //DateTime end = start.AddHours(Constants.WORKDAY_DURATION);
             DateTime thisMidnight = start.AddDays(1).Date;
 
             while (start < thisMidnight)

@@ -131,8 +131,33 @@
                                             <p class="time_details">
                                                 @if (core.IntendedEndTime != null)
                                                 {
+                                                    <!-- Appropriate date and time for display are computed here. -->
                                                     DateTime eta = (DateTime)core.IntendedEndTime;
-                                                    <small><i>ETA </i><span class="glyphicon glyphicon-time"></span><br />@eta.ToShortTimeString()</small>
+                                                    DayOfWeek today = DateTime.Now.DayOfWeek;
+                                                    int days = today - DayOfWeek.Monday;
+                                                    DateTime startOfWeek = DateTime.Now.AddDays(-days);
+                                                    DateTime endOfWeek = startOfWeek.AddDays(6);
+                                                    
+                                                    if ((DateTime.Now.DayOfWeek == eta.DayOfWeek) && (DateTime.Now.Day == eta.Day) && (DateTime.Now.Year == eta.Year))
+                                                    {
+                                                        <!-- The return date is today -->
+                                                        <small>Today<br /> @eta.ToShortTimeString()</small>
+                                                    }
+                                                    else
+                                                    {
+                                                        <!-- The return date is some other day. -->
+                                                        
+                                                        if (eta < endOfWeek)
+                                                        {
+                                                            <small>@eta.DayOfWeek<br /> @eta.ToShortTimeString()</small>
+                                                        }
+                                                        else
+                                                        {
+                                                            <small>@eta.ToShortDateString()<br /> @eta.ToShortTimeString()</small>
+                                                        }
+                                                        
+                                                    }
+                                                    
                                                 }
                                             </p>
                                         </div>
