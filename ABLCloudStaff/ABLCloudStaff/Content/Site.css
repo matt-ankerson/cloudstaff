@@ -133,6 +133,10 @@ input[type="checkbox"].input-validation-error {
     white-space: nowrap;
 }
 
+.out_of_time {
+    color: red;
+}
+
 /* Main Board Modal */
 #main-modal-header,
 #modal-title {

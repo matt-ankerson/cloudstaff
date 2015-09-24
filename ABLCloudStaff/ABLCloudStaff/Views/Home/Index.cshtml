@@ -137,11 +137,19 @@
                                                     int days = today - DayOfWeek.Monday;
                                                     DateTime startOfWeek = DateTime.Now.AddDays(-days);
                                                     DateTime endOfWeek = startOfWeek.AddDays(6);
+                                                    DateTime now = DateTime.Now;
                                                     
                                                     if ((DateTime.Now.DayOfWeek == eta.DayOfWeek) && (DateTime.Now.Day == eta.Day) && (DateTime.Now.Year == eta.Year))
                                                     {
                                                         <!-- The return date is today -->
-                                                        <small>Today<br /> @eta.ToShortTimeString()</small>
+                                                        if (now > eta)
+                                                        {
+                                                            <small class="out_of_time">Today<br /> @eta.ToShortTimeString()</small>
+                                                        }
+                                                        else
+                                                        {
+                                                            <small>Today<br /> @eta.ToShortTimeString()</small>
+                                                        }
                                                     }
                                                     else
                                                     {
@@ -149,15 +157,27 @@
                                                         
                                                         if (eta < endOfWeek)
                                                         {
-                                                            <small>@eta.DayOfWeek<br /> @eta.ToShortTimeString()</small>
+                                                            if (now > eta)
+                                                            {
+                                                                <small class="out_of_time">@eta.DayOfWeek<br /> @eta.ToShortTimeString()</small>
+                                                            }
+                                                            else
+                                                            {
+                                                                <small>@eta.DayOfWeek<br /> @eta.ToShortTimeString()</small>
+                                                            }
                                                         }
                                                         else
                                                         {
-                                                            <small>@eta.ToShortDateString()<br /> @eta.ToShortTimeString()</small>
-                                                        }
-                                                        
-                                                    }
-                                                    
+                                                            if (now > eta)
+                                                            {
+                                                                <small class="out_of_time">@eta.ToShortDateString()<br /> @eta.ToShortTimeString()</small>
+                                                            }
+                                                            else
+                                                            {
+                                                                <small>@eta.ToShortDateString()<br /> @eta.ToShortTimeString()</small>
+                                                            }
+                                                        }                                                        
+                                                    }       
                                                 }
                                             </p>
                                         </div>
