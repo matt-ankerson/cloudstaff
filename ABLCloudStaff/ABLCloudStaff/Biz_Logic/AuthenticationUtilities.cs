@@ -176,7 +176,7 @@ namespace ABLCloudStaff.Biz_Logic
                 // Check userName and password
                 if (userName.Equals(u.Authentication.UserName))
                 {
-                    // Username matches, now check password
+                    // Username matches, start check password
                     if (!VerifyPassword(userID, password))
                     {
                         response = "Password is incorrect.";

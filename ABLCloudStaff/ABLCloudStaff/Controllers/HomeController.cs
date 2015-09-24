@@ -231,10 +231,9 @@ namespace ABLCloudStaff.Controllers
             DateTime startDay = DateTime.Parse(date);
 
             DateTime start = new DateTime(startDay.Year, startDay.Month, startDay.Day, Constants.START_OF_DAY, 0, 0);
-            //DateTime end = start.AddHours(Constants.WORKDAY_DURATION);
-            DateTime thisMidnight = start.AddDays(1).Date;
+            DateTime end = start.AddHours(Constants.WORKDAY_DURATION);
 
-            while (start < thisMidnight)
+            while (start <= end)
             {
                 TimeInfo ti = new TimeInfo();
 
@@ -264,37 +263,38 @@ namespace ABLCloudStaff.Controllers
         }
 
         /// <summary>
-        /// Return a list of TimeInfo objects, in half hour intervals, from now until 12am midnight.
+        /// Return a list of TimeInfo objects, in half hour intervals, from start until 12am midnight.
         /// </summary>
         /// <returns></returns>
         public JsonResult GetRemainderOfToday()
         {
             List<TimeInfo> timeIntervals = new List<TimeInfo>();
 
-            DateTime now = DateTimeUtilities.RoundUp(DateTime.Now, TimeSpan.FromMinutes(30));
-            DateTime thisMidnight = DateTime.Now.AddDays(1).Date;
+            DateTime start = DateTimeUtilities.RoundUp(DateTime.Now, TimeSpan.FromMinutes(30));
+            int remainingHours = Constants.END_OF_DAY - start.Hour;
+            DateTime end = start.AddHours(remainingHours);
 
-            while(now < thisMidnight)
+            while(start <= end)
             {
                 TimeInfo ti = new TimeInfo();
 
                 // Create a new TimeInfo object and add it to the list
                 ti = new TimeInfo
                 {
-                    numeric_repr = now.ToShortTimeString(),
-                    dateString = now.ToString(),
-                    year = now.Year.ToString(),
-                    month = now.Month.ToString(),
-                    day = now.Day.ToString(),
-                    hour = now.Hour.ToString(),
-                    minute = now.Minute.ToString(),
-                    second = now.Second.ToString()
+                    numeric_repr = start.ToShortTimeString(),
+                    dateString = start.ToString(),
+                    year = start.Year.ToString(),
+                    month = start.Month.ToString(),
+                    day = start.Day.ToString(),
+                    hour = start.Hour.ToString(),
+                    minute = start.Minute.ToString(),
+                    second = start.Second.ToString()
                 };
                 
                 timeIntervals.Add(ti);
 
                 // Increment the current time by 30 minutes.
-                now = now.AddMinutes(30);
+                start = start.AddMinutes(30);
             }
 
             // Convert our list to something that can be Json-ified
