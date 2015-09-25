@@ -25,7 +25,7 @@ namespace ABLCloudStaff.Biz_Logic
             {
                 using (var context = new ABLCloudStaffContext())
                 {
-                    // Query for 'n' record, starting with the latest
+                    // Query for 'n' records, starting with the latest
                     changeLog = context.StatusChangeLogs.Include("User").Include("NewStatus").Include("OldStatus").OrderByDescending(x => x.StatusChangeTimeStamp).Take(nRecords).ToList();
                 }
                 
@@ -33,7 +33,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now, ex.InnerException.Message);
+                throw ex;
             }
 
             return changeLog;
@@ -60,7 +61,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now, ex.InnerException.Message);
+                throw ex;
             }
 
             return changeLog;
@@ -101,7 +103,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                tErrorUtilities.LogException(ex.Message, DateTime.Now, ex.InnerException.Message);
+                throw ex;
             }
         }
 
@@ -138,7 +141,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now, ex.InnerException.Message);
+                throw ex;
             }
         }
     }
