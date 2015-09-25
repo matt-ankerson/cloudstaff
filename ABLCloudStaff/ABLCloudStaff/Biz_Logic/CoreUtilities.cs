@@ -28,7 +28,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now, ex.InnerException.Message);
+                throw ex;
             }
 
             return coreInstances;
@@ -52,7 +53,8 @@ namespace ABLCloudStaff.Biz_Logic
             } 
             catch(Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now, ex.InnerException.Message);
+                throw ex;
             }
 
             return thisInstance;
@@ -76,7 +78,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now, ex.InnerException.Message);
+                throw ex;
             }
 
             return thisInstance;
@@ -108,7 +111,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now, ex.InnerException.Message);
+                throw ex;
             }
 
             return coreInstances;
@@ -140,7 +144,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now, ex.InnerException.Message);
+                throw ex;
             }
 
             return coreInstances;
@@ -168,7 +173,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now, ex.InnerException.Message);
+                throw ex;
             }
 
             return thisStatus;
@@ -196,7 +202,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now, ex.InnerException.Message);
+                throw ex;
             }
 
             return thisStatus;
@@ -282,7 +289,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now, ex.InnerException.Message);
+                throw ex;
             }
         }
 
@@ -347,7 +355,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now, ex.InnerException.Message);
+                throw ex;
             }
         }
 
@@ -389,7 +398,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now, ex.InnerException.Message);
+                throw ex;
             }
         }
 
@@ -431,7 +441,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now, ex.InnerException.Message);
+                throw ex;
             }
         }
 
@@ -471,7 +482,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now, ex.InnerException.Message);
+                throw ex;
             }
         }
 
@@ -496,7 +508,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-
+                ErrorUtilities.LogException(ex.Message, DateTime.Now, ex.InnerException.Message);
+                throw ex;
             }
         }
     }
