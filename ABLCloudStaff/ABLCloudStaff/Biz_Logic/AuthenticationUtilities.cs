@@ -40,7 +40,8 @@ namespace ABLCloudStaff.Biz_Logic
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception(ex.Message);
+                    ErrorUtilities.LogException(ex.Message, DateTime.Now, ex.InnerException.Message);
+                    throw ex;
                 }
             }
 
@@ -103,7 +104,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception("Couldn't add authentication information - " + ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now, ex.InnerException.Message, "Couldn't add authentication information.");
+                throw ex;
             }
         }
 
@@ -153,7 +155,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception("Couldn't update authentication information - " + ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now, ex.InnerException.Message, "Couldn't update authentication information.");
+                throw ex;
             }
         }
 
@@ -190,7 +193,8 @@ namespace ABLCloudStaff.Biz_Logic
             catch (Exception ex)
             {
                 response = "Authentication Failed.";
-                throw new Exception("Authentication Failed: " + ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now, ex.InnerException.Message, "Authentication Failed.");
+                throw ex;
             }
 
             return response;
@@ -233,7 +237,8 @@ namespace ABLCloudStaff.Biz_Logic
             catch (Exception ex)
             {
                 response = "Authentication failed due to an error.";
-                throw new Exception("Authentication Failed: " + ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now, ex.InnerException.Message, "Authentication Failed.");
+                throw ex;
             }
 
             return response;
@@ -271,7 +276,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception("Couldn't generate token: " + ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now, ex.InnerException.Message, "Couldn't generate new api token");
+                throw ex;
             }
 
             return response;
@@ -302,7 +308,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception("Couldn't get password for username " + userID.ToString() + " " + ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now, ex.InnerException.Message, "Couldn't get password for userID " + userID.ToString());
+                throw ex;
             }
 
             return passwordsMatch;
@@ -349,7 +356,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now, ex.InnerException.Message);
+                throw ex;
             }
 
             return userType;
