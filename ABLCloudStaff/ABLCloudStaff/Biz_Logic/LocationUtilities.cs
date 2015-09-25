@@ -33,7 +33,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
             }
 
             return locations;
@@ -56,7 +57,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
             }
 
             return locations;
@@ -79,7 +81,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
             }
 
             return locationIDs;
@@ -123,7 +126,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
             }
         }
 
@@ -158,7 +162,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
             }
         }
 
@@ -179,7 +184,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
             }
         }
 
@@ -207,7 +213,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
             }
         }
     }

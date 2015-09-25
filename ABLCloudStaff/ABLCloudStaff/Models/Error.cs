@@ -12,9 +12,9 @@ namespace ABLCloudStaff.Models
     /// </summary>
     public class Error
     {
+        public int ErrorID { get; set; }
         public string Exception { get; set; }
-        public string? InnerException { get; set; }
-        public string? Detail { get; set; }
+        public string Detail { get; set; }
         public DateTime TimeStamp { get; set; }
     }
 }

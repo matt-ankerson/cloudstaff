@@ -21,15 +21,22 @@ namespace ABLCloudStaff.Biz_Logic
         /// <param name="timeStamp">The time the error occured</param>
         /// <param name="innerException">Optional field for inner exception.</param>
         /// <param name="detail">Optional further detail about the nature of the exception.</param>
-        public static void LogException(string exception, DateTime timeStamp, string innerException=null, string detail=null)
+        public static void LogException(string exception, DateTime timeStamp, string detail="")
         {
             using (var context = new ABLCloudStaffContext())
             {
-                // Craft the error instance.
-                Error err = new Error { Exception = exception, TimeStamp = timeStamp, InnerException = innerException, Detail = detail };
-                // Save to error table.
-                context.Errors.Add(err);
-                context.SaveChanges();
+                try
+                {
+                    // Craft the error instance.
+                    Error err = new Error { Exception = exception, TimeStamp = timeStamp, Detail = detail };
+                    // Save to error table.
+                    context.Errors.Add(err);
+                    context.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+
+                }
             }
         }
     }

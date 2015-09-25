@@ -26,9 +26,10 @@ namespace ABLCloudStaff.Biz_Logic
                     users = context.Users.Include("UserType").Include("Authentication").OrderBy(x => x.FirstName).ToList();
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                throw new Exception(e.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
             }
 
             return users;
@@ -50,9 +51,10 @@ namespace ABLCloudStaff.Biz_Logic
                     user = context.Users.Include("Authentication").Where(u => u.UserID == userID).FirstOrDefault();
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                throw new Exception(e.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
             }
 
             return user;
@@ -111,7 +113,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
             }
         }
 
@@ -144,7 +147,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
             }
         }
 
@@ -177,7 +181,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
             }
         }
 
@@ -205,7 +210,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
             }
         }
 
@@ -233,7 +239,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
             }
         }
 
@@ -254,7 +261,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
             }
 
             return userTypes;
@@ -293,7 +301,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
             }
         }
 
@@ -321,7 +330,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
             }
 
             return active;
