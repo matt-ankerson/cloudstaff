@@ -40,6 +40,9 @@
             // Init toggle switches
             $("[name='staff-state']").bootstrapSwitch();
 
+            // Prevent auto complete for form fields on this page.
+            $("form :input").attr("autocomplete", "off");
+
         });
         
         // Refresh page every 300 seconds, providing the modal isn't visible
