@@ -137,7 +137,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\DisplaySmall\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -265,6 +264,7 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Admin\Admin.cshtml" />
     <Content Include="Views\LoginAdmin\LoginAdmin.cshtml" />
+    <Content Include="Views\DisplaySmall\DisplaySmall.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

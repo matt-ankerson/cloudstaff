@@ -4,6 +4,10 @@
     background-color: #7a7a7a;
 }
 
+.no_top_margin {
+    padding-top: 0px;
+}
+
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
@@ -190,4 +194,38 @@ input[type="checkbox"].input-validation-error {
 #login_form {
     margin-left: 0px;
     margin-right: 0px;
+}
+
+/***********************************/
+
+.abacusbio_blue {
+    color: #0099da;
+}
+
+.no__bottom_margin {
+    margin-bottom: 0px;
+}
+
+.small_top_margin {
+    margin-top: 25px;
+}
+
+.label-info {
+    background-color:#0099da
+}
+
+.label-info[href]:focus,
+.label-info[href]:hover {
+    background-color:#31b0d5
+}
+
+.small_inout {
+    display: block;
+    width: 40px;
+    line-height: 20px;
+    text-align: center;
+    vertical-align: middle;
+}
+.vertical_aligned {
+    margin-top: 8px;
 }
