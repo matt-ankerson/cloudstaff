@@ -137,6 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\DisplaySmall\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -155,6 +156,7 @@
     <Compile Include="Biz_Logic\UserUtilities.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\CloudStaffApiController.cs" />
+    <Compile Include="Controllers\DisplaySmallController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginAdminController.cs" />
     <Compile Include="Global.asax.cs">
@@ -201,6 +203,7 @@
     <Content Include="Content\jquery-ui.theme.min.css" />
     <Content Include="Content\mobile-range-slider.css" />
     <Content Include="Content\slider.css" />
+    <Content Include="Content\spinner.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -220,6 +223,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ClassDiagram1.cd" />
     <Content Include="Content\slider.less" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <None Include="Properties\PublishProfiles\AbacusBio Zip Package.pubxml" />
     <None Include="Properties\PublishProfiles\AbacusBio.pubxml" />
     <None Include="Properties\PublishProfiles\CloudStaff.pubxml" />
@@ -233,6 +237,7 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-ui.min.js" />
+    <Content Include="Scripts\jquery.min.js" />
     <Content Include="Scripts\less.js" />
     <Content Include="Scripts\link_modifier.js" />
     <Content Include="Scripts\mobile-range-slider.js" />
