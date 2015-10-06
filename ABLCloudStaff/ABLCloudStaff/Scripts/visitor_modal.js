@@ -30,6 +30,8 @@ $(document).ready(function () {
     time_picker = $('#visitor_timepicker');
 
     // Set up time picker.
-    time_picker.timepicker();
+    time_picker.timepicker({
+        'minTime': new Date()
+    });
 
 });
