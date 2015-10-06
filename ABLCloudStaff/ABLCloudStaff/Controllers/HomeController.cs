@@ -55,6 +55,15 @@ namespace ABLCloudStaff.Controllers
         }
 
         /// <summary>
+        /// Accept params necessary to add a new visitor to the workplace.
+        /// </summary>
+        /// <returns>Redirects to home/index action.</returns>
+        public ActionResult AddVisitor()
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
+        /// <summary>
         /// Regardless of other circumstances, set the status to the default status 'in office'
         /// </summary>
         /// <param name="userID">The username to apply this change to</param>

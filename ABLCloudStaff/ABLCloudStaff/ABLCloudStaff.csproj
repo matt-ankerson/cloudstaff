@@ -200,6 +200,7 @@
     <Content Include="Content\jquery-ui.min.css" />
     <Content Include="Content\jquery-ui.structure.min.css" />
     <Content Include="Content\jquery-ui.theme.min.css" />
+    <Content Include="Content\jquery.timepicker.css" />
     <Content Include="Content\mobile-range-slider.css" />
     <Content Include="Content\slider.css" />
     <Content Include="Content\spinner.css" />
@@ -237,6 +238,7 @@
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\jquery.min.js" />
+    <Content Include="Scripts\jquery.timepicker.js" />
     <Content Include="Scripts\less.js" />
     <Content Include="Scripts\link_modifier.js" />
     <Content Include="Scripts\mobile-range-slider.js" />
@@ -248,6 +250,7 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\swipe_to_change_status.js" />
     <Content Include="Scripts\datetime_selection.js" />
+    <Content Include="Scripts\visitor_modal.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

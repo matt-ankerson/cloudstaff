@@ -152,6 +152,10 @@ input[type="checkbox"].input-validation-error {
     background-color: #0099da;
 }
 
+.global_modal_header {
+    background-color: #0099da;
+}
+
 #custom_track {
     z-index: 0;
 }
