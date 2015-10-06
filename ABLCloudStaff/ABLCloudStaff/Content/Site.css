@@ -86,6 +86,7 @@ input[type="checkbox"].input-validation-error {
 .container-switch {
     height: 35px;
     text-align: center;
+    
     vertical-align: middle;
 }
 
@@ -114,6 +115,10 @@ input[type="checkbox"].input-validation-error {
 #redundant_link,
 #redundant_link:hover {
     cursor: default;
+}
+
+#visitor_button {
+    margin-top: 7px;
 }
 
 /* Staff modules */
