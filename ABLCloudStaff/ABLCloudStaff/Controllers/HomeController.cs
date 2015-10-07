@@ -85,20 +85,33 @@ namespace ABLCloudStaff.Controllers
                     {
                         // Use the existing one.
                         visitorUserID = Convert.ToInt32(existingVisitorUserID);
+                        // We also need to add a core instance again for this user.
+                        CoreUtilities.AddCore(visitorUserID, Constants.DEFAULT_IN_STATUS, Constants.DEFAULT_LOCATION);
                     }
 
                     // If we've now got a visitor user and a visited user:
                     if ((visitorUserID != 0) && (actualUserBeingVisitedID != 0))
                     {
-                        // Parse the given return time.
-                        DateTime timeOfDeparture = DateTime.Parse(intendedDepartTime);
+                        DateTime timeOfDeparture = DateTime.Now;
 
-                        // Add visitor log
+                        // Try parse the given return time.
+                        try
+                        {
+                            timeOfDeparture = DateTime.Parse(intendedDepartTime);
+                        }
+                        catch (Exception ex)
+                        {
+                            ViewBag.Message = "Could not add visitor, invalid return time given.";
+                            List<Core> coreInfo = CoreUtilities.GetAllCoreInstances();
+                            return View("Index", coreInfo);
+                        }     
+
+                        // Now we have everything we need to add a visitor log
                         VisitorLogUtilities.LogVisitorIn(visitorUserID, actualUserBeingVisitedID, company, timeOfDeparture);
                     }
                     else
                     {
-                        // Report failure
+                        // Report invalid users provided
                         ViewBag.Message = "Could not add visitor, invalid users provided.";
                         List<Core> coreInfo = CoreUtilities.GetAllCoreInstances();
                         return View("Index", coreInfo);

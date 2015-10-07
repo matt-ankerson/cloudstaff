@@ -153,6 +153,7 @@
     <Compile Include="Biz_Logic\LocationUtilities.cs" />
     <Compile Include="Biz_Logic\StatusUtilities.cs" />
     <Compile Include="Biz_Logic\UserUtilities.cs" />
+    <Compile Include="Biz_Logic\VisitorLogUtilities.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\CloudStaffApiController.cs" />
     <Compile Include="Controllers\DisplaySmallController.cs" />
@@ -175,6 +176,7 @@
     <Compile Include="Models\UserLocation.cs" />
     <Compile Include="Models\UserStatus.cs" />
     <Compile Include="Models\UserType.cs" />
+    <Compile Include="Models\VisitorLog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
