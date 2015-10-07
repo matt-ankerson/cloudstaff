@@ -16,6 +16,7 @@ namespace ABLCloudStaff.Biz_Logic
         public const int SALT_SIZE = 4;
         public const int TOKEN_LENGTH = 20;
         public const string ADMIN_TYPE = "Admin";
+        public const string VISITOR_TYPE = "Visitor";
         public const int SESSION_TIMEOUT = 10;
         public const int START_OF_DAY = 6;      // 6am
         public const int END_OF_DAY = 18;       // 12am <--- it is imperative that this be changed to 18 when debugging is finished

@@ -57,9 +57,101 @@ namespace ABLCloudStaff.Controllers
         /// <summary>
         /// Accept params necessary to add a new visitor to the workplace.
         /// </summary>
+        /// <param name="firstName">Firstname of new visitor</param>
+        /// <param name="lastName">Lastname of new visitor</param>
+        /// <param name="company">Company associated with new visitor.</param>
+        /// <param name="intendedDepartTime">The time that the visitor intends to leave.</param>
+        /// <param name="existingVisitorUserID">When given, this field indicates that this is a returning visitor, thus we don't need to add a new user.</param>
         /// <returns>Redirects to home/index action.</returns>
-        public ActionResult AddVisitor()
+        public ActionResult AddVisitor(string firstName, string lastName, string company, string intendedDepartTime, string userBeingVisitedID, string existingVisitorUserID = "")
         {
+            int visitorUserID = 0;
+            int actualUserBeingVisitedID = 0;
+
+            try
+            {
+                // Only accept this visit if a 'userBeingVisited' is defined.
+                if (!string.IsNullOrEmpty(userBeingVisitedID))
+                {
+                    actualUserBeingVisitedID = Convert.ToInt32(userBeingVisitedID);
+
+                    // We need to add a new user for the new visitor, unless we've been given an existing userID.
+                    if (string.IsNullOrEmpty(existingVisitorUserID))
+                    {
+                        // Create a new user
+                        visitorUserID = UserUtilities.AddUserAsVisitor(firstName, lastName);
+                    }
+                    else
+                    {
+                        // Use the existing one.
+                        visitorUserID = Convert.ToInt32(existingVisitorUserID);
+                    }
+
+                    // If we've now got a visitor user and a visited user:
+                    if ((visitorUserID != 0) && (actualUserBeingVisitedID != 0))
+                    {
+                        // Parse the given return time.
+                        DateTime timeOfDeparture = DateTime.Parse(intendedDepartTime);
+
+                        // Add visitor log
+                        VisitorLogUtilities.LogVisitorIn(visitorUserID, actualUserBeingVisitedID, company, timeOfDeparture);
+                    }
+                    else
+                    {
+                        // Report failure
+                        ViewBag.Message = "Could not add visitor, invalid users provided.";
+                        List<Core> coreInfo = CoreUtilities.GetAllCoreInstances();
+                        return View("Index", coreInfo);
+                    }
+                }
+                else
+                {
+                    // There was no user given that the visitor intends to visit.
+                    ViewBag.Message = "Could not add visitor, no person to visit provided.";
+                    List<Core> coreInfo = CoreUtilities.GetAllCoreInstances();
+                    return View("Index", coreInfo);
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = "Could not add visitor, " + ex.Message;
+                List<Core> coreInfo = CoreUtilities.GetAllCoreInstances();
+                return View("Index", coreInfo);
+            }
+            
+            // Success!
+            return RedirectToAction("Index", "Home");
+        }
+
+        /// <summary>
+        /// Remove a given visitor
+        /// </summary>
+        /// <remarks>
+        /// Update the log table where this visitor is concerned, and set their active status to false. They may wish to visit again.
+        /// </remarks>
+        /// <param name="visitorUserID">The visitor to remove.</param>
+        /// <returns></returns>
+        public ActionResult RemoveVisitor(string visitorUserID)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(visitorUserID))
+                {
+                    int actualVisitorUserID = Convert.ToInt32(visitorUserID);
+
+                    // Flag the user/visitor as deleted.
+                    UserUtilities.FlagUserDeleted(actualVisitorUserID);
+                    // Update the visitor log
+                    VisitorLogUtilities.LogVisitorOut(actualVisitorUserID);
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = "Could not remove visitor, " + ex.Message;
+                List<Core> coreInfo = CoreUtilities.GetAllCoreInstances();
+                return View("Index", coreInfo);
+            }
+
             return RedirectToAction("Index", "Home");
         }
 

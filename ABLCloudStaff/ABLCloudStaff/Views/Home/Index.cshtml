@@ -89,6 +89,21 @@
         </div>
     </div>
     <br />
+
+    @if (ViewBag.Message != null)
+    {
+        <div class="row" id="admin_error_window">
+            <div class="container-fluid">
+                <div class="col-md-12">
+                    <div class="container well">
+                        @ViewBag.Message
+                        <button type="button" id="admin_error_window_close" class="btn btn-danger pull-right">&times;</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    
     <div class="container-fluid">
         <div class="row">
             <!-- We require a variable to uniquely identify each module (UserID) -->

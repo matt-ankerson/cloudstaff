@@ -77,7 +77,7 @@ namespace ABLCloudStaff.Biz_Logic
 
                 using (var context = new ABLCloudStaffContext())
                 {
-                    // Create the new username and add it to the db
+                    // Create the new user and add it to the db
                     User newUser = new User {FirstName = firstName, LastName = lastName, UserTypeID = userType, IsActive = isDeleted };
                     context.Users.Add(newUser);
                     context.SaveChanges();      
@@ -107,7 +107,7 @@ namespace ABLCloudStaff.Biz_Logic
                     AddUserLocation(userID, locationID);
                 }
 
-                // Add a core instance for this username, with defaults for status and location.
+                // Add a core instance for this user, with defaults for status and location.
                 CoreUtilities.AddCore(userID, Constants.DEFAULT_IN_STATUS, Constants.DEFAULT_LOCATION);
 
             }
@@ -116,6 +116,57 @@ namespace ABLCloudStaff.Biz_Logic
                 ErrorUtilities.LogException(ex.Message, DateTime.Now);
                 throw ex;
             }
+        }
+
+        /// <summary>
+        /// Add a new user to the user table, but with less verbosity.
+        /// </summary>
+        /// <remarks>
+        /// Don't add an Authentication instance, don't add all the statuses and locations (only defaults).
+        /// </remarks>
+        /// <param name="firstName">Firstname of visitor</param>
+        /// <param name="lastName">Lastname of visitor</param>
+        /// <returns>The userID of the newly added visitor, or 0 if there was a problem.</returns>
+        public static int AddUserAsVisitor(string firstName, string lastName)
+        {
+            int newVisitorID = 0;
+
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    // Get the UserTypeID 'visitor'.
+                    int visitorTypeID = context.UserTypes.Where(x => x.Type == Constants.VISITOR_TYPE).Select(x => x.UserTypeID).FirstOrDefault();
+
+                    // Create the new user and add it to the db
+                    User newVisitor = new User { FirstName = firstName, LastName = lastName, UserTypeID = visitorTypeID, IsActive = true };
+                    context.Users.Add(newVisitor);
+                    context.SaveChanges();     
+                }
+
+                // Use a different context instance
+                using (var context = new ABLCloudStaffContext())
+                {
+                    // Get the userID back out from the added record
+                    newVisitorID = context.Users.OrderBy(x => x.UserID).Select(x => x.UserID).ToList().LastOrDefault();
+                }
+
+                // Now that we have the userID for our new visitor, we need to add some limited associated information.
+                // For a start they need the default status and location
+                AddUserStatus(newVisitorID, Constants.DEFAULT_IN_STATUS);
+                AddUserLocation(newVisitorID, Constants.DEFAULT_LOCATION);
+
+                // Add a core instance for this user, with defaults for status and location.
+                CoreUtilities.AddCore(newVisitorID, Constants.DEFAULT_IN_STATUS, Constants.DEFAULT_LOCATION);
+
+            }
+            catch (Exception ex)
+            {
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
+            }
+
+            return newVisitorID;
         }
 
         /// <summary>
