@@ -169,6 +169,25 @@ namespace ABLCloudStaff.Controllers
         }
 
         /// <summary>
+        /// Get a dictionary of all general or admin users and their respective IDs.
+        /// </summary>
+        /// <returns>Json dictionary of users and IDs.</returns>
+        public JsonResult GetGeneralAndAdminUsers()
+        {
+            // This dictionary will hold userID and corresponding name
+            Dictionary<string, string> usersDict = new Dictionary<string, string>();
+
+            List<User> rawUsers = UserUtilities.GetGeneralAndAdminUsers();
+
+            foreach (User u in rawUsers)
+            {
+                usersDict.Add(u.UserID.ToString(), u.FirstName + " " + u.LastName);
+            }
+
+            return Json(usersDict, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
         /// Regardless of other circumstances, set the status to the default status 'in office'
         /// </summary>
         /// <param name="userID">The username to apply this change to</param>

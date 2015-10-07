@@ -9,6 +9,8 @@ $(document).ready(function () {
         visitor_modal.modal();
     });
 
+    //-----------------------------------------------------
+    // visitor modal date / time
     //---------------------------------------------
     // Visitor modal datepicker for departure date:
     date_picker = $('#visitor_datepicker');
@@ -66,6 +68,80 @@ $(document).ready(function () {
         return new Date(yyyy, mm, dd);
     }
 
-    
+    function pretty_datetime(ugly_date, ugly_time) {
+        // Convert a date from the datepicker into something C# can parse.
+        var arr = ugly_date.split('/');
+        // arr[0] = mm
+        // arr[1] = dd
+        // arr[2] = yyyy
+        var pretty_datetime = arr[2] + '-' + arr[0] + '-' + arr[1];
+        return pretty_datetime;
+    }
 
+    // /visitor modal date / time
+    //-----------------------------------------------------
+
+    //-----------------------------------------------------
+    // New visitor / returning visitor toggle buttons.
+    new_visitor_button = $('#new_visitor_button');
+    returning_visitor_button = $('#returning_visitor_button');
+
+    // Click handlers:
+    new_visitor_button.on('click', function (e) {
+        // Transfer bold font to this button.
+        returning_visitor_button.html('Returning Visitor');
+        new_visitor_button.html('<b>New Visitor</b>');
+    });
+
+    returning_visitor_button.on('click', function (e) {
+        // Transfer bold font to this button.
+        returning_visitor_button.html('<b>Returning Visitor</b>');
+        new_visitor_button.html('New Visitor');
+    });
+
+    //-----------------------------------------------------
+    // Autocomplete for user being visited.
+    //      - get dict of all general / admin users with their userIDs.
+
+    // Use ajax to fetch all users
+    var get_users_url = "/Home/GetGeneralAndAdminUsers";
+
+    $.ajax({
+        type: "GET",
+        url: get_users_url,
+        data: null,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: general_admin_users_success_func,
+        error: general_admin_users_error_func
+    });
+    
+    function general_admin_users_success_func(data, status) {
+        var dict = data;
+        availableTags = [];
+        // Pull values out of dictionary and assign to array
+        for (var key in dict) {
+            availableTags.push({ label: dict[key], value: key });
+        }
+
+        setup_visiting_user_autocomplete(availableTags)
+    }
+
+    function general_admin_users_error_func(error) {
+        // Do nothing.
+    }
+
+    function setup_visiting_user_autocomplete(availableTags) {
+
+        $("#visiting_user_autocomplete").autocomplete({
+            source: availableTags,
+            appendTo: '#visitor_modal',
+            select: function (event, ui) {
+                $('#visiting_user_autocomplete').val(ui.item.label);
+                $('#user_being_visited_ID').val(ui.item.value);
+                $('#user_being_visited_ID_display').html('<small>' + ui.item.label + ' <span class="glyphicon glyphicon-ok"></span></small>');
+                return false;
+            }
+        });
+    }
 });

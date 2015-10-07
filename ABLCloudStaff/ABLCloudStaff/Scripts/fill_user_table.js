@@ -59,7 +59,6 @@ $(document).ready(function () {
                 '<input type="hidden" id="username-value" value="' + list[i].username + '" />' +
                 '</button>' + '</td>' +
                 '</tr>');
-            console.log(list[i].username);
         }
 
         //----------------------------------------------------------------------------------------

@@ -36,6 +36,31 @@ namespace ABLCloudStaff.Biz_Logic
         }
 
         /// <summary>
+        /// Get all users who are either admins or of general type.
+        /// </summary>
+        /// <returns>List of general and admin users.</returns>
+        public static List<User> GetGeneralAndAdminUsers()
+        {
+            List<User> users = new List<User>();
+
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    users = context.Users.Include("UserType").Include("Authentication").Where(x => x.UserType.Type == Constants.ADMIN_TYPE ||
+                        x.UserType.Type == Constants.GENERAL_TYPE).OrderBy(x => x.FirstName).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
+            }
+
+            return users;
+        }
+
+        /// <summary>
         /// Gets a single username
         /// </summary>
         /// <param name="userID">Which username do you want?</param>

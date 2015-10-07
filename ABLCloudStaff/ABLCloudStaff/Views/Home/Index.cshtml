@@ -9,9 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="../../Scripts/jquery.min.js"></script>
     <script src="../../Scripts/bootstrap.min.js"></script>
-    <script src="../../Scripts/less.js"></script>
     <script src="../../Scripts/jquery-ui.min.js"></script>
-    <link rel="stylesheet" href="../../Content/jquery-ui.min.css" />
     <link rel="stylesheet" href="../../Content/bootstrap.min.css">
     <link rel="stylesheet" href="../../Content/bootstrap-switch.css">
     <link rel="stylesheet" href="../../Content/jquery.timepicker.css" />
@@ -25,6 +23,7 @@
     <script src="../../Scripts/jquery.timepicker.js"></script>
     <link rel="stylesheet" href="../../Content/Site.css">
     <link rel="stylesheet" href="../../Content/mobile-range-slider.css" />
+    <link rel="stylesheet" href="../../Content/jquery-ui.min.css" />
 
     <!-- favicon from AbacusBio website -->
     <link rel="apple-touch-icon" sizes="144x144" href="http://www.abacusbio.com/themes/abacusbio/assets/images/apple-touch-144x144-icon.png" />
@@ -36,7 +35,6 @@
     <title>CloudStaff</title>
 
     <script type="text/javascript">
-        less.watch();
 
         $(document).ready(function () {
 
@@ -331,41 +329,66 @@
                         <!-- Modal Content -->
                         <div class="modal-body" style="padding:40px 50px;">
                             <form id="add_visitor_form" action="/Home/AddVisitor" method="post" role="form">
+                                <!-- Returning/New visitor toggle buttons. -->
+                                <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                                    <div class="btn-group" role="group">
+                                        <button type="button" id="new_visitor_button" class="btn btn-default"><b>New Visitor</b></button>
+                                    </div>
+                                    <div class="btn-group" role="group">
+                                        <button type="button" id="returning_visitor_button" class="btn btn-default">Returning Visitor</button>
+                                    </div>    
+                                </div> 
+                                <br />        
                                 <div class="form-group container-fluid">
-                                    <label for="visitor_firstname">First Name</label>
-                                    <input class="form-control" type="text" id="visitor_firstname" name="firstName" required />
-                                    <br />
-                                    <label for="visitor_lastname">Last Name</label>
-                                    <input class="form-control" type="text" id="visitor_lastname" name="lastName" required />
-                                    <br />
-                                    <label for="visiting_user">Who're you visiting?</label>
-                                    <input class="form-control" type="text" id="visiting_user" name="visiting" />
-                                    <br />
-                                    <label for="visitor_company">Your company</label>
-                                    <input class="form-control" type="text" id="visitor_company" name="company" />
-                                    <br />
-                                    <label for="visitor_depart_time">When will you be leaving us?</label>
-                                    <div class="row">
-                                        <!-- Visitor datepicker goes here. -->
-                                        <div class="col-xs-1">
-                                            <p><font size="6"><span class="glyphicon glyphicon-calendar"></span></font></p>
+                                    <div class="ui-widget">
+                                        <label for="visitor_firstname">First Name</label>
+                                        <!--firstName-->
+                                        <input class="form-control" type="text" id="visitor_firstname" name="firstName" required />
+                                        <br />
+                                        <label for="visitor_lastname">Last Name</label>
+                                        <!--lastName-->
+                                        <input class="form-control" type="text" id="visitor_lastname" name="lastName" required />
+                                        <br />
+
+                                        <label for="visiting_user_autocomplete">Who're you visiting?</label>
+                                        <div class="row">
+                                            <div class="col-xs-8">
+                                                <input class="form-control" id="visiting_user_autocomplete" placeholder="First or Last name..." required />
+                                                <!--userBeingVisitedID-->
+                                                <input type="hidden" id="user_being_visited_ID" name="userBeingVisitedID" />
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <p id="user_being_visited_ID_display"><small>Not yet selected</small></p>
+                                            </div>    
                                         </div>
-                                        <div class="col-xs-11">
-                                            <input type="text" class="form-control" placeholder="Date (click here...)" id="visitor_datepicker" name="returnDate" />
+                                        <br />
+                                        <label for="visitor_company">Your company</label>
+                                        <!--company-->
+                                        <input class="form-control" type="text" id="visitor_company" name="company" />
+                                        <br />
+                                        <label for="visitor_depart_time">When will you be leaving us?</label>
+                                        <div class="row">
+                                            <!-- Visitor datepicker goes here. -->
+                                            <div class="col-xs-1">
+                                                <p><font size="6"><span class="glyphicon glyphicon-calendar"></span></font></p>
+                                            </div>
+                                            <div class="col-xs-11">
+                                                <input type="text" class="form-control" placeholder="Date (click here...)" id="visitor_datepicker" name="returnDate" />
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-xs-1">
-                                            <p><font size="6"><span class="glyphicon glyphicon-time"></span></font></p>
+                                        <div class="row">
+                                            <div class="col-xs-1">
+                                                <p><font size="6"><span class="glyphicon glyphicon-time"></span></font></p>
+                                            </div>
+                                            <div class="col-xs-11">
+                                                <input class="form-control" type="text" placeholder="Time (click here...)" id="visitor_timepicker" autocomplete="off" name="returnTime" />
+                                            </div>
                                         </div>
-                                        <div class="col-xs-11">
-                                            <input class="form-control" type="text" placeholder="Time (click here...)" id="visitor_timepicker" autocomplete="off" name="returnTime" />
-                                        </div>
-                                    </div>
-                                    <br />
-                                    <!-- Hidden input field for our departure datetime. -->
-                                    <input type="hidden" id="intendedDepartTime" name="intendedDepartTime" value="0" />
-                                    <button id="save_new_visitor" type="submit" class="btn btn-info btn-block"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>
+                                        <br />
+                                        <!-- intendedDepartTime -->
+                                        <input type="hidden" id="intendedDepartTime" name="intendedDepartTime" value="0" />
+                                        <button id="save_new_visitor" type="submit" class="btn btn-info btn-block"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>
+                                    </div>  
                                 </div>
                             </form>
                         </div>
