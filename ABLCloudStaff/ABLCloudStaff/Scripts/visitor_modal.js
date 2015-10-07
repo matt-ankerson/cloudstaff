@@ -40,8 +40,7 @@ $(document).ready(function () {
         raw_date = new Date();
         date_today = new Date(raw_date.getFullYear(), raw_date.getMonth(), raw_date.getDate());
         // Get the js date representation of the date_text
-        given_date = construct_date(date_text);
-        console.log(given_date, date_today);
+        given_date = construct_js_date(date_text);
         // Compare today's date to the date text
         if (given_date <= date_today)
         {
@@ -56,11 +55,8 @@ $(document).ready(function () {
     }
 
     // Return a js date object from a given
-    function construct_date(date_str) {
+    function construct_js_date(date_str) {
         var arr = date_str.split('/');
-        // arr[0] = mm
-        // arr[1] = dd
-        // arr[2] = yyyy
         mm = parseInt(arr[0]) - 1; // months are indexed from 0 in JS
         dd = parseInt(arr[1]);
         yyyy = parseInt(arr[2]);
@@ -68,15 +64,60 @@ $(document).ready(function () {
         return new Date(yyyy, mm, dd);
     }
 
+    function construct_str_date(js_date) {
+        return js_date.getMonth() + '/' + js_date.getDate() + '/' + js_date.getFullYear();
+    }
+
     function pretty_datetime(ugly_date, ugly_time) {
         // Convert a date from the datepicker into something C# can parse.
-        var arr = ugly_date.split('/');
+        var date_arr = ugly_date.split('/');
         // arr[0] = mm
         // arr[1] = dd
         // arr[2] = yyyy
-        var pretty_datetime = arr[2] + '-' + arr[0] + '-' + arr[1];
+        var time_left = ugly_time.replace(ugly_time.slice(-2), '');
+        var time_right = ugly_time.slice(-2);
+        var pretty_datetime = date_arr[2] + '-' + date_arr[0] + '-' + date_arr[1] + ' ' + time_left + ' ' + time_right;
         return pretty_datetime;
     }
+
+    // Submit button click handler
+    $('#save_new_visitor').on('click', function (e) {
+        e.preventDefault();
+
+        // Build a c# parseable datetime and save it in the hidden field.
+
+        csharp_parsable_datetime = null;
+        date = null;
+        time = null;
+        
+        // Did the user supply a date?
+        if ($('#visitor_datepicker').val() == null) {
+            // No date supplied, use today's date.
+            date = construct_str_date(new Date());
+        }
+        else {
+            // Date supplied, pull from input box.
+            date = $('#visitor_datepicker').val();
+        }
+        // Did the user supply a time?
+        if ($('#visitor_timepicker').val() == null) {
+            // No time supplied, use 5pm.
+            time = '5:00pm';
+        }
+        else {
+            // Time supplied, pull from input box
+            time = $('#visitor_timepicker').val();
+        }
+
+        // Problems here.*****
+        csharp_parsable_datetime = pretty_datetime(date, time);
+
+        // Save in hidden field.
+        $('intendedDepartTime').val(csharp_parsable_datetime);
+
+        // Submit the form.
+        $('#add_visitor_form').submit();
+    });
 
     // /visitor modal date / time
     //-----------------------------------------------------

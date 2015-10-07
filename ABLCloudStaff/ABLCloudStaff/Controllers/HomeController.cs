@@ -68,6 +68,20 @@ namespace ABLCloudStaff.Controllers
             int visitorUserID = 0;
             int actualUserBeingVisitedID = 0;
 
+            DateTime timeOfDeparture = DateTime.Now;
+
+            // Try parse the given return time.
+            try
+            {
+                timeOfDeparture = DateTime.Parse(intendedDepartTime);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = "Could not add visitor, invalid return time given.";
+                List<Core> coreInfo = CoreUtilities.GetAllCoreInstances();
+                return View("Index", coreInfo);
+            }  
+
             try
             {
                 // Only accept this visit if a 'userBeingVisited' is defined.
@@ -91,20 +105,7 @@ namespace ABLCloudStaff.Controllers
 
                     // If we've now got a visitor user and a visited user:
                     if ((visitorUserID != 0) && (actualUserBeingVisitedID != 0))
-                    {
-                        DateTime timeOfDeparture = DateTime.Now;
-
-                        // Try parse the given return time.
-                        try
-                        {
-                            timeOfDeparture = DateTime.Parse(intendedDepartTime);
-                        }
-                        catch (Exception ex)
-                        {
-                            ViewBag.Message = "Could not add visitor, invalid return time given.";
-                            List<Core> coreInfo = CoreUtilities.GetAllCoreInstances();
-                            return View("Index", coreInfo);
-                        }     
+                    {   
 
                         // Now we have everything we need to add a visitor log
                         VisitorLogUtilities.LogVisitorIn(visitorUserID, actualUserBeingVisitedID, company, timeOfDeparture);
