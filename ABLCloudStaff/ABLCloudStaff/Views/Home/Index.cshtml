@@ -21,6 +21,7 @@
     <script src="../../Scripts/datetime_selection.js"></script>
     <script src="../../Scripts/link_modifier.js"></script>
     <script src="../../Scripts/jquery.timepicker.js"></script>
+    <script src="../../Scripts/admin_error_window.js"></script>
     <link rel="stylesheet" href="../../Content/Site.css">
     <link rel="stylesheet" href="../../Content/mobile-range-slider.css" />
     <link rel="stylesheet" href="../../Content/jquery-ui.min.css" />
@@ -201,7 +202,8 @@
                                     {
                                         <div class="centered">
                                             <!-- Button to handle visitor deletion. -->
-                                            <button class="btn btn-info">Leave Office</button>
+                                            <button class="remove_user_button btn btn-info" value="@core.UserID">Leave Office</button>
+                                            <input id="userID" type="hidden" value="@core.UserID" />
                                         </div>
                                     }
                                     else
@@ -351,15 +353,38 @@
                                 <br />        
                                 <div class="form-group container-fluid">
                                     <div class="ui-widget">
-                                        <label for="visitor_firstname">First Name</label>
-                                        <!--firstName-->
-                                        <input class="form-control" type="text" id="visitor_firstname" name="firstName" required />
-                                        <br />
-                                        <label for="visitor_lastname">Last Name</label>
-                                        <!--lastName-->
-                                        <input class="form-control" type="text" id="visitor_lastname" name="lastName" required />
-                                        <br />
 
+                                        <!-- New visitor -->
+                                        <!----------------------------------------------------------------------------------------------->
+                                        <div id="new_visitor_control_cluster">
+                                            <label for="visitor_firstname">First Name</label>
+                                            <!--firstName-->
+                                            <input class="form-control" type="text" id="visitor_firstname" name="firstName" required />
+                                            <br />
+                                            <label for="visitor_lastname">Last Name</label>
+                                            <!--lastName-->
+                                            <input class="form-control" type="text" id="visitor_lastname" name="lastName" required />
+                                        </div>
+                                        <!----------------------------------------------------------------------------------------------->
+
+                                        <!-- Returning visitor -->
+                                        <!----------------------------------------------------------------------------------------------->
+                                        <div id="returning_visitor_control_cluster" hidden>
+                                            <label for="returning_visitor_autocomplete">Your Name</label>
+                                            <div class="row">
+                                                <div class="col-xs-8">
+                                                    <input class="form-control" id="returning_visitor_autocomplete" autocomplete="off" placeholder="First or Last name..." required />
+                                                    <!--returning visitor ID-->
+                                                    <input type="hidden" id="returning_visitor_ID" name="existingVisitorUserID" />
+                                                </div>
+                                                <div class="col-xs-4">
+                                                    <p id="returning_visitor_ID_display"><small>Not yet selected</small></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!----------------------------------------------------------------------------------------------->
+
+                                        <br />
                                         <label for="visiting_user_autocomplete">Who're you visiting?</label>
                                         <div class="row">
                                             <div class="col-xs-8">

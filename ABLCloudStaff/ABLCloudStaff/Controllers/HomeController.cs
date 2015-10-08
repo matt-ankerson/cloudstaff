@@ -105,6 +105,8 @@ namespace ABLCloudStaff.Controllers
                         CoreUtilities.AddCore(visitorUserID, Constants.VISITING_STATUS, Constants.DEFAULT_LOCATION);
                         // Set the 'intendedEndTime' on this core instance to be the visitor's intended time of departure.
                         CoreUtilities.SetReturnTimeForUser(visitorUserID, timeOfDeparture);
+                        // Activate the user. (so they show up on the main board)
+                        UserUtilities.FlagUserActive(visitorUserID);
                     }
 
                     // If we've now got a visitor user and a visited user:
@@ -149,7 +151,7 @@ namespace ABLCloudStaff.Controllers
         /// </remarks>
         /// <param name="visitorUserID">The visitor to remove.</param>
         /// <returns></returns>
-        public ActionResult RemoveVisitor(string visitorUserID)
+        public JsonResult RemoveVisitor(string visitorUserID)
         {
             try
             {
@@ -165,12 +167,10 @@ namespace ABLCloudStaff.Controllers
             }
             catch (Exception ex)
             {
-                ViewBag.Message = "Could not remove visitor, " + ex.Message;
-                List<Core> coreInfo = CoreUtilities.GetAllCoreInstances();
-                return View("Index", coreInfo);
+                return Json(ex.Message, JsonRequestBehavior.DenyGet);
             }
 
-            return RedirectToAction("Index", "Home");
+            return Json("request-ok", JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
@@ -183,6 +183,25 @@ namespace ABLCloudStaff.Controllers
             Dictionary<string, string> usersDict = new Dictionary<string, string>();
 
             List<User> rawUsers = UserUtilities.GetGeneralAndAdminUsers();
+
+            foreach (User u in rawUsers)
+            {
+                usersDict.Add(u.UserID.ToString(), u.FirstName + " " + u.LastName);
+            }
+
+            return Json(usersDict, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// Get a dictionary of all visitor type users and thier respective IDs
+        /// </summary>
+        /// <returns>Json dictionary of users and their IDs.</returns>
+        public JsonResult GetVisitorUsers()
+        {
+            // This dictionary will hold userID and corresponding name
+            Dictionary<string, string> usersDict = new Dictionary<string, string>();
+
+            List<User> rawUsers = UserUtilities.GetVisitorUsers();
 
             foreach (User u in rawUsers)
             {

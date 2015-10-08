@@ -61,6 +61,30 @@ namespace ABLCloudStaff.Biz_Logic
         }
 
         /// <summary>
+        /// Get a list of all users in the system of type visitor.
+        /// </summary>
+        /// <returns>List of visitor users.</returns>
+        public static List<User> GetVisitorUsers()
+        {
+            List<User> visitors = new List<User>();
+
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    visitors = context.Users.Include("UserType").Where(x => x.UserType.Type == Constants.VISITOR_TYPE).OrderBy(x => x.FirstName).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
+            }
+
+            return visitors;
+        }
+
+        /// <summary>
         /// Gets a single username
         /// </summary>
         /// <param name="userID">Which username do you want?</param>
@@ -309,6 +333,32 @@ namespace ABLCloudStaff.Biz_Logic
                     if (userToDelete != null)
                     {
                         userToDelete.IsActive = false;
+                        context.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Set the IsDeleted flag on the user instance to false.
+        /// </summary>
+        /// <param name="userID">The user on which to perform the update.</param>
+        public static void FlagUserActive(int userID)
+        {
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    var userToActivate = context.Users.SingleOrDefault(x => x.UserID == userID);
+
+                    if (userToActivate != null)
+                    {
+                        userToActivate.IsActive = true;
                         context.SaveChanges();
                     }
                 }

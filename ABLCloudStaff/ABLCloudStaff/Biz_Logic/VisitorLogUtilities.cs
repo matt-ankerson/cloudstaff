@@ -73,7 +73,7 @@ namespace ABLCloudStaff.Biz_Logic
                 using (var context = new ABLCloudStaffContext())
                 {
                     // Get the appropriate VisitorLog instance.
-                    VisitorLog vl = context.VisitorLogs.OrderByDescending(x => x.VisitorLogID).Where(x => x.VisitorLogID == visitorUserID).FirstOrDefault();
+                    VisitorLog vl = context.VisitorLogs.OrderByDescending(x => x.VisitorLogID).Where(x => x.VisitorUserID == visitorUserID).FirstOrDefault();
 
                     // Ensure this is a valid visitor
                     if (vl == null)

@@ -115,7 +115,6 @@ $(document).ready(function () {
         }
 
         csharp_parsable_datetime = pretty_datetime(date, time);
-        alert(csharp_parsable_datetime);
 
         // Save in hidden field.
         $('#intendedDepartTime').val(csharp_parsable_datetime);
@@ -134,15 +133,25 @@ $(document).ready(function () {
 
     // Click handlers:
     new_visitor_button.on('click', function (e) {
+
         // Transfer bold font to this button.
         returning_visitor_button.html('Returning Visitor');
         new_visitor_button.html('<b>New Visitor</b>');
+
+        // Make the new visitor control cluster visible.
+        $('#new_visitor_control_cluster').show();
+        $('#returning_visitor_control_cluster').hide();
     });
 
     returning_visitor_button.on('click', function (e) {
+
         // Transfer bold font to this button.
         returning_visitor_button.html('<b>Returning Visitor</b>');
         new_visitor_button.html('New Visitor');
+
+        // Make the returning visitor control cluster visible.
+        $('#new_visitor_control_cluster').hide();
+        $('#returning_visitor_control_cluster').show();
     });
 
     //-----------------------------------------------------
@@ -190,4 +199,84 @@ $(document).ready(function () {
             }
         });
     }
+
+    // /autocomplete for choosing a person to visit.
+    //-------------------------------------------------------
+    // Autocomplete for a returning visitor.
+
+    var get_users_url = "/Home/GetVisitorUsers";
+
+    $.ajax({
+        type: "GET",
+        url: get_users_url,
+        data: null,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: visitor_users_success_func,
+        error: visitor_users_error_func
+    });
+
+    function visitor_users_success_func(data, status) {
+        var dict = data;
+        availableTags = [];
+        // Pull values out of dictionary and assign to array
+        for (var key in dict) {
+            availableTags.push({ label: dict[key], value: key });
+        }
+
+        setup_returning_visitor_autocomplete(availableTags)
+    }
+
+    function visitor_users_error_func(error) {
+        // Do nothing.
+    }
+
+    function setup_returning_visitor_autocomplete(availableTags) {
+
+        $("#returning_visitor_autocomplete").autocomplete({
+            source: availableTags,
+            appendTo: '#visitor_modal',
+            select: function (event, ui) {
+                $('#returning_visitor_autocomplete').val(ui.item.label);
+                $('#returning_visitor_ID').val(ui.item.value);
+                $('#returning_visitor_ID_display').html('<small>' + ui.item.label + ' <span class="glyphicon glyphicon-ok"></span></small>');
+                return false;
+            }
+        });
+    }
+
+    // /autocomplete for returning visitor.
+    //-------------------------------------------------------
+    // Leave Office button. (removing a visitor)
+
+    $('.remove_user_button').on('click', function (e) {
+        // Get the button that was clicked
+        button = $(this);
+        // Get the userID of the visitor to remove.
+        visitor_user_ID = button.val();
+
+        // Use Ajax to perform a removal of this visitor / user serverside.
+
+        var removeVisitorURL = '/Home/RemoveVisitor';
+
+        // Get statuses
+        $.ajax({
+            type: "GET",
+            url: removeVisitorURL,
+            data: { visitorUserID: visitor_user_ID },
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: remove_visitor_success_func,
+            error: errorFunc
+        });
+
+
+        function remove_visitor_success_func(data, status) {
+            window.location.href = '/Home/Index';
+        }
+
+        function errorFunc(error) {
+            window.location.href = '/Home/Index';
+        }
+    });
 });
