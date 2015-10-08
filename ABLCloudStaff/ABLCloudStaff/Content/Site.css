@@ -1,6 +1,11 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
+    background-color: #7a7a7a;
+}
+
+.no_top_margin {
+    padding-top: 0px;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -39,4 +44,202 @@ input[type="checkbox"].input-validation-error {
 
 .validation-summary-valid {
     display: none;
+}
+
+/**************************************/
+
+/* For the modal boxes*/
+
+.modal-header, h4, .close {
+    background-color: #5cb85c;
+    color: white !important;
+    text-align: center;
+    font-size: 30px;
+}
+
+.modal-footer {
+    background-color: #f9f9f9;
+}
+
+#status-list,
+#location-list {
+    width: 200px;
+}
+
+#cancel_time {
+    visibility: hidden;
+}
+
+
+.core_modal_form_control {
+    display: inline;
+}
+
+
+#time_display {
+    text-align: center;
+}
+
+/*********************************/
+
+/* Toggle switches */
+.container-switch {
+    height: 35px;
+    text-align: center;
+    
+    vertical-align: middle;
+}
+
+/*********************************/
+
+/* Main Board */
+
+/* Navigation */
+#cloudstaff_title a,
+.nav.navbar-nav li a {
+    color: #0099da;
+}
+
+#title_image {
+    padding-bottom: 3px;
+}
+
+.navbar.navbar-inverse.navbar-fixed-top {
+    background-color: #e5e5e5;
+}
+
+#cloudstaff_title {
+    display: inline;
+}
+
+#redundant_link,
+#redundant_link:hover {
+    cursor: default;
+}
+
+#visitor_button {
+    margin-top: 7px;
+}
+
+/* Staff modules */
+.top-half-of-panel{
+    cursor: pointer;
+    margin-top: 40px;
+    box-shadow:1px 1px 5px 5px rgba(0,0,0,0.5);
+ -webkit-box-shadow:2px 2px 10px 10px rgba(0,0,0,0.5);
+ -moz-box-shadow:2px 2px 10px 10px rgba(0,0,0,0.5);
+}
+
+.default-cursur {
+    cursor: default;
+}
+
+.staff-modules-panels {
+    background-color: lightgray;
+}
+
+.staff-name {
+    white-space: nowrap;
+}
+
+.out_of_time {
+    color: red;
+}
+
+.centered {
+    width: 60%;
+    margin: auto;
+}
+
+/* Main Board Modal */
+#main-modal-header,
+#modal-title {
+    background-color: #0099da;
+}
+
+.global_modal_header {
+    background-color: #0099da;
+}
+
+#custom_track {
+    z-index: 0;
+}
+
+/********************************/
+
+/* Administration screen */
+#admin-foreground {
+    background-color: lightgray;
+}
+
+.nested-tabs {
+    width: inherit;
+}
+
+#spinner-container {
+    text-align: center;
+}
+
+#spn-user-table-loading {
+    margin: auto;
+}
+
+#add_user_password_error {
+    color: red;
+}
+
+/* Administration EDIT Modals */
+#admin-edit-status-modal-header,
+#admin-edit-location-modal-header,
+#admin-edit-user-modal-header {
+    background-color: lightgray;
+    padding:35px 50px;
+}
+
+#edit-status-modal-title,
+#edit-location-modal-title,
+#edit-user-modal-title {
+    background-color: lightgray;
+}
+
+/***********************************/
+
+/* Login Form for Administration */
+#login_form {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+/***********************************/
+
+.abacusbio_blue {
+    color: #0099da;
+}
+
+.no__bottom_margin {
+    margin-bottom: 0px;
+}
+
+.small_top_margin {
+    margin-top: 25px;
+}
+
+.label-info {
+    background-color:#0099da
+}
+
+.label-info[href]:focus,
+.label-info[href]:hover {
+    background-color:#31b0d5
+}
+
+.small_inout {
+    display: block;
+    width: 40px;
+    line-height: 20px;
+    text-align: center;
+    vertical-align: middle;
+}
+.vertical_aligned {
+    margin-top: 8px;
 }

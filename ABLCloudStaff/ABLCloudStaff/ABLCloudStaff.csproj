@@ -29,6 +29,17 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PublishDatabaseSettings>
+      <Objects>
+        <ObjectGroup Name="ABLCloudStaff" Order="1">
+          <Destination Path="Data Source=localhost\SQLEXPRESS%3bInitial Catalog=ABLCloudStaff%3bIntegrated Security=True" />
+          <Object Type="DbFullSql" Enabled="True">
+            <PreSource Path="Data Source=localhost\SQLEXPRESS%3bInitial Catalog=ABLCloudStaff%3bIntegrated Security=True" ScriptSchema="True" ScriptData="False" CopyAllFullTextCatalogs="False" DriDefaults="True" />
+            <Source Path="obj\Debug\AutoScripts\ABLCloudStaff_SchemaOnly.sql" Transacted="True" />
+          </Object>
+        </ObjectGroup>
+      </Objects>
+    </PublishDatabaseSettings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -46,9 +57,17 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -58,6 +77,14 @@
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -99,10 +126,6 @@
     <Reference Include="System.Web.Optimization">
       <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.1\lib\net40\System.Web.Optimization.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <Private>True</Private>
-      <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
@@ -119,38 +142,117 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Board_Logic\CoreUtilities.cs" />
-    <Compile Include="Board_Logic\UserUtilities.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Biz_Logic\AuthenticationUtilities.cs" />
+    <Compile Include="Biz_Logic\ChangeLogUtilities.cs" />
+    <Compile Include="Biz_Logic\Constants.cs" />
+    <Compile Include="Biz_Logic\CoreUtilities.cs" />
+    <Compile Include="Biz_Logic\DateTimeUtilities.cs" />
+    <Compile Include="Biz_Logic\EncryptionUtilities.cs" />
+    <Compile Include="Biz_Logic\ErrorUtilities.cs" />
+    <Compile Include="Biz_Logic\LocationUtilities.cs" />
+    <Compile Include="Biz_Logic\StatusUtilities.cs" />
+    <Compile Include="Biz_Logic\UserUtilities.cs" />
+    <Compile Include="Biz_Logic\VisitorLogUtilities.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\CloudStaffApiController.cs" />
+    <Compile Include="Controllers\DisplaySmallController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginAdminController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ABLCloudStaffContext.cs" />
+    <Compile Include="Models\Authentication.cs" />
     <Compile Include="Models\Core.cs" />
+    <Compile Include="Models\CreateABLCloudStaffIfNotExists.cs" />
     <Compile Include="Models\DropCreateABLCloudStaffAlways.cs" />
+    <Compile Include="Models\Error.cs" />
     <Compile Include="Models\Location.cs" />
+    <Compile Include="Models\LocationChangeLog.cs" />
     <Compile Include="Models\Status.cs" />
+    <Compile Include="Models\StatusChangeLog.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserLocation.cs" />
     <Compile Include="Models\UserStatus.cs" />
+    <Compile Include="Models\UserType.cs" />
+    <Compile Include="Models\VisitorLog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-switch.css" />
+    <Content Include="Content\bootstrap-switch.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\images\calendar.gif" />
+    <Content Include="Content\images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
+    <Content Include="Content\images\ui-bg_diagonals-thick_20_666666_40x40.png" />
+    <Content Include="Content\images\ui-bg_flat_10_000000_40x100.png" />
+    <Content Include="Content\images\ui-bg_glass_100_f6f6f6_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_100_fdf5ce_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\images\ui-bg_gloss-wave_35_f6a828_500x100.png" />
+    <Content Include="Content\images\ui-bg_highlight-soft_100_eeeeee_1x100.png" />
+    <Content Include="Content\images\ui-bg_highlight-soft_75_ffe45c_1x100.png" />
+    <Content Include="Content\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\images\ui-icons_228ef1_256x240.png" />
+    <Content Include="Content\images\ui-icons_ef8c08_256x240.png" />
+    <Content Include="Content\images\ui-icons_ffd27a_256x240.png" />
+    <Content Include="Content\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\jquery-ui.min.css" />
+    <Content Include="Content\jquery-ui.structure.min.css" />
+    <Content Include="Content\jquery-ui.theme.min.css" />
+    <Content Include="Content\jquery.timepicker.css" />
+    <Content Include="Content\mobile-range-slider.css" />
+    <Content Include="Content\slider.css" />
+    <Content Include="Content\spinner.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\bg.png" />
+    <Content Include="Scripts\add_location_autocomplete.js" />
+    <Content Include="Scripts\add_location_form.js" />
+    <Content Include="Scripts\add_status_autocomplete.js" />
+    <Content Include="Scripts\add_status_form.js" />
+    <Content Include="Scripts\add_user_form.js" />
+    <Content Include="Scripts\admin_error_window.js" />
+    <Content Include="Scripts\all_locations_table.js" />
+    <Content Include="Scripts\all_statuses_table.js" />
+    <Content Include="Scripts\bootstrap-slider.js" />
+    <Content Include="Scripts\bootstrap-switch.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ClassDiagram1.cd" />
+    <Content Include="Content\slider.less" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="Properties\PublishProfiles\AbacusBio Zip Package.pubxml" />
+    <None Include="Properties\PublishProfiles\AbacusBio.pubxml" />
+    <None Include="Properties\PublishProfiles\CloudStaff.pubxml" />
+    <None Include="Properties\PublishProfiles\Default Package.pubxml" />
+    <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
+    <None Include="Properties\PublishProfiles\Default.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\changelog_tables.js" />
+    <Content Include="Scripts\fill_user_table.js" />
+    <Content Include="Scripts\init_modal.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Scripts\jquery-ui.min.js" />
+    <Content Include="Scripts\jquery.min.js" />
+    <Content Include="Scripts\jquery.timepicker.js" />
+    <Content Include="Scripts\less.js" />
+    <Content Include="Scripts\link_modifier.js" />
+    <Content Include="Scripts\mobile-range-slider.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\remove-user_autocomplete.js" />
+    <Content Include="Scripts\remove_location_autocomplete.js" />
+    <Content Include="Scripts\remove_status_autocomplete.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\swipe_to_change_status.js" />
+    <Content Include="Scripts\datetime_selection.js" />
+    <Content Include="Scripts\visitor_modal.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -163,10 +265,11 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Views\Admin\Admin.cshtml" />
+    <Content Include="Views\LoginAdmin\LoginAdmin.cshtml" />
+    <Content Include="Views\DisplaySmall\DisplaySmall.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -90,10 +90,13 @@
     <Reference Include="System.Net.Http.WebRequest" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Board_Logic\CoreUtilitiesTest.cs" />
-    <Compile Include="Board_Logic\UserUtilitiesTest.cs" />
+    <Compile Include="Biz_Logic\ChangeLogUtilitiesTest.cs" />
+    <Compile Include="Biz_Logic\CoreUtilitiesTest.cs" />
+    <Compile Include="Biz_Logic\LocationUtilitiesTest.cs" />
+    <Compile Include="Biz_Logic\StatusUtilitiesTest.cs" />
+    <Compile Include="Biz_Logic\AuthenticationUtilitiesTest.cs" />
+    <Compile Include="Biz_Logic\UserUtilitiesTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Controllers\HomeControllerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />
@@ -106,6 +109,9 @@
       <Project>{EE8779AB-4107-4BDB-AA8E-CD5ABA81C22B}</Project>
       <Name>ABLCloudStaff</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controllers\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

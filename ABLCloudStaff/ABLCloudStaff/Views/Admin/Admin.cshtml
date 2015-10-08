@@ -1,0 +1,539 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <script src="../../Scripts/jquery.min.js"></script>
+    <script src="../../Scripts/bootstrap.min.js"></script>
+    <script src="../../Scripts/jquery-ui.min.js"></script>
+    <script src="../../Scripts/admin_error_window.js"></script>
+    <script src="../../Scripts/remove-user_autocomplete.js"></script>
+    <script src="../../Scripts/fill_user_table.js"></script>
+    <script src="../../Scripts/changelog_tables.js"></script>
+    <script src="../../Scripts/add_user_form.js"></script>
+    <script src="../../Scripts/all_statuses_table.js"></script>
+    <script src="../../Scripts/add_status_autocomplete.js"></script>
+    <script src="../../Scripts/add_status_form.js"></script>
+    <script src="../../Scripts/remove_status_autocomplete.js"></script>
+    <script src="../../Scripts/all_locations_table.js"></script>
+    <script src="../../Scripts/add_location_form.js"></script>
+    <script src="../../Scripts/add_location_autocomplete.js"></script>
+    <script src="../../Scripts/remove_location_autocomplete.js"></script>
+    <script src="../../Scripts/link_modifier.js"></script>
+    <link rel="stylesheet" href="../../Content/bootstrap.min.css">
+    <link rel="stylesheet" href="../../Content/spinner.css" type="text/css">
+    <link rel="stylesheet" href="../../Content/Site.css">
+    <link rel="stylesheet" href="../../Content/bootstrap-switch.css">
+    <link rel="stylesheet" href="../../Content/jquery-ui.min.css"/>
+
+    <!-- favicon from AbacusBio website -->
+    <link rel="apple-touch-icon" sizes="144x144" href="http://www.abacusbio.com/themes/abacusbio/assets/images/apple-touch-144x144-icon.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="http://www.abacusbio.com/themes/abacusbio/assets/images/apple-touch-114x114-icon.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="http://www.abacusbio.com/themes/abacusbio/assets/images/apple-touch-72x72-icon.png" />
+    <link rel="apple-touch-icon" href="http://www.abacusbio.com/themes/abacusbio/assets/images/apple-touch-57x57-icon.png" />
+    <link rel="shortcut icon" href="http://www.abacusbio.com/themes/abacusbio/favicon.ico" type="image/x-icon" />
+
+    <title>CloudStaff Admin</title>
+
+    <script type="text/javascript">
+        jQuery(document).ready(function ($) {
+            // Create tabs
+            $('.tabs').tab();
+        });
+    </script>
+
+</head>
+<body>
+    <!-- Navigation Bar-->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <div id="cloudstaff_title">
+                    <a href="/Home/Index" class="navbar-brand" id="redundant_link">
+                        <span>
+                            <img id="title_image" src="http://www.abacusbio.com/themes/abacusbio/assets/images/apple-touch-57x57-icon.png" width="25" height="25" />
+                        </span>
+                        CloudStaff
+                    </a>
+                </div>
+
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Status Board", "Index", "Home")</li>
+                    <li><a href="/Admin/Admin">Administration <span class="glyphicon glyphicon-refresh"></span></a></li>
+                    <li><a href="http://goo.gl/forms/u1cbZStRaA" target="_blank">Submit Feedback <span class="glyphicon glyphicon-list-alt"></span></a></li>
+                    <li><a href="/Admin/Logout" class="pull-right">Logout <span class="glyphicon glyphicon-log-out"></span></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <br />
+
+    @if(ViewBag.Message != null)
+    {
+        <div class="row" id="admin_error_window">
+            <div class="container-fluid">
+                <div class="col-md-12">
+                    <div class="container well">
+                        @ViewBag.Message
+                        <button type="button" id="admin_error_window_close" class="btn btn-danger pull-right">&times;</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="container-fluid">
+        <div class="row">
+
+            <!-- Outer tab set -->
+            <div class="container well" id="admin-foreground">
+                <div id="all-content">
+                    <ul class="tabs nav nav-tabs" data-tabs="tabs">
+                        <li class="active"><a href="#users" data-toggle="tab">Users</a></li>
+                        <li><a href="#statuses" data-toggle="tab">Statuses</a></li>
+                        <li><a href="#locations" data-toggle="tab">Locations</a></li>
+                        <li><a href="#change-log" data-toggle="tab">Change Log</a></li>
+                    </ul>
+                    <div id="outer-tab-content" class="tab-content">
+                        <div class="tab-pane active" id="users">
+
+                            <!-- User tab set -->
+                            <div class="container well nested-tabs">
+                                <div id="user-content">
+                                    <ul class="tabs nav nav-tabs" data-tabs="tabs">
+                                        <li class="active"><a href="#see-users" data-toggle="tab">See All</a></li>
+                                        <li><a href="#add-user" data-toggle="tab">Add User</a></li>
+                                        <li><a href="#remove-user" data-toggle="tab">Remove User</a></li>
+                                    </ul>
+                                    <div class="tab-content">
+
+                                        <!-- See all users -->
+                                        <div class="tab-pane active" id="see-users">
+                                            <h3 id="head-user-table">All Users</h3>
+                                            <!-- Put a spinner here until the user-table has loaded. -->
+                                            <div id="spinner-container">
+                                                <div id="spn-user-table-loading" class="spinner-loader">
+                                                    Loading…
+                                                </div>
+                                            </div>    
+                                            <!-- User table goes here. -->
+                                        </div>
+
+                                        <!-- Add User Form -->
+                                        <div class="tab-pane" id="add-user">
+                                            <form id="add-user-form" action="/Admin/AddNewUser" method="post" role="form">
+                                                <h3>Add new user</h3>
+                                                <div class="form-group container">
+                                                    <label for="first-name-input">First Name</label>
+                                                    <input type="text" id="first-name-input" class="form-control" placeholder="John" name="firstName" required />
+                                                    <br />
+                                                    <label for="last-name-input">Last Name</label>
+                                                    <input type="text" id="last-name-input" class="form-control" placeholder="Smith" name="lastName" required />
+                                                    <br />
+                                                    <label for="username-input">Username</label>
+                                                    <input type="text" id="username-input" class="form-control" name="username" required />
+                                                    <br />
+                                                    <p id="add_user_password_error" hidden>Passwords must match</p>
+                                                    <label for="password-input">Password</label>
+                                                    <input type="password" id="password-input" class="form-control" name="password" required />
+                                                    <label for="password-confirm-input">Confirm Password</label>
+                                                    <input type="password" id="password-confirm-input" class="form-control" name="passwordConfirm" required />
+                                                    <br />
+                                                    <label for="user-type-list">User Type</label>
+                                                    <select id="user-type-list" class="form-control" name="userTypeID">
+                                                        <!-- User type options go here. -->
+                                                    </select>
+                                                    <br />
+                                                    <p>
+                                                    <label for="user-active-status">Active User: </label>&nbsp;
+                                                    <input id="user-active-status" type="checkbox" name="active" checked/>
+                                                    </p>
+                                                    <br />
+                                                    <button id="new-user-submit" type="submit" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>
+                                                </div>
+                                            </form>
+                                            
+                                        </div>
+
+                                        <!-- Remove User Form -->
+                                        <div class="tab-pane" id="remove-user">
+                                            <form id="remove-user" action="/Admin/RemoveUser" method="post" role="form">
+                                                <h3>Remove User</h3>
+                                                <div class="form-group container">
+                                                    <p>This will not 'delete' the user, the user will be flagged as inactive.</p>
+                                                    <div class="ui-widget">
+                                                        <label for="remove-user-autocomplete">Which user?</label>
+                                                        <input id="remove-user-autocomplete" class="form-control" placeholder="First or Last name" required>
+                                                        <input type="hidden" name="userID" id="remove-userID" />
+                                                        <br />
+                                                        <button id="remove-user-submit" type="submit" class="btn btn-default">Remove User</button>
+                                                    </div>
+                                                </div>
+                                            </form>             
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>          
+                            <!-- /end User tab set -->
+
+                        </div>
+                        <div class="tab-pane" id="statuses">
+
+                            <!-- Status tab set -->
+                            <div class="container well nested-tabs">
+                                <div id="status-content">
+                                    <ul class="tabs nav nav-tabs" data-tabs="tabs">
+                                        <li class="active"><a href="#see-all-statuses" data-toggle="tab">See All</a></li>
+                                        <li><a href="#add-status" data-toggle="tab">Add Status</a></li>
+                                        <li><a href="#remove-status" data-toggle="tab">Remove Status</a></li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div class="tab-pane active" id="see-all-statuses">
+                                            <h3>All Statuses</h3>
+                                            <div class="container nested-tabs">
+                                                <div class="panel panel-default">
+                                                    <!-- Table -->
+                                                    <table id="all-statuses-table" class="table table-striped">
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Status name</th>
+                                                            <th>Users Available</th>
+                                                            <th>Edit</th>
+                                                        </tr>
+                                                        <!-- Statuses go here. -->
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="add-status">
+                                            <h3>Add Status</h3>
+                                            <div class="container nested-tabs">
+                                                <!-- Add Status Form -->
+                                                <form id="add-status-form" action="/Admin/AddStatus" method="post" role="form">
+                                                    <hr />
+                                                    <label for="add_status_for_one_or_all">Add for all users</label>&nbsp;
+                                                    <input type="checkbox" id="add_status_for_one_or_all" checked />
+                                                    <hr />
+                                                    <label for="new_status_name">Status Name</label>
+                                                    <input type="text" id="new_status_name" class="form-control" placeholder="At John's place" name="statusName" required /><br />
+                                                    <label for="new_status_worksite">Are people considered <i>available</i> when assigned this status?</label>&nbsp;
+                                                    <input type="checkbox" id="new_status_worksite" name="available" />                     
+                                                    <hr />
+                                                    <fieldset id="fldst_status_for_single_user" disabled="disabled">
+                                                        <div class="ui-widget">
+                                                            <label for="add-status-user-autocomplete">Which user?</label>
+                                                            <input id="add-status-user-autocomplete" class="form-control" placeholder="First or Last name" required>
+                                                            <input type="hidden" name="userID" id="add-status-userID" />
+                                                        </div>
+                                                    </fieldset>
+                                                    <br /><br />
+                                                    <button id="add-status-submit" type="submit" class="btn btn-default">Add Status</button>
+                                                </form>
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="tab-pane" id="remove-status">
+                                            <h3>Remove Status</h3>
+                                            <div class="container nested-tabs">
+                                                <!-- Remove Status Form -->
+                                                <form id="remove-status-form" action="/Admin/RemoveStatus" method="post" role="form">
+                                                    <div class="ui-widget">
+                                                        <label for="remove-status-user-autocomplete">Which Status?</label>
+                                                        <input id="remove-status-user-autocomplete" class="form-control" placeholder="Status name" required>
+                                                        <br />
+                                                        <p id="remove-status-userID-display"></p>
+                                                        <input type="hidden" name="statusID" id="remove-status-userID" />
+                                                    </div>
+                                                    <br />
+                                                    <button id="remove-status-submit" type="submit" class="btn btn-default">Remove Status</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /end Status tab set -->
+
+                        </div>
+                        <div class="tab-pane" id="locations">
+
+                            <!-- Location tab set -->
+                            <div class="container well nested-tabs">
+                                <div id="location-content">
+                                    <ul class="tabs nav nav-tabs" data-tabs="tabs">
+                                        <li class="active"><a href="#all-locations" data-toggle="tab">See All</a></li>
+                                        <li><a href="#add-location" data-toggle="tab">Add Location</a></li>
+                                        <li><a href="#remove-location" data-toggle="tab">Remove Location</a></li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div class="tab-pane active" id="all-locations">
+                                            <h3>All Locations</h3>
+                                            <div class="container nested-tabs">
+                                                <div class="panel panel-default">
+                                                    <!-- Table -->
+                                                    <table id="all-locations-table" class="table table-striped">
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Location name</th>
+                                                            <th>Edit</th>
+                                                        </tr>
+                                                        <!-- Locations go here. -->
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="add-location">
+                                            <h3>Add Location</h3>
+                                            <div class="container nested-tabs">
+                                                <!-- Add Location Form -->
+                                                <form id="add-location-form" action="/Admin/AddLocation" method="post" role="form">
+                                                    <hr />
+                                                    <label for="add_location_for_one_or_all">Add for all users</label>&nbsp;
+                                                    <input type="checkbox" id="add_location_for_one_or_all" checked />
+                                                    <hr />
+                                                    <label for="new_location_name">Location Name</label>
+                                                    <input type="text" id="new_location_name" class="form-control" placeholder="Location name" name="locationName" required /><br />
+                                                    <hr />
+                                                    <fieldset id="fldst_location_for_single_user" disabled="disabled">
+                                                        <div class="ui-widget">
+                                                            <label for="add-location-user-autocomplete">Which user?</label>
+                                                            <input id="add-location-user-autocomplete" class="form-control" placeholder="First or Last name" required>
+                                                            <input type="hidden" name="userID" id="add-location-userID" />
+                                                        </div>
+                                                    </fieldset>
+                                                    <br /><br />
+                                                    <button id="add-location-submit" type="submit" class="btn btn-default">Add Location</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="remove-location">
+                                            <h3>Remove Location</h3>
+                                            <div class="container nested-tabs">
+                                                <!-- Remove Location Form -->
+                                                <form id="remove-location-form" action="/Admin/RemoveLocation" method="post" role="form">
+                                                    <div class="ui-widget">
+                                                        <label for="remove-location-user-autocomplete">Which Location?</label>
+                                                        <input id="remove-location-user-autocomplete" class="form-control" placeholder="Location name" required>
+                                                        <br />
+                                                        <p id="remove-location-userID-display"></p>
+                                                        <input type="hidden" name="locationID" id="remove-location-userID" />
+                                                    </div>
+                                                    <br />
+                                                    <button id="remove-location-submit" type="submit" class="btn btn-default">Remove Location</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /end Location tab set -->
+
+                        </div>
+                        <div class="tab-pane" id="change-log">
+                        
+                            <!-- Change-log tab -->
+                            <div class="container well nested-tabs">
+                                <div id="change-log-content">
+                                    <ul class="tabs nav nav-tabs" data-tabs="tabs">
+                                        <li class="active"><a href="#status-updates" data-toggle="tab">Status Updates</a></li>
+                                        <li><a href="#location-updates" data-toggle="tab">Location Updates</a></li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div class="tab-pane active" id="status-updates">
+                                            <h3>Status</h3>
+                                            <div class="container nested-tabs">
+                                                <div class="panel panel-default">
+
+                                                    <!-- Table -->
+                                                    <table id="status-changes-table" class="table table-striped">
+                                                        <tr>
+                                                            <th>First name</th>
+                                                            <th>Last name</th>
+                                                            <th>Old</th>
+                                                            <th>New</th>
+                                                            <th>Changed</th>
+                                                            <th>Initiated</th>
+                                                        </tr>
+
+                                                        <!-- Status changes here. -->
+
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="location-updates">
+                                            <h3>Location</h3>
+                                            <div class="container nested-tabs">
+                                                <div class="panel panel-default">
+                                                    <!-- Table -->
+                                                    <table id="location-changes-table" class="table table-striped">
+                                                        <tr>
+                                                            <th>First name</th>
+                                                            <th>Last name</th>
+                                                            <th>Old</th>
+                                                            <th>New</th>
+                                                            <th>Changed</th>
+                                                            <th>Initiated</th>
+                                                        </tr>
+
+                                                        <!-- Location changes here. -->
+
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /end Change-log tab -->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="container">
+                <!--------------- Edit User Modal---------------------->
+                <div class="modal fade" id="edit-user-modal" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header" id="admin-edit-user-modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 id="edit-user-modal-title">Edit: </h4>
+                            </div>
+                            <!-- Modal Content -->
+                            <div class="modal-body" style="padding:40px 50px;">
+                                <form id="edit-user-form" action="/Admin/UpdateUser" method="post" role="form">
+                                    <div class="form-group">
+                                        <label for="edit-user-firstName">First name</label>
+                                        <input id="edit-user-firstName" type="text" name="firstName" class="form-control" disabled="disabled" />
+                                        <br />
+                                        <label for="edit-user-lastName">Last name</label>
+                                        <input id="edit-user-lastName" type="text" name="lastName" class="form-control" disabled="disabled"/>
+                                        <br />
+                                        <label for="edit-user-username">Username</label>
+                                        <input id="edit-user-username" type="text" class="form-control" name="username" disabled="disabled" />
+                                        <br />
+                                        <p>Password is only updated if you supply a new one.</p>
+                                        <label for="edit-user-password">New Password</label>
+                                        <input id="edit-user-password" type="password" class="form-control" name="password" disabled="disabled" />
+                                        <label for="edit-user-password-check">Confirm New Password</label>
+                                        <input id="edit-user-password-check" type="password" class="form-control" name="passwordCheck" disabled="disabled" />
+                                        <br />
+                                        <label for="edit-user-userType">User Type</label>
+                                        <select id="edit-user-userType" name="userType" class="form-control">
+                                            <!-- User Type options go here. -->
+                                        </select>
+                                        <br />
+                                        <label for="edit-user-isActive">User is active:</label>
+                                        <input type="checkbox" id="edit-user-isActive" name="isActive" disabled="disabled" />
+                                        <br />
+                                    </div>
+
+                                    <button id="update-user-button" type="submit" class="btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span> Update & Save</button>
+                                </form>
+                            </div>
+                            <!-- Modal Footer -->
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /modal -->
+            </div>
+        </div>
+        <!-- /row -->
+
+        <div class="row">
+            <div class="container">
+                <!--------------- Edit Status Modal---------------------->
+                <div class="modal fade" id="edit-status-modal" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header" id="admin-edit-status-modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 id="edit-status-modal-title">Edit: </h4>
+                            </div>
+                            <!-- Modal Content -->
+                            <div class="modal-body" style="padding:40px 50px;">
+                                <form id="edit-status-form" action="/Admin/UpdateStatus" method="post" role="form">
+                                    <div class="form-group">
+                                        <label for="edit-status-name">Name</label>
+                                        <input id="edit-status-name" type="text" name="name" class="form-control" disabled="disabled" />
+                                        <br />
+                                        <label for="edit-status-available">People are considered <i>available</i> here:</label>
+                                        <input type="checkbox" id="edit-status-available" name="available" disabled="disabled" />
+                                        <br />
+                                    </div>
+                                    <button id="update-status-button" type="submit" class="btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span> Update & Save</button>
+                                </form>
+                            </div>
+                            <!-- Modal Footer -->
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /modal -->
+            </div>
+        </div>
+        <!-- /row -->
+
+        <div class="row">
+            <div class="container">
+                <!--------------- Edit Location Modal---------------------->
+                <div class="modal fade" id="edit-location-modal" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header" id="admin-edit-location-modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 id="edit-location-modal-title">Edit: </h4>
+                            </div>
+                            <!-- Modal Content -->
+                            <div class="modal-body" style="padding:40px 50px;">
+                                <form id="edit-location-form" action="/Admin/UpdateLocation" method="post" role="form">
+                                    <div class="form-group">
+                                        <label for="edit-location-name">Name</label>
+                                        <input id="edit-location-name" type="text" name="name" class="form-control" disabled="disabled" />
+                                        <br />
+                                    </div>
+                                    <button id="update-location-button" type="submit" class="btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span> Update & Save</button>
+                                </form>
+                            </div>
+                            <!-- Modal Footer -->
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /modal -->
+            </div>
+        </div>
+        <!-- /row -->
+
+    </div>
+    
+</body>
+</html>

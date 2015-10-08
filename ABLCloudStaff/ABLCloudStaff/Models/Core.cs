@@ -12,7 +12,7 @@ namespace ABLCloudStaff.Models
     /// Holds IDs to User, Location and Status, amongst other metadata
     /// </summary>
     /// <remarks>
-    /// A single instance of this object holds all the information relavent for one user
+    /// A single instance of this object holds all the information relavent for one username
     /// at the current moment in time.
     /// </remarks>
     public class Core
@@ -22,7 +22,7 @@ namespace ABLCloudStaff.Models
         public int LocationID { get; set; }
         public int StatusID { get; set; }
         public DateTime StateStart { get; set; }
-        public DateTime? StateEnd { get; set; }
+        public DateTime? IntendedEndTime { get; set; }
 
         public virtual User User { get; set; }
         public virtual Status Status { get; set; }
