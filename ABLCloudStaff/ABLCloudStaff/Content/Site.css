@@ -146,6 +146,11 @@ input[type="checkbox"].input-validation-error {
     color: red;
 }
 
+.centered {
+    width: 60%;
+    margin: auto;
+}
+
 /* Main Board Modal */
 #main-modal-header,
 #modal-title {

@@ -112,7 +112,7 @@
                         <!-- When clicked, this is the invoker. -->
                         <div class="panel-group top-half-of-panel">
                             <div class="panel-default panel staff-modules-panels">
-                                <div id="@core.UserID" class="panel-heading staff-name staff-modules">
+                                <div id="@core.UserID" class="panel-heading staff-name @(core.StatusID == ABLCloudStaff.Biz_Logic.Constants.VISITING_STATUS ? "staff-modules visitor-modules default-cursur" : "staff-modules")">
                                     <!-- Useful fields for initialising the change modal -->
                                     <input type="hidden" class="thisUsersStatusID" value="@core.StatusID" />
                                     <input type="hidden" class="thisUsersLocationID" value="@core.LocationID" />
@@ -144,7 +144,7 @@
                                             <p class="time_details">
                                                 @if (core.IntendedEndTime != null)
                                                 {
-                                                    <!-- Appropriate date and time for display are computed here. -->
+                                            <!-- Appropriate date and time for display are computed here. -->
                                                     DateTime eta = (DateTime)core.IntendedEndTime;
                                                     DayOfWeek today = DateTime.Now.DayOfWeek;
                                                     int days = today - DayOfWeek.Monday;
@@ -154,7 +154,7 @@
 
                                                     if ((DateTime.Now.DayOfWeek == eta.DayOfWeek) && (DateTime.Now.Day == eta.Day) && (DateTime.Now.Year == eta.Year))
                                                     {
-                                                        <!-- The return date is today -->
+                                                <!-- The return date is today -->
                                                         if (now > eta)
                                                         {
                                                             <small class="out_of_time">Today<br /> @eta.ToShortTimeString()</small>
@@ -166,7 +166,7 @@
                                                     }
                                                     else
                                                     {
-                                                        <!-- The return date is some other day. -->
+                                                <!-- The return date is some other day. -->
 
                                                         if (eta < endOfWeek)
                                                         {
@@ -195,14 +195,14 @@
                                             </p>
                                         </div>
                                     </div>
-
-
                                 </div>
                                 <div class="panel-body default-cursur">
                                     @if (core.StatusID == ABLCloudStaff.Biz_Logic.Constants.VISITING_STATUS)
                                     {
-                                        <!-- Button to handle visitor deletion. -->
-                                        <button class="btn btn-info">Leave Office</button>
+                                        <div class="centered">
+                                            <!-- Button to handle visitor deletion. -->
+                                            <button class="btn btn-info">Leave Office</button>
+                                        </div>
                                     }
                                     else
                                     {
