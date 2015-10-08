@@ -149,7 +149,10 @@ namespace ABLCloudStaff.Controllers
                 ui.userType = user.UserType.Type;
                 ui.userTypeID = user.UserTypeID.ToString();
                 ui.isActive = user.IsActive.ToString();
-                ui.username = user.Authentication.UserName;
+                if (user.Authentication != null)
+                    ui.username = user.Authentication.UserName;
+                else
+                    ui.username = "";
                 // Add to the list of verbose username details
                 userInfo.Add(ui);
             }
