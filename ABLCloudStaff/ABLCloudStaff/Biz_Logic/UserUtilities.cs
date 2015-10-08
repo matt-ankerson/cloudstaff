@@ -178,11 +178,11 @@ namespace ABLCloudStaff.Biz_Logic
 
                 // Now that we have the userID for our new visitor, we need to add some limited associated information.
                 // For a start they need the default status and location
-                AddUserStatus(newVisitorID, Constants.DEFAULT_IN_STATUS);
+                AddUserStatus(newVisitorID, Constants.VISITING_STATUS);
                 AddUserLocation(newVisitorID, Constants.DEFAULT_LOCATION);
 
                 // Add a core instance for this user, with defaults for status and location.
-                CoreUtilities.AddCore(newVisitorID, Constants.DEFAULT_IN_STATUS, Constants.DEFAULT_LOCATION);
+                CoreUtilities.AddCore(newVisitorID, Constants.VISITING_STATUS, Constants.DEFAULT_LOCATION);
 
             }
             catch (Exception ex)

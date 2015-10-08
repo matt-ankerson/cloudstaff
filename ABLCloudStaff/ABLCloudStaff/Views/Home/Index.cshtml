@@ -199,7 +199,15 @@
 
                                 </div>
                                 <div class="panel-body default-cursur">
-                                    <div class="container-switch">
+                                    @if (core.StatusID == ABLCloudStaff.Biz_Logic.Constants.VISITING_STATUS)
+                                    {
+                                        <!-- Button to handle visitor deletion. -->
+                                        <button class="btn btn-info">Leave Office</button>
+                                    }
+                                    else
+                                    {
+                                        <!-- This is not a visitor, give them the sign in/out switch. -->
+                                        <div class="container-switch">
                                         <p>
                                             @if (core.Status.Available == true)
                                             {
@@ -210,8 +218,10 @@
                                                 <input type="checkbox" name="staff-state" value="@core.UserID" data-on-color="abacusbio" data-off-color="warning" data-off-text="Out" data-on-text="In">
                                             }
                                         </p>
-                                    </div>
-                                    <input id="userID" type="hidden" value="@core.UserID" />
+                                        </div>
+                                        <input id="userID" type="hidden" value="@core.UserID" />
+                                    }
+                                    
                                 </div>
                             </div>
                         </div>

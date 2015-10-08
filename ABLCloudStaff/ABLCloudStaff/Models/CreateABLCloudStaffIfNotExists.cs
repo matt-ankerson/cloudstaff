@@ -20,7 +20,7 @@ namespace ABLCloudStaff.Models
         // Create the context
         private ABLCloudStaffContext dbContext = new ABLCloudStaffContext();
         // Number of users that will be initialised (important for the authentication table population.)
-        private const int N_USERS = 34;
+        private const int N_USERS = 33;
 
         protected override void Seed(ABLCloudStaffContext context)
         {
@@ -112,8 +112,7 @@ namespace ABLCloudStaff.Models
                 new Core {UserID = 30, StatusID = 3, LocationID = 1, StateStart = DateTime.Now},
                 new Core {UserID = 31, StatusID = 3, LocationID = 2, StateStart = DateTime.Now},
                 new Core {UserID = 32, StatusID = 1, LocationID = 1, StateStart = DateTime.Now},
-                new Core {UserID = 33, StatusID = 3, LocationID = 2, StateStart = DateTime.Now},
-                new Core {UserID = 34, StatusID = 1, LocationID = 1, StateStart = DateTime.Now}
+                new Core {UserID = 33, StatusID = 3, LocationID = 2, StateStart = DateTime.Now}
             };
 
             foreach (Core c in cores)
@@ -133,7 +132,7 @@ namespace ABLCloudStaff.Models
                 new User { FirstName = "Bruno", LastName = "Santos", UserTypeID = 1, IsActive = true, AuthenticationID = 3 },
                 new User { FirstName = "Daniel", LastName = "Martin-Collado", UserTypeID = 1, IsActive = true, AuthenticationID = 4 },
                 new User { FirstName = "Fiona", LastName = "Hely", UserTypeID = 1, IsActive = true, AuthenticationID = 5 },
-                new User { FirstName = "Gemma", LastName = "Jenkins", UserTypeID = 1, IsActive = true, AuthenticationID = 6 },
+                new User { FirstName = "Tim", LastName = "Byne", UserTypeID = 1, IsActive = true, AuthenticationID = 6 },
                 new User { FirstName = "Bruce", LastName = "McCorkindale", UserTypeID = 1, IsActive = true, AuthenticationID = 7 },
                 new User { FirstName = "Gertje", LastName = "Petersen", UserTypeID = 1, IsActive = true, AuthenticationID = 8 },
                 new User { FirstName = "Grace", LastName = "Johnstone", UserTypeID = 1, IsActive = true, AuthenticationID = 9 },
@@ -160,8 +159,7 @@ namespace ABLCloudStaff.Models
                 new User { FirstName = "Sammy", LastName = "Wong", UserTypeID = 1, IsActive = true, AuthenticationID = 30 },
                 new User { FirstName = "Simon", LastName = "Glennie", UserTypeID = 1, IsActive = true, AuthenticationID = 31 },
                 new User { FirstName = "Simon", LastName = "Ryan", UserTypeID = 2, IsActive = true, AuthenticationID = 32 },
-                new User { FirstName = "Robyn", LastName = "Simpson", UserTypeID = 2, IsActive = true, AuthenticationID = 33 },
-                new User { FirstName = "Tim", LastName = "Byne", UserTypeID = 1, IsActive = true, AuthenticationID = 34 }
+                new User { FirstName = "Ismeni", LastName = "Currin", UserTypeID = 2, IsActive = true, AuthenticationID = 33 }
 
                 //new User { FirstName = "Sue", LastName = "Gregory", UserTypeID = 1, IsActive = true, AuthenticationID = 1 },
                 //new User { FirstName = "Myles", LastName = "Kennedy", UserTypeID = 1, IsActive = true, AuthenticationID = 2 },
@@ -195,8 +193,7 @@ namespace ABLCloudStaff.Models
                 //new User { FirstName = "Jon", LastName = "Bon Jovi", UserTypeID = 1, IsActive = true, AuthenticationID = 30 },
                 //new User { FirstName = "Patty", LastName = "Smith", UserTypeID = 1, IsActive = true, AuthenticationID = 31 },
                 //new User { FirstName = "Iggy", LastName = "Pop", UserTypeID = 2, IsActive = true, AuthenticationID = 32 },
-                //new User { FirstName = "Sid", LastName = "Vicious", UserTypeID = 2, IsActive = true, AuthenticationID = 33 },
-                //new User { FirstName = "Angus", LastName = "Gerard", UserTypeID = 1, IsActive = true, AuthenticationID = 34 }
+                //new User { FirstName = "Sid", LastName = "Vicious", UserTypeID = 2, IsActive = true, AuthenticationID = 33 }
             };
 
             foreach (User u in users)
@@ -215,8 +212,10 @@ namespace ABLCloudStaff.Models
                 new Status {Name = "Out of Office", Available = false},
                 new Status {Name = "Meeting", Available = false},
                 new Status {Name = "Lunch", Available = false},
-                new Status {Name = "Home", Available = false},
-                new Status {Name = "On Leave", Available = false}
+                new Status {Name = "Working from Home", Available = false},
+                new Status {Name = "On Leave", Available = false},
+                new Status {Name = "Visiting", Available = true},
+                new Status {Name = "Sick", Available = false}
             };
 
             foreach (Status s in statuses)
@@ -234,8 +233,10 @@ namespace ABLCloudStaff.Models
                 new Location {Name = "Not applicable"},
                 new Location {Name = "Dunedin"},
                 new Location {Name = "Mosgiel"},
-                new Location {Name = "Invercargill"},
-                new Location {Name = "Nelson"}
+                new Location {Name = "On Farm"},
+                new Location {Name = "Nelson"},
+                new Location {Name = "Overseas"},
+                new Location {Name = "North Island"}
             };
 
             foreach (Location l in locations)
@@ -482,14 +483,7 @@ namespace ABLCloudStaff.Models
                 new UserStatus {UserID = 33, StatusID = 3, DateAdded = new DateTime(2015, 3, 5)},
                 new UserStatus {UserID = 33, StatusID = 4, DateAdded = new DateTime(2015, 3, 5)},
                 new UserStatus {UserID = 33, StatusID = 5, DateAdded = new DateTime(2015, 3, 5)},
-                new UserStatus {UserID = 33, StatusID = 6, DateAdded = new DateTime(2015, 3, 5)},
-                // User 34
-                new UserStatus {UserID = 34, StatusID = 1, DateAdded = new DateTime(2015, 3, 5)},
-                new UserStatus {UserID = 34, StatusID = 2, DateAdded = new DateTime(2015, 3, 5)},
-                new UserStatus {UserID = 34, StatusID = 3, DateAdded = new DateTime(2015, 3, 5)},
-                new UserStatus {UserID = 34, StatusID = 4, DateAdded = new DateTime(2015, 3, 5)},
-                new UserStatus {UserID = 34, StatusID = 5, DateAdded = new DateTime(2015, 3, 5)},
-                new UserStatus {UserID = 34, StatusID = 6, DateAdded = new DateTime(2015, 3, 5)}
+                new UserStatus {UserID = 33, StatusID = 6, DateAdded = new DateTime(2015, 3, 5)}
             };
 
             foreach (UserStatus us in userStatuses)
@@ -669,12 +663,7 @@ namespace ABLCloudStaff.Models
                 new UserLocation {UserID = 33, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 33, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 33, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
-                new UserLocation {UserID = 33, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
-                // User 34
-                new UserLocation {UserID = 34, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
-                new UserLocation {UserID = 34, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
-                new UserLocation {UserID = 34, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
-                new UserLocation {UserID = 34, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)}
+                new UserLocation {UserID = 33, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)}
             };
 
             foreach (UserLocation ul in userLocations)

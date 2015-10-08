@@ -65,7 +65,10 @@ $(document).ready(function () {
     }
 
     function construct_str_date(js_date) {
-        return js_date.getMonth() + '/' + js_date.getDate() + '/' + js_date.getFullYear();
+        mm = js_date.getMonth() + 1;
+        dd = js_date.getDate();
+        yyyy = js_date.getFullYear();
+        return mm + '/' + dd + '/' + yyyy;
     }
 
     function pretty_datetime(ugly_date, ugly_time) {
@@ -89,9 +92,11 @@ $(document).ready(function () {
         csharp_parsable_datetime = null;
         date = null;
         time = null;
+        datepicker_element = $('#visitor_datepicker');
+        timepicker_element = $('#visitor_timepicker');
         
         // Did the user supply a date?
-        if ($('#visitor_datepicker').val() == null) {
+        if ((datepicker_element.val() == null) || (date_picker.val() == '')) {
             // No date supplied, use today's date.
             date = construct_str_date(new Date());
         }
@@ -100,7 +105,7 @@ $(document).ready(function () {
             date = $('#visitor_datepicker').val();
         }
         // Did the user supply a time?
-        if ($('#visitor_timepicker').val() == null) {
+        if ((timepicker_element.val() == null) || (timepicker_element.val() == '')) {
             // No time supplied, use 5pm.
             time = '5:00pm';
         }
@@ -109,11 +114,11 @@ $(document).ready(function () {
             time = $('#visitor_timepicker').val();
         }
 
-        // Problems here.*****
         csharp_parsable_datetime = pretty_datetime(date, time);
+        alert(csharp_parsable_datetime);
 
         // Save in hidden field.
-        $('intendedDepartTime').val(csharp_parsable_datetime);
+        $('#intendedDepartTime').val(csharp_parsable_datetime);
 
         // Submit the form.
         $('#add_visitor_form').submit();

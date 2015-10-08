@@ -94,13 +94,17 @@ namespace ABLCloudStaff.Controllers
                     {
                         // Create a new user
                         visitorUserID = UserUtilities.AddUserAsVisitor(firstName, lastName);
+                        // Set the 'intendedEndTime' on this core instance to be the visitor's intended time of departure.
+                        CoreUtilities.SetReturnTimeForUser(visitorUserID, timeOfDeparture);
                     }
                     else
                     {
                         // Use the existing one.
                         visitorUserID = Convert.ToInt32(existingVisitorUserID);
                         // We also need to add a core instance again for this user.
-                        CoreUtilities.AddCore(visitorUserID, Constants.DEFAULT_IN_STATUS, Constants.DEFAULT_LOCATION);
+                        CoreUtilities.AddCore(visitorUserID, Constants.VISITING_STATUS, Constants.DEFAULT_LOCATION);
+                        // Set the 'intendedEndTime' on this core instance to be the visitor's intended time of departure.
+                        CoreUtilities.SetReturnTimeForUser(visitorUserID, timeOfDeparture);
                     }
 
                     // If we've now got a visitor user and a visited user:

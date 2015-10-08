@@ -488,6 +488,30 @@ namespace ABLCloudStaff.Biz_Logic
         }
 
         /// <summary>
+        /// Save a given return time for an indicated user into the appropriate core instance.
+        /// </summary>
+        /// <param name="userID">The core instance to save the return time into.</param>
+        /// <param name="returnTime">The return time for this user.</param>
+        public static void SetReturnTimeForUser(int userID, DateTime returnTime)
+        {
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    // Get the appropriate core instance
+                    Core c = context.Cores.Where(x => x.UserID == userID).FirstOrDefault();
+                    c.IntendedEndTime = returnTime;
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
+            }
+        }
+
+        /// <summary>
         /// Remove the indicated core instance from the core table
         /// </summary>
         /// <param name="userID">Core instance indicated by userID</param>
