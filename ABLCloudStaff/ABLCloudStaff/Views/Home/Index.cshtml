@@ -87,7 +87,6 @@
             </div>
         </div>
     </div>
-    <br />
 
     @if (ViewBag.Message != null)
     {
@@ -111,7 +110,7 @@
                 <div class="col-xs-10 col-xs-offset-1 col-sm-4 col-sm-offset-0 col-md-3 col-md-offset-0 col-lg-2 col-lg-offset-0">
                     <div class="container-fluid">
                         <!-- When clicked, this is the invoker. -->
-                        <div class="panel-group top-half-of-panel">
+                        <div class="panel-group top-half-of-panel no__bottom_margin small_top_margin">
                             <div class="panel-default panel staff-modules-panels">
                                 <div id="@core.UserID" class="panel-heading staff-name @(core.StatusID == ABLCloudStaff.Biz_Logic.Constants.VISITING_STATUS ? "staff-modules visitor-modules default-cursur" : "staff-modules")">
                                     <!-- Useful fields for initialising the change modal -->
@@ -126,7 +125,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-xs-6">
-                                            <p>
+                                            <p class="reduced_p_margin">
                                                 <small class="status_location_details">
                                                     @core.Status.Name
                                                     <br />
@@ -197,12 +196,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="panel-body default-cursur">
+                                <div class="panel-body default-cursur reduced_panel_body">
                                     @if (core.StatusID == ABLCloudStaff.Biz_Logic.Constants.VISITING_STATUS)
                                     {
                                         <div class="centered">
                                             <!-- Button to handle visitor deletion. -->
-                                            <button class="remove_user_button btn btn-info" value="@core.UserID">Leave Office</button>
+                                            <button class="remove_user_button btn btn-info btn_nopadding" value="@core.UserID">Leave Office</button>
                                             <input id="userID" type="hidden" value="@core.UserID" />
                                         </div>
                                     }
@@ -210,20 +209,20 @@
                                     {
                                         <!-- This is not a visitor, give them the sign in/out switch. -->
                                         <div class="container-switch">
-                                        <p>
-                                            @if (core.Status.Available == true)
-                                            {
-                                                <input type="checkbox" name="staff-state" value="@core.UserID" checked data-on-color="abacusbio" data-off-color="warning" data-on-text="In" data-off-text="Out">
-                                            }
-                                            else
-                                            {
-                                                <input type="checkbox" name="staff-state" value="@core.UserID" data-on-color="abacusbio" data-off-color="warning" data-off-text="Out" data-on-text="In">
-                                            }
-                                        </p>
+                                            <p>
+                                                @if (core.Status.Available == true)
+                                                {
+                                                    <input type="checkbox" name="staff-state" value="@core.UserID" checked data-on-color="abacusbio" data-off-color="warning" data-on-text="In" data-off-text="Out">
+                                                }
+                                                else
+                                                {
+                                                    <input type="checkbox" name="staff-state" value="@core.UserID" data-on-color="abacusbio" data-off-color="warning" data-off-text="Out" data-on-text="In">
+                                                }
+                                            </p>
                                         </div>
                                         <input id="userID" type="hidden" value="@core.UserID" />
                                     }
-                                    
+
                                 </div>
                             </div>
                         </div>

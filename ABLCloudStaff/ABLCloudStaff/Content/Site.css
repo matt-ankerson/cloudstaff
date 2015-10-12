@@ -151,6 +151,18 @@ input[type="checkbox"].input-validation-error {
     margin: auto;
 }
 
+.reduced_panel_body {
+    padding: 6px;
+}
+
+.reduced_p_margin {
+    margin: 0 0 2px;
+}
+
+.btn_nopadding {
+    padding: 0px 0px;
+}
+
 /* Main Board Modal */
 #main-modal-header,
 #modal-title {
