@@ -192,6 +192,13 @@
                                                         }
                                                     }
                                                 }
+                                                else
+                                                {
+                                                    <small>
+                                                        <br />
+                                                        <br />
+                                                    </small>  
+                                                }
                                             </p>
                                         </div>
                                     </div>
@@ -199,10 +206,13 @@
                                 <div class="panel-body default-cursur reduced_panel_body">
                                     @if (core.StatusID == ABLCloudStaff.Biz_Logic.Constants.VISITING_STATUS)
                                     {
-                                        <div class="centered">
-                                            <!-- Button to handle visitor deletion. -->
-                                            <button class="remove_user_button btn btn-info btn_nopadding" value="@core.UserID">Leave Office</button>
-                                            <input id="userID" type="hidden" value="@core.UserID" />
+                                        <div class="container-switch">
+                                            <p>
+                                                <!-- Button to handle visitor deletion. -->
+                                                <button class="remove_user_button btn btn-info" value="@core.UserID">Leave Office</button>
+                                                <!--<input type="checkbox" name="visitor-state" value="@core.UserID" data-on-color="abacusbio" data-off-color="warning" data-off-text="Out" data-on-text="In">-->
+                                                <input id="userID" type="hidden" value="@core.UserID" />
+                                            </p>
                                         </div>
                                     }
                                     else
