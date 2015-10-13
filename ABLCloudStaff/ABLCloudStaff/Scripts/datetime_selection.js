@@ -22,23 +22,25 @@ $(document).ready(function () {
     date_picker.datepicker({
         showOn: "focus",
         minDate: new Date(),
-        onSelect: date_selected
+        onSelect: date_selected,
+        dateFormat: 'dd/mm/yy'
     });
 
     // Function fired when date is selected.
     function date_selected(date_text, inst) {
+
+        var nice_date = pretty_date(date_text);
+        var date_for_display = display_date(date_text);
         
         // Hide the datepicker
         date_picker.datepicker('hide');
 
         // Update the return day display:
-        $("#date_picker_val").text(date_text);
+        $("#date_picker_val").text(date_for_display);
 
         // Make the cancel button appear.)
         $("#cancel_time").show();
         $("#cancel_time").css("visibility", "visible");
-
-        var nice_date = pretty_date(date_text);
 
         // Call the AJAX function to get a list of time intervals relavent for the selected day.
         get_all_day_times_from_server(all_day_time_success_func, errorFunc, nice_date);
@@ -50,10 +52,19 @@ $(document).ready(function () {
     function pretty_date(ugly_date) {
         // Convert a date from the datepicker into something C# can parse.
         var arr = ugly_date.split('/');
-        // arr[0] = mm
-        // arr[1] = dd
+        // arr[0] = dd
+        // arr[1] = mm
         // arr[2] = yyyy
-        var pretty_date = arr[2] + '-' + arr[0] + '-' + arr[1];
+        var pretty_date = arr[2] + '-' + arr[1] + '-' + arr[0]; // yyyy/mm/dd
+        return pretty_date;
+    }
+    function display_date(ugly_date) {
+        // Convert a date from the datepicker into a date format dd-mm-yyyy
+        var arr = ugly_date.split('/');
+        // arr[0] = dd
+        // arr[1] = mm
+        // arr[2] = yyyy
+        var pretty_date = arr[0] + '-' + arr[1] + '-' + arr[2]; // yyyy/mm/dd
         return pretty_date;
     }
     // end date picker setup
