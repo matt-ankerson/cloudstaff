@@ -23,6 +23,30 @@ namespace ABLCloudStaff.Controllers
         }
 
         /// <summary>
+        /// Push a status, location and return time to the database for a specific user.
+        /// </summary>
+        /// <remarks>
+        /// Only performs update if necessary.
+        /// </remarks>
+        /// <param name="userID">The userID of the user to perform the update for.</param>
+        /// <param name="statusID">The new statusID</param>
+        /// <param name="locationID">The new locationID.</param>
+        /// <param name="returnTime">The new return time.</param>
+        private void _submitStateUpdateForUser(int userID, int statusID, int locationID, string returnTime)
+        {
+            try
+            {
+                // Perform the update. ReturnTime is handled as an optional field. 
+                CoreUtilities.UpdateStatus(userID, statusID, returnTime);
+                CoreUtilities.UpdateLocation(userID, locationID);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
         /// Push a status and location to the database for a specific username
         /// </summary>
         /// <returns>An ActionResult object</returns>
@@ -39,9 +63,7 @@ namespace ABLCloudStaff.Controllers
                     int actualStatusID = Convert.ToInt32(statusID);
                     int actualLocationID = Convert.ToInt32(locationID);
 
-                    // Perform the update. ReturnTime is handled as an optional field. 
-                    CoreUtilities.UpdateStatus(actualUserID, actualStatusID, returnTime);
-                    CoreUtilities.UpdateLocation(actualUserID, actualLocationID);
+                    _submitStateUpdateForUser(actualUserID, actualStatusID, actualLocationID, returnTime);
                 }
             }
             catch (Exception ex)
@@ -51,6 +73,42 @@ namespace ABLCloudStaff.Controllers
 
             //List<Core> coreInfo = CoreUtilities.GetAllCoreInstances();
             //return View("Index", coreInfo);
+            return RedirectToAction("Index", "Home");
+        }
+
+        /// <summary>
+        /// Push a status, location and return time to the database for a set of users.
+        /// </summary>
+        /// <param name="userIDs">All userIDs to perform the update for.</param>
+        /// <param name="statusID">The new statusID</param>
+        /// <param name="locationID">The new locationID</param>
+        /// <param name="returnTime">The new return time.</param>
+        /// <returns>Redirects to home page.</returns>
+        [HttpPost]
+        public ActionResult SubmitStatusOrLocationUpdateForGroup(List<string> userIDs, string statusID, string locationID, string returnTime)
+        {
+            try
+            {
+                // Convert our parameters into a useful data type
+                int actualStatusID = Convert.ToInt32(statusID);
+                int actualLocationID = Convert.ToInt32(locationID);
+                
+                // For each userID:
+                foreach (string userIDStr in userIDs)
+                {
+                    if(!string.IsNullOrEmpty(userIDStr))
+                    {
+                        int actualUserID = Convert.ToInt32(userIDStr);
+                        // Perform the update for this user:
+                        _submitStateUpdateForUser(actualUserID, actualStatusID, actualLocationID, returnTime);
+                    }  
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
             return RedirectToAction("Index", "Home");
         }
 
