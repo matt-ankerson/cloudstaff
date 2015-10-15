@@ -50,7 +50,7 @@ namespace ABLCloudStaff.Biz_Logic
         /// Deactivate the indicated group.
         /// </summary>
         /// <param name="groupID">The group to deactivate.</param>
-        public static void RemoveGroup(int groupID)
+        public static void DeactivateGroup(int groupID)
         {
             try
             {
@@ -60,6 +60,31 @@ namespace ABLCloudStaff.Biz_Logic
                     Group grp = context.Groups.Where(x => x.GroupID == groupID).FirstOrDefault();
                     // Deactivate the group.
                     grp.Active = false;
+                    // Save changes
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Activate the indicated group.
+        /// </summary>
+        /// <param name="groupID">The group to activate</param>
+        public static void ActivateGroup(int groupID)
+        {
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    // Pull up the indicated Group instance
+                    Group grp = context.Groups.Where(x => x.GroupID == groupID).FirstOrDefault();
+                    // Activate the group.
+                    grp.Active = true;
                     // Save changes
                     context.SaveChanges();
                 }
