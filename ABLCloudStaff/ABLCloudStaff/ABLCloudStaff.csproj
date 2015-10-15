@@ -150,6 +150,7 @@
     <Compile Include="Biz_Logic\DateTimeUtilities.cs" />
     <Compile Include="Biz_Logic\EncryptionUtilities.cs" />
     <Compile Include="Biz_Logic\ErrorUtilities.cs" />
+    <Compile Include="Biz_Logic\GroupUtilities.cs" />
     <Compile Include="Biz_Logic\LocationUtilities.cs" />
     <Compile Include="Biz_Logic\StatusUtilities.cs" />
     <Compile Include="Biz_Logic\UserUtilities.cs" />
@@ -168,6 +169,7 @@
     <Compile Include="Models\CreateABLCloudStaffIfNotExists.cs" />
     <Compile Include="Models\DropCreateABLCloudStaffAlways.cs" />
     <Compile Include="Models\Error.cs" />
+    <Compile Include="Models\Group.cs" />
     <Compile Include="Models\Location.cs" />
     <Compile Include="Models\LocationChangeLog.cs" />
     <Compile Include="Models\Status.cs" />
