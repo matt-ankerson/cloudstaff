@@ -68,7 +68,9 @@ namespace ABLCloudStaff.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ViewBag.Message = "Failed to perform update for user. " + ex.Message;
+                List<Core> coreInfo = CoreUtilities.GetAllCoreInstances();
+                return View("Index", coreInfo);
             }
 
             //List<Core> coreInfo = CoreUtilities.GetAllCoreInstances();
@@ -92,6 +94,9 @@ namespace ABLCloudStaff.Controllers
                 // Convert our parameters into a useful data type
                 int actualStatusID = Convert.ToInt32(statusID);
                 int actualLocationID = Convert.ToInt32(locationID);
+
+                // Integer list for saving a group to the Group table.
+                List<int> members = new List<int>();
                 
                 // For each userID:
                 foreach (string userIDStr in userIDs)
@@ -101,12 +106,19 @@ namespace ABLCloudStaff.Controllers
                         int actualUserID = Convert.ToInt32(userIDStr);
                         // Perform the update for this user:
                         _submitStateUpdateForUser(actualUserID, actualStatusID, actualLocationID, returnTime);
+                        // Add the userID to the member list.
+                        members.Add(actualUserID);
                     }  
                 }
+
+                // Add a group
+                GroupUtilities.AddGroup(members);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ViewBag.Message = "Failed to perform update for group. " + ex.Message;
+                List<Core> coreInfo = CoreUtilities.GetAllCoreInstances();
+                return View("Index", coreInfo);
             }
 
             return RedirectToAction("Index", "Home");

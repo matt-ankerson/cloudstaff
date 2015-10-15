@@ -117,7 +117,9 @@ input[type="checkbox"].input-validation-error {
     cursor: default;
 }
 
-#visitor_button {
+#visitor_button,
+#add_group_button,
+#remove_group_button {
     margin-top: 7px;
 }
 
@@ -163,7 +165,7 @@ input[type="checkbox"].input-validation-error {
     padding: 0px 0px;
 }
 
-/* Main Board Modal */
+/* Main board singular status/location update modal */
 #main-modal-header,
 #modal-title {
     background-color: #0099da;
@@ -175,6 +177,13 @@ input[type="checkbox"].input-validation-error {
 
 #custom_track {
     z-index: 0;
+}
+
+/* Add group modal */
+.scrolling_div {
+    height: 120px;
+    width: inherit;
+    overflow: auto;
 }
 
 /********************************/
