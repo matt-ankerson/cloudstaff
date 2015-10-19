@@ -273,9 +273,14 @@ namespace ABLCloudStaff.Controllers
 
             List<User> rawUsers = UserUtilities.GetVisitorUsers();
 
+            // For each user, pull up their last visitor log instance, so we can provide 
+            // some distinguishing information in the UI.
             foreach (User u in rawUsers)
             {
-                usersDict.Add(u.UserID.ToString(), u.FirstName + " " + u.LastName);
+                // Get this user's last visit.
+                VisitorLog lastVl = VisitorLogUtilities.GetLastLogForVisitor(u.UserID);
+                // Append some useful information in the dict.
+                usersDict.Add(u.UserID.ToString(), u.FirstName + " " + u.LastName + " (" + lastVl.Company + ")");
             }
 
             return Json(usersDict, JsonRequestBehavior.AllowGet);

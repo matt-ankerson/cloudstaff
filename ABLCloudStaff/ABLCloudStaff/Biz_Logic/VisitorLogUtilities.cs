@@ -93,5 +93,30 @@ namespace ABLCloudStaff.Biz_Logic
                 throw ex;
             }
         }
+
+        /// <summary>
+        /// Get the latest visitor log for the given userID
+        /// </summary>
+        /// <param name="userID">The user to search on</param>
+        /// <returns>VisitorLog instance or null</returns>
+        public static VisitorLog GetLastLogForVisitor(int userID)
+        {
+            VisitorLog vl = new VisitorLog();
+
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    vl = context.VisitorLogs.Where(x => x.VisitorUserID == userID).OrderByDescending(x => x.VisitorLogID).FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
+            }
+
+            return vl;
+        }
     }
 }
