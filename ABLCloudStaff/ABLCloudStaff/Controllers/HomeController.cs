@@ -112,7 +112,7 @@ namespace ABLCloudStaff.Controllers
                 }
 
                 // Add a group
-                GroupUtilities.AddGroup(members);
+                //GroupUtilities.AddGroup(members);
             }
             catch (Exception ex)
             {

@@ -175,6 +175,7 @@
     <Compile Include="Models\Status.cs" />
     <Compile Include="Models\StatusChangeLog.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Models\UserInGroup.cs" />
     <Compile Include="Models\UserLocation.cs" />
     <Compile Include="Models\UserStatus.cs" />
     <Compile Include="Models\UserType.cs" />

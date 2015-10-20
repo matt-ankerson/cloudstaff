@@ -36,6 +36,45 @@ namespace ABLCloudStaff.Models
             PopulateUserLocation();
             PopulateUserStatus();
             PopulateCore();
+            PopulateGroup();
+            PopulateUserInGroup();       
+        }
+
+        /// <summary>
+        /// Seed the group table
+        /// </summary>
+        public void PopulateGroup()
+        {
+            List<Group> groups = new List<Group>();
+
+            for (int i = 1; i < 4; i++)
+            {
+                groups.Add(new Group { Active = false, Name = "Group " + i.ToString(), Priority = 0 });
+            }
+
+            foreach (Group g in groups)
+                dbContext.Groups.Add(g);
+            dbContext.SaveChanges();
+        }
+
+        /// <summary>
+        /// Seed the UserInGroup table
+        /// </summary>
+        public void PopulateUserInGroup()
+        {
+            List<UserInGroup> uigs = new List<UserInGroup>();
+            uigs.Add(new UserInGroup { GroupID = 1, UserID = 20 });
+            uigs.Add(new UserInGroup { GroupID = 1, UserID = 21 });
+            uigs.Add(new UserInGroup { GroupID = 1, UserID = 22 });
+            uigs.Add(new UserInGroup { GroupID = 2, UserID = 23 });
+            uigs.Add(new UserInGroup { GroupID = 2, UserID = 24 });
+            uigs.Add(new UserInGroup { GroupID = 2, UserID = 25 }); 
+            uigs.Add(new UserInGroup { GroupID = 3, UserID = 26 });
+            uigs.Add(new UserInGroup { GroupID = 3, UserID = 27 }); 
+            uigs.Add(new UserInGroup { GroupID = 3, UserID = 28 });
+            foreach (UserInGroup uig in uigs)
+                dbContext.UserInGroups.Add(uig);
+            dbContext.SaveChanges();
         }
 
         /// <summary>

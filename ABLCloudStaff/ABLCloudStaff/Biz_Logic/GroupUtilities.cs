@@ -15,28 +15,39 @@ namespace ABLCloudStaff.Biz_Logic
     public static class GroupUtilities
     {
         /// <summary>
-        /// Add a group to the database with 'Now' for the timestamp
+        /// Add a group to the database, autopopulates the UserInGroup table
         /// </summary>
         /// <param name="userIDs">List of UserIDs to include in this group.</param>
-        public static void AddGroup(List<int> userIDs)
+        public static void AddGroup(List<int> userIDs, string name, bool active, int priority=0)
         {
             try
             {
-                // Serialise the list of userIDs to a comma separated string representation.
-                string members = "";
-
-                foreach (int userID in userIDs)
+                using (var context = new ABLCloudStaffContext())
                 {
-                    members += userID.ToString() + ",";
+                    Group g = new Group { Name = name, Active = active, Priority = priority };
+                    context.Groups.Add(g);
+                    context.SaveChanges();
                 }
+
+                // For each userID given, add a UserInGroup instance for this new group.
+                
+                // Pull the group back out again for the ID.
+                int groupID = 0;
 
                 using (var context = new ABLCloudStaffContext())
                 {
-                    // Create new group
-                    Group grp = new Group { Members = members, Active = true, Initiated = DateTime.Now };
-                    // Add and save.
-                    context.Groups.Add(grp);
-                    context.SaveChanges();
+                    groupID = context.Groups.OrderByDescending(x => x.GroupID).Select(x => x.GroupID).FirstOrDefault();
+                }
+
+                if (groupID == 0)
+                    throw new Exception("Failed to add group.");
+                else
+                {
+                    // Add UserInGroup instances.
+                    foreach (int userID in userIDs)
+                    {
+                        AddUserToGroup(userID, groupID);
+                    }
                 }
             }
             catch (Exception ex)
@@ -100,42 +111,17 @@ namespace ABLCloudStaff.Biz_Logic
         /// Get all currently actve groups.
         /// </summary>
         /// <returns>List of active groups, with member lists deserialised.</returns>
-        public static List<GroupDeserialized> GetActiveGroups()
+        public static List<Group> GetActiveGroups()
         {
-            List<GroupDeserialized> groups = new List<GroupDeserialized>();
+            List<Group> groups = new List<Group>();
 
             try
             {
-                List<Group> rawGroups = new List<Group>();
 
                 using (var context = new ABLCloudStaffContext())
                 {
                     // Get all active groups from database.
-                    rawGroups = context.Groups.Where(x => x.Active == true).OrderByDescending(x => x.Initiated).ToList();
-                }
-
-                // Build list of deserialized groups.
-                foreach (var rawGroup in rawGroups)
-                {
-                    var stringMembers = rawGroup.Members.Split(',');
-                    List<int> intMembers = new List<int>();
-
-                    // Loop over string array of members:
-                    foreach (string stringMember in stringMembers)
-                    {
-                        intMembers.Add(Convert.ToInt32(stringMember));
-                    }
-
-                    // Create deserialised group object
-                    GroupDeserialized grpDsrlzd = new GroupDeserialized { 
-                        Members = intMembers, 
-                        Active = rawGroup.Active, 
-                        GroupID = rawGroup.GroupID, 
-                        Initiated = rawGroup.Initiated 
-                    };
-
-                    // Add object to list
-                    groups.Add(grpDsrlzd);
+                    groups = context.Groups.Where(x => x.Active == true).ToList();
                 }
             }
             catch (Exception ex)
@@ -151,43 +137,16 @@ namespace ABLCloudStaff.Biz_Logic
         /// Get all groups regardless of whether or not they're actve.
         /// </summary>
         /// <returns>List of groups with deserialized members.</returns>
-        public static List<GroupDeserialized> GetAllGroups()
+        public static List<Group> GetAllGroups()
         {
-            List<GroupDeserialized> groups = new List<GroupDeserialized>();
+            List<Group> groups = new List<Group>();
 
             try
             {
-                List<Group> rawGroups = new List<Group>();
-
                 using (var context = new ABLCloudStaffContext())
                 {
                     // Get all active groups from database.
-                    rawGroups = context.Groups.OrderByDescending(x => x.Initiated).ToList();
-                }
-
-                // Build list of deserialized groups.
-                foreach (var rawGroup in rawGroups)
-                {
-                    var stringMembers = rawGroup.Members.Split(',');
-                    List<int> intMembers = new List<int>();
-
-                    // Loop over string array of members:
-                    foreach (string stringMember in stringMembers)
-                    {
-                        intMembers.Add(Convert.ToInt32(stringMember));
-                    }
-
-                    // Create deserialised group object
-                    GroupDeserialized grpDsrlzd = new GroupDeserialized
-                    {
-                        Members = intMembers,
-                        Active = rawGroup.Active,
-                        GroupID = rawGroup.GroupID,
-                        Initiated = rawGroup.Initiated
-                    };
-
-                    // Add object to list
-                    groups.Add(grpDsrlzd);
+                    groups = context.Groups.ToList();
                 }
             }
             catch (Exception ex)
@@ -198,16 +157,75 @@ namespace ABLCloudStaff.Biz_Logic
 
             return groups;
         }
-    }
 
-    /// <summary>
-    /// Deserialised version of the group class. (list of integers instead of comma separated string)
-    /// </summary>
-    public class GroupDeserialized
-    {
-        public int GroupID { get; set; }
-        public List<int> Members { get; set; }
-        public DateTime Initiated { get; set; }
-        public bool Active { get; set; }
+        /// <summary>
+        /// Add a UserInGroup instance to the database
+        /// </summary>
+        /// <param name="userID">The user to add to the group</param>
+        /// <param name="groupID">The group to add the user to.</param>
+        public static void AddUserToGroup(int userID, int groupID)
+        {
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    // Ensure that both the user and the group actually exist.
+                    List<int> existingUserIDs = context.Users.Select(x => x.UserID).ToList();
+                    List<int> existingGroupIDs = context.Groups.Select(x => x.GroupID).ToList();
+
+                    if (!existingUserIDs.Contains(userID))
+                        throw new Exception("User does not exist.");
+                    if (!existingGroupIDs.Contains(groupID))
+                        throw new Exception("Group does not exist.");
+
+                    // Create new UserInGroup instance
+                    UserInGroup uig = new UserInGroup { GroupID = groupID, UserID = userID };
+                    context.UserInGroups.Add(uig);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Remove an indicated user from the indicated group.
+        /// </summary>
+        /// <param name="userID">The user to remove.</param>
+        /// <param name="groupID">The group to remove.</param>
+        public static void RemoveUserFromGroup(int userID, int groupID)
+        {
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    // Ensure that both the user and the group actually exist.
+                    List<int> existingUserIDs = context.Users.Select(x => x.UserID).ToList();
+                    List<int> existingGroupIDs = context.Groups.Select(x => x.GroupID).ToList();
+
+                    if (!existingUserIDs.Contains(userID))
+                        throw new Exception("User does not exist.");
+                    if (!existingGroupIDs.Contains(groupID))
+                        throw new Exception("Group does not exist.");
+
+                    // Remove the indicated UserInGroup instance from the database.
+                    UserInGroup uigToDelete = context.UserInGroups.Where(x => x.UserID == userID).Where(x => x.GroupID == groupID).FirstOrDefault();
+                    
+                    if (uigToDelete != null)
+                    {
+                        context.UserInGroups.Remove(uigToDelete);
+                        context.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
+            }
+        }
     }
 }
