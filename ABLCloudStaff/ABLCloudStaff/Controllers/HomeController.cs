@@ -287,6 +287,33 @@ namespace ABLCloudStaff.Controllers
         }
 
         /// <summary>
+        /// Get a list of all Groups stored in the db.
+        /// </summary>
+        /// <returns>List of groups</returns>
+        public JsonResult GetAllGroups()
+        {
+            List<GroupInfo> groupsSerialized = new List<GroupInfo>();
+
+            // Get list of all our groups:
+            List<Group> groups = GroupUtilities.GetAllGroups();
+
+            // Build list of serialized objects
+            foreach (Group g in groups)
+            {
+                groupsSerialized.Add(new GroupInfo {
+                     GroupID = g.GroupID.ToString(),
+                     Active = g.Active.ToString(),
+                     Name = g.Name,
+                     Priority = g.Priority.ToString()
+                });
+            }
+
+            IEnumerable<GroupInfo> data = groupsSerialized;
+
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
         /// Regardless of other circumstances, set the status to the default status 'in office'
         /// </summary>
         /// <param name="userID">The username to apply this change to</param>

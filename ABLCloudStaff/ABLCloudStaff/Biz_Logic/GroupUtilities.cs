@@ -228,4 +228,12 @@ namespace ABLCloudStaff.Biz_Logic
             }
         }
     }
+
+    public class GroupInfo
+    {
+        public string GroupID;
+        public string Name;
+        public string Active;
+        public string Priority;
+    }
 }
