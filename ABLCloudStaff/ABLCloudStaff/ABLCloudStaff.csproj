@@ -183,6 +183,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-multiselect.css" />
     <Content Include="Content\bootstrap-switch.css" />
     <Content Include="Content\bootstrap-switch.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -214,6 +215,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\bg.png" />
+    <Content Include="Scripts\bootstrap-multiselect.js" />
     <Content Include="Scripts\Groups\add_group.js" />
     <Content Include="Scripts\Groups\see_groups.js" />
     <Content Include="Scripts\add_location_autocomplete.js" />

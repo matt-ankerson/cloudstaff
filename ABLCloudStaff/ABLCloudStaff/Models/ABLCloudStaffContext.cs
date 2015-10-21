@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Data.Entity;
 using System.Data.SqlClient;
+using System.Configuration;
 
 namespace ABLCloudStaff.Models
 {
@@ -23,31 +24,15 @@ namespace ABLCloudStaff.Models
         {
             get
             {
-                var builder = new SqlConnectionStringBuilder
-                {
+                string connString = "";
 #if DEBUG
-                    DataSource=@".\SQLEXPRESS",
-                    InitialCatalog="ABLCloudStaff",
-                    IntegratedSecurity=true,
-                    MultipleActiveResultSets = true // For Entity Framework
+                connString = ConfigurationManager.ConnectionStrings["debug"].ConnectionString;
 #else
-                    // OP
-                    //DataSource = @".\SQLEXPRESS",
-                    //InitialCatalog = "ABLCloudStaff",
-                    //UserID = "test",
-                    //Password = "P@ssw0rd",
-                    //MultipleActiveResultSets = true // For Entity Framework
-
-                    // AbacusBio
-                    DataSource = @"AB-DEPLOY",
-                    InitialCatalog = "ABLCloudStaff",
-                    UserID = "CloudStaffTest",
-                    Password = "P@ssw0rd",
-                    MultipleActiveResultSets = true // For Entity Framework
+                connString = ConfigurationManager.ConnectionStrings["staging"].ConnectionString;
+                //connString = ConfigurationManager.ConnectionStrings["release"].ConnectionString;
 #endif
-                };
 
-                return builder.ConnectionString;
+                return connString;               
             }
         }
 

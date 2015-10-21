@@ -387,7 +387,8 @@
                             <form id="form-add-group" action="/Home/AddGroup" method="post" role="form">
                                 <label for="add_group_name_field">Name</label>
                                 <input type="text" id="add_group_name_field" class="form-control" name="name" required />
-                                <select>
+                                <label for="members_of_group">Members</label>
+                                <select id="members_of_group" multiple="multiple">
 
                                 </select>
                                 <button id="add-group-submit" type="submit" class="btn btn-info btn-block"><span class="glyphicon glyphicon-floppy-disk"></span> Save Group</button>
