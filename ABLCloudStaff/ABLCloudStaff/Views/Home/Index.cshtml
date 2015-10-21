@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="../../Content/bootstrap-switch.css">
     <link rel="stylesheet" href="../../Content/jquery.timepicker.css" />
     <script src="../../Scripts/bootstrap-switch.min.js"></script>
+    <script src="../../Scripts/bootstrap-multiselect.js"></script>
     <script src="../../Scripts/swipe_to_change_status.js"></script>
     <script src="../../Scripts/init_modal.js"></script>
     <script src="../../Scripts/visitor_modal.js"></script>
@@ -382,8 +383,14 @@
                         </div>
                         <div class="modal-body" style="padding:40px 50px;">
                             <!-- Modal content here (add group form) -->
+                            <form id="form-add-group" action="/Home/AddGroup" method="post" role="form">
+                                <label for="add_group_name_field">Name</label>
+                                <input type="text" id="add_group_name_field" class="form-control" name="name" required />
+                                <select>
 
-
+                                </select>
+                                <button id="add-group-submit" type="submit" class="btn btn-info btn-block"><span class="glyphicon glyphicon-floppy-disk"></span> Save Group</button>
+                            </form>
                         </div>
                         <!-- Modal Footer -->
                         <div class="modal-footer">

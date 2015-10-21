@@ -214,6 +214,30 @@ namespace ABLCloudStaff.Controllers
         }
 
         /// <summary>
+        /// Add a new group to the database and all indicated members.
+        /// </summary>
+        /// <param name="name">The name of this group</param>
+        /// <param name="userIDs">The members to add.</param>
+        /// <param name="active">Whether or not this group is out or in. (true would indicate they're out)</param>
+        /// <returns>Error or redirects to home.</returns>
+        public ActionResult AddGroup(string name, List<string> userIDs, string active)
+        {
+            try
+            {
+                bool groupOut = false;
+                if (active == "on")
+                    groupOut = true;
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = "Could not add group, " + ex.Message;
+                List<Core> coreInfo = CoreUtilities.GetAllCoreInstances();
+                return View("Index", coreInfo);
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
+        /// <summary>
         /// Remove a given visitor
         /// </summary>
         /// <remarks>
