@@ -159,6 +159,31 @@ namespace ABLCloudStaff.Biz_Logic
         }
 
         /// <summary>
+        /// Get all users belonging to an indicated group.
+        /// </summary>
+        /// <param name="groupID">The group to pull members for.</param>
+        /// <returns>List of users.</returns>
+        public static List<User> GetMembersOfGroup(int groupID)
+        {
+            List<User> members = new List<User>();
+
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    members = context.UserInGroups.Where(x => x.GroupID == groupID).Select(x => x.User).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
+            }
+
+            return members;
+        }
+
+        /// <summary>
         /// Add a UserInGroup instance to the database
         /// </summary>
         /// <param name="userID">The user to add to the group</param>

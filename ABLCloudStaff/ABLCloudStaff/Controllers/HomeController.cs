@@ -263,6 +263,37 @@ namespace ABLCloudStaff.Controllers
         }
 
         /// <summary>
+        /// Get members of a particular group.
+        /// </summary>
+        /// <param name="groupID">The groupID to seach on.</param>
+        /// <returns>List of users.</returns>
+        public JsonResult GetMembersOfGroup(string groupID)
+        {
+            List<UserInfo> userInfos = new List<UserInfo>();
+            List<User> rawUsers = new List<User>();
+
+            if (!string.IsNullOrEmpty(groupID))
+            {
+                int actualGroupID = Convert.ToInt32(groupID);
+
+                // Get all users of this group
+                rawUsers = GroupUtilities.GetMembersOfGroup(actualGroupID);
+            }
+
+            // Build list of serialisible user info objects.
+            foreach (User u in rawUsers)
+            {
+                userInfos.Add(new UserInfo{ userID = u.UserID.ToString(), 
+                    firstName = u.FirstName, 
+                    lastName = u.LastName, 
+                    isActive = u.IsActive.ToString()});
+            }
+
+            IEnumerable<UserInfo> data = userInfos;
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
         /// Get a dictionary of all visitor type users and thier respective IDs
         /// </summary>
         /// <returns>Json dictionary of users and their IDs.</returns>
