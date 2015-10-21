@@ -3,11 +3,11 @@
 
 $(document).ready(function () {
 
-    add_group_modal = $('#see_groups_modal');
+    see_groups_modal = $('#see_groups_modal');
 
-    // Launch group modal on button press.
+    // Launch see group modal on button press.
     $('#see_groups_button').click(function (e) {
-        add_group_modal.modal();
+        see_groups_modal.modal();
     });
 
     // Use ajax to pull groups from the server, inject into the group list.

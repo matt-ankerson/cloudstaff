@@ -18,6 +18,7 @@
     <script src="../../Scripts/init_modal.js"></script>
     <script src="../../Scripts/visitor_modal.js"></script>
     <script src="../../Scripts/Groups/see_groups.js"></script>
+    <script src="../../Scripts/Groups/add_group.js"></script>
     <script src="../../Scripts/mobile-range-slider.js"></script>
     <script src="../../Scripts/datetime_selection.js"></script>
     <script src="../../Scripts/link_modifier.js"></script>
@@ -337,7 +338,7 @@
         </div>
     </div>
     <!-- /row -->
-
+    <!------------------------------------------------------------------------>
     <div class="row">
         <div class="container">
             <!-- See groups modal -->
@@ -347,7 +348,6 @@
                     <div class="modal-content">
                         <div id="main-modal-header" class="modal-header" style="padding:35px 50px;">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <button type="button" class="pull-left btn btn-success" data-dismiss="modal"><span class="glyphicon glyphicon-plus"></span> New</button>
                             <h4 class="global_modal_header">Groups</h4>
                         </div>
                         <div class="modal-body" style="padding:40px 50px;">
@@ -358,7 +358,8 @@
                         </div>
                         <!-- Modal Footer -->
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+                            <button type="button" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+                            <button type="button" class="pull-right btn btn-success" id="add_group_button" data-dismiss="modal"><span class="glyphicon glyphicon-plus"></span> New</button>
                         </div>
                     </div>
                 </div>
@@ -367,7 +368,36 @@
         </div>
     </div>
     <!-- /row -->
+    <!------------------------------------------------------------------------>
+    <div class="row">
+        <div class="container">
+            <!-- Add group modal -->
+            <div class="modal fade" id="add_group_modal" role="dialog" data-backdrop="static">
+                <div class="modal-dialog">
+                    <!-- Modal content -->
+                    <div class="modal-content">
+                        <div id="main-modal-header" class="modal-header" style="padding:35px 50px;">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="global_modal_header">Add Group</h4>
+                        </div>
+                        <div class="modal-body" style="padding:40px 50px;">
+                            <!-- Modal content here (add group form) -->
 
+
+                        </div>
+                        <!-- Modal Footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+                            <button type="button" class="pull-right btn btn-success" data-dismiss="modal"><span class="glyphicon glyphicon-floppy-disk"></span> Save Group</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /add group modal -->
+        </div>
+    </div>
+    <!-- /row -->
+    <!------------------------------------------------------------------------>
     <div class="row">
         <div class="container">
 
