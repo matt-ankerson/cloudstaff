@@ -55,4 +55,7 @@ $(document).ready(function () {
         // Inject a button explaining an error has occurred.
         list_group.append('<button type="button" class="list-group-item">An Error Occurred.</button>');
     }
+
+    // Event handler for clicking a group's button. Save the groupID to global scope.
+    //$('')
 });

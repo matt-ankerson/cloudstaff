@@ -387,17 +387,19 @@
                             <form id="form-add-group" action="/Home/AddGroup" method="post" role="form">
                                 <label for="add_group_name_field">Name</label>
                                 <input type="text" id="add_group_name_field" class="form-control" name="name" required />
+                                <br />
                                 <label for="members_of_group">Members</label>
                                 <select id="members_of_group" multiple="multiple">
-
+                                    <!-- Select options go here. -->
                                 </select>
+                                <br /><br />
+                                <input type="checkbox" />
                                 <button id="add-group-submit" type="submit" class="btn btn-info btn-block"><span class="glyphicon glyphicon-floppy-disk"></span> Save Group</button>
                             </form>
                         </div>
                         <!-- Modal Footer -->
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
-                            <button type="button" class="pull-right btn btn-success" data-dismiss="modal"><span class="glyphicon glyphicon-floppy-disk"></span> Save Group</button>
                         </div>
                     </div>
                 </div>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
+using System.Collections.Specialized;
 using ABLCloudStaff.Models;
 using ABLCloudStaff.Biz_Logic;
 
@@ -285,6 +286,26 @@ namespace ABLCloudStaff.Controllers
 
             return Json(usersDict, JsonRequestBehavior.AllowGet);
         }
+
+        /// <summary>
+        /// Get an ordered dictionary of all general or admin users and their respective IDs.
+        /// </summary>
+        /// <returns>Json dictionary of users and IDs.</returns>
+        public JsonResult GetGeneralAndAdminUsersOrdered()
+        {
+            // This dictionary will hold userID and corresponding name
+            OrderedDictionary usersDict = new OrderedDictionary();
+
+            List<User> rawUsers = UserUtilities.GetGeneralAndAdminUsers();
+
+            foreach (User u in rawUsers)
+            {
+                usersDict.Add(u.UserID.ToString(), u.FirstName + " " + u.LastName);
+            }
+
+            return Json(usersDict, JsonRequestBehavior.AllowGet);
+        }
+
 
         /// <summary>
         /// Get members of a particular group.
