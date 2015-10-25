@@ -221,13 +221,23 @@ namespace ABLCloudStaff.Controllers
         /// <param name="userIDs">The members to add.</param>
         /// <param name="active">Whether or not this group is out or in. (true would indicate they're out)</param>
         /// <returns>Error or redirects to home.</returns>
-        public ActionResult AddGroup(string name, List<string> userIDs, string active)
+        public ActionResult AddGroup(string name, List<string> members)
         {
             try
             {
-                bool groupOut = false;
-                if (active == "on")
-                    groupOut = true;
+                // Check for valid name:
+                if (string.IsNullOrEmpty(name))
+                    throw new Exception("No name supplied.");
+
+                // Build list of integer userIDs
+                List<int> actualMembers = new List<int>();
+                foreach(string member in members)
+                {
+                    actualMembers.Add(Convert.ToInt32(member));
+                }
+
+                // Add the group. (This operation will also add members to the group)
+                GroupUtilities.AddGroup(actualMembers, name);
             }
             catch (Exception ex)
             {
@@ -235,6 +245,7 @@ namespace ABLCloudStaff.Controllers
                 List<Core> coreInfo = CoreUtilities.GetAllCoreInstances();
                 return View("Index", coreInfo);
             }
+
             return RedirectToAction("Index", "Home");
         }
 

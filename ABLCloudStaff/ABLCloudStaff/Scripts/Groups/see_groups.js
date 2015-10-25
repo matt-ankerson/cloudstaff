@@ -35,20 +35,30 @@ $(document).ready(function () {
         {
             if (list[i].Active == 'True') {
                 // Group is out. (or 'Active')
-                list_group.append('<button type="button" class="list-group-item btn_group_is_out" value="' + list[i].GroupID + '">' +
+                list_group.append('<button type="button" class="list-group-item btn_group_is_out btn_group_name" data-dismiss="modal" value="' + list[i].GroupID + '">' +
                     list[i].Name +
                     '<span class="pull-right">Out</span>' +
                     '</button>');
             }
             else {
                 // Group is in. (or 'Inactive')
-                list_group.append('<button type="button" class="list-group-item btn_group_is_in" value="' + list[i].GroupID + '">' +
+                list_group.append('<button type="button" class="list-group-item btn_group_is_in btn_group_name" data-dismiss="modal" value="' + list[i].GroupID + '">' +
                     list[i].Name +
                     '<span class="pull-right">In</span>' +
                     '</button>');
             }
             
         }
+
+        // Open group member modal when a group is selected from the 'see groups' modal.
+        $(".btn_group_name").on('click', function (e) {
+            // Inject the GroupID into an element on the modal
+            // Save the groupID into a memorable variable name. (maybe). Check what $(this).val() yields.
+            $('#group_id_for_members').val($(this).val());
+            // Launch the members modal 
+            $('#see_group_members_modal').modal();
+            
+        });
     }
 
     function get_groups_errorFunc(error) {

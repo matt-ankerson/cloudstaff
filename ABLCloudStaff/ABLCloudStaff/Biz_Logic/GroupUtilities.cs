@@ -18,7 +18,7 @@ namespace ABLCloudStaff.Biz_Logic
         /// Add a group to the database, autopopulates the UserInGroup table
         /// </summary>
         /// <param name="userIDs">List of UserIDs to include in this group.</param>
-        public static void AddGroup(List<int> userIDs, string name, bool active, int priority=0)
+        public static void AddGroup(List<int> userIDs, string name, bool active = false, int priority=0)
         {
             try
             {

@@ -242,6 +242,7 @@
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\changelog_tables.js" />
     <Content Include="Scripts\fill_user_table.js" />
+    <Content Include="Scripts\Groups\see_group_members.js" />
     <Content Include="Scripts\init_modal.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

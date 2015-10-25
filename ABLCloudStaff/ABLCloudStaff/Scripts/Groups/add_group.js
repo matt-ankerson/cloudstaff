@@ -20,7 +20,7 @@ $(document).ready(function () {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: get_appropriate_users_success_func,
-        error: get_appropriate_users_success_func
+        error: get_appropriate_users_error_func
     });
 
     function get_appropriate_users_success_func(data, status) {
@@ -39,6 +39,8 @@ $(document).ready(function () {
         // Call to make it a multiselect.
         members_of_group_multiselect.multiselect({
             includeSelectAllOption: true,
+            enableFiltering: true,
+            filterPlaceholder: 'Search...',
             maxHeight: 400,
         });
     }
