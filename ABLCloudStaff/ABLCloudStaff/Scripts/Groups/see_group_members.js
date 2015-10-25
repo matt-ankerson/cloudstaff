@@ -24,6 +24,9 @@ $(document).ready(function () {
         function get_members_success_func(data, status) {
             list = data;
             // Inject members into member list.
+
+            // Get refine members multiselect
+            refine_group_members_multiselect = $('#refine_group_members');
         }
 
         function get_members_errorFunc(error) {

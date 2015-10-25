@@ -37,14 +37,14 @@ $(document).ready(function () {
                 // Group is out. (or 'Active')
                 list_group.append('<button type="button" class="list-group-item btn_group_is_out btn_group_name" data-dismiss="modal" value="' + list[i].GroupID + '">' +
                     list[i].Name +
-                    '<span class="pull-right">Out</span>' +
+                    '<span class="pull-right badge">Out</span>' +
                     '</button>');
             }
             else {
                 // Group is in. (or 'Inactive')
                 list_group.append('<button type="button" class="list-group-item btn_group_is_in btn_group_name" data-dismiss="modal" value="' + list[i].GroupID + '">' +
-                    list[i].Name +
-                    '<span class="pull-right">In</span>' +
+                    '<div class="group_name_inner">' + list[i].Name + '</div>' +
+                    '<span class="pull-right badge">In</span>' +
                     '</button>');
             }
             
@@ -53,8 +53,10 @@ $(document).ready(function () {
         // Open group member modal when a group is selected from the 'see groups' modal.
         $(".btn_group_name").on('click', function (e) {
             // Inject the GroupID into an element on the modal
-            // Save the groupID into a memorable variable name. 
             $('#group_id_for_members').val($(this).val());
+            group_name = $(this).find('.group_name_inner').text();
+            // Inject the Group name into the modal heading.
+            $('#member_list_heading').text(group_name);
             // Launch the members modal 
             $('#see_group_members_modal').modal();
             
@@ -65,7 +67,4 @@ $(document).ready(function () {
         // Inject a button explaining an error has occurred.
         list_group.append('<button type="button" class="list-group-item">An Error Occurred.</button>');
     }
-
-    // Event handler for clicking a group's button. Save the groupID to global scope.
-    //$('')
 });
