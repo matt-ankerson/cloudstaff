@@ -53,7 +53,7 @@ $(document).ready(function () {
         // Open group member modal when a group is selected from the 'see groups' modal.
         $(".btn_group_name").on('click', function (e) {
             // Inject the GroupID into an element on the modal
-            // Save the groupID into a memorable variable name. (maybe). Check what $(this).val() yields.
+            // Save the groupID into a memorable variable name. 
             $('#group_id_for_members').val($(this).val());
             // Launch the members modal 
             $('#see_group_members_modal').modal();
