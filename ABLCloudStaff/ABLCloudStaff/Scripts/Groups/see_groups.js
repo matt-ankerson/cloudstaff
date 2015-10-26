@@ -39,6 +39,7 @@ $(document).ready(function () {
                     '<div class="group_name_inner jsOnly">' + list[i].Name + '</div>' + list[i].Name +
                     '<span class="pull-right badge">Out</span>' +
                     '</button>');
+                
             }
             else {
                 // Group is in. (or 'Inactive')
@@ -50,6 +51,9 @@ $(document).ready(function () {
             
         }
 
+        control_container = $('#alternate_options_for_groups_in_or_out');
+        control_container_previous_elements = control_container.contents();
+
         // Open group member modal when a group is selected from the 'see groups' modal.
         $(".btn_group_name").on('click', function (e) {
             // Inject the GroupID into an element on the modal
@@ -57,6 +61,27 @@ $(document).ready(function () {
             group_name = $(this).find('.group_name_inner').text();
             // Inject the Group name into the modal heading.
             $('#member_list_heading').text(group_name);
+
+            // We also need to present a slightly different modal when an 'out' group is pressed.
+            // The modal needs to provide a multiselect list of all members, and a single button for returning to the office.
+            if ($(this).hasClass('btn_group_is_out')) {
+                
+                default_in_status = $('#default_in_status_id').val();
+                default_in_location = $('#default_in_location_id').val();
+                // Clear the container contents.
+                control_container.html('');
+                // Inject appropriate controls.
+                control_container.html('<input type="hidden" name="statusID" value="' + default_in_status + '" />' +
+                                       '<input type="hidden" name="locationID" value="' + default_in_location + '" />' +
+                                       '<input type="hidden" name="returnTime" value="" />' +
+                                       '<button id="update-group-submit" type="submit" class="btn btn-info btn-block">Return to Office</button>');
+            }
+            else {
+                // Show the ordinary controls. (For a group which is in)
+                control_container.html('');
+                control_container.append(control_container_previous_elements);
+            }
+
             // Launch the members modal 
             $('#see_group_members_modal').modal();
             

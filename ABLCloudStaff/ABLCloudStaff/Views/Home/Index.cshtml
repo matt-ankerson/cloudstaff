@@ -20,7 +20,7 @@
     <script src="../../Scripts/visitor_modal.js"></script>
     <script src="../../Scripts/Groups/see_groups.js"></script>
     <script src="../../Scripts/Groups/add_group.js"></script>
-    <script src="../../Scripts/Groups/see_group_members.js"></script>
+    <script src="../../Scripts/Groups/update_group_modal.js"></script>
     <script src="../../Scripts/mobile-range-slider.js"></script>
     <script src="../../Scripts/datetime_selection.js"></script>
     <script src="../../Scripts/link_modifier.js"></script>
@@ -108,6 +108,10 @@
             </div>
         </div>
     }
+    
+    <!-- Get some handy constants from serverside for use in JS. -->
+    <input type="hidden" id="default_in_status_id" value="@ABLCloudStaff.Biz_Logic.Constants.DEFAULT_IN_STATUS" />
+    <input type="hidden" id="default_in_location_id" value="@ABLCloudStaff.Biz_Logic.Constants.DEFAULT_LOCATION" />
     
     <div class="container-fluid">
         <div class="row">
@@ -423,12 +427,83 @@
                         </div>
                         <div class="modal-body" style="padding:40px 50px;">
                             <input type="hidden" id="group_id_for_members"/>
-                            <form>
+                            <form id="form-update-status-or-location_for_group" action="/Home/SubmitStatusOrLocationUpdateForGroup" method="post" role="form">
                                 <label for="refine_group_members">Refine Members: </label>
                                 <select id="refine_group_members" multiple="multiple" name="members[]">
                                     <!-- Select options go here. -->
                                 </select>
                                 <br /><br />
+                                <div id="alternate_options_for_groups_in_or_out">
+                                    <!-- This div holds form options for either a group which is in, or a group which is out.
+                                            By default it will hold options for a group which is currently in. -->
+
+                                    <div class="form-group container-fluid">
+                                        <div class="row">
+                                            <div class="col-xs-6">
+                                                <label for="status-list_for_group"><span class="glyphicon glyphicon-user"></span> Status</label>
+                                                <br />
+                                                <!-- Status Dropdown -->
+                                                <select id="status-list_for_group" class="form-control" name="statusID">
+                                                    <!-- Statuses go here. -->
+                                                </select>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <label for="location-list_for_group"><span class="glyphicon glyphicon-map-marker"></span> Location</label>
+                                                <br />
+                                                <!-- Location Dropdown -->
+                                                <select id="location-list_for_group" class="form-control" name="locationID">
+                                                    <!-- Locations go here. -->
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-xs-8" id="time_display_for_group">
+                                                <label for="time_slider_for_group">
+                                                    Return
+                                                    <span class="glyphicon glyphicon-calendar"> </span>
+                                                    <span class="glyphicon glyphicon-time"> </span>
+                                                    <span id="date_picker_val_for_group"> </span>
+                                                    <span id="time_slider_val_for_group"> </span>
+                                                </label>
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <button id="cancel_time_for_group" class="btn btn-default form-control">
+                                                    <span class="glyphicon glyphicon-calendar"> </span>
+                                                    <span class="glyphicon glyphicon-time"> </span> Cancel
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <!-- Datepicker goes here. -->
+                                            <div class="col-xs-1">
+                                                <p><font size="6"><span class="glyphicon glyphicon-calendar"></span></font></p>
+                                            </div>
+                                            <div class="col-xs-11">
+                                                <input type="text" class="form-control" placeholder="touch here..." id="datepicker" name="returnDate" />
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <!-- Time slider goes here. -->
+                                            <div class="col-xs-1">
+                                                <p><font size="6"><span class="glyphicon glyphicon-time"></span></font></p>
+                                            </div>
+                                            <div class="col-xs-11">
+                                                <div id="time_slider_for_group" class="slider">
+                                                    <div class="track" id="custom_track"></div>
+                                                    <div class="knob"></div>
+                                                </div>
+                                                <!-- Hidden field for datetime information -->
+                                                <input type="hidden" id="time_value_for_group" name="returnTime" value="" />
+                                            </div>
+                                        </div>
+                                        <br />
+                                    </div>
+                                    <!-- Submit button -->
+                                    <button id="update-group-submit" type="submit" class="btn btn-info btn-block"><span class="glyphicon glyphicon-floppy-disk"></span> Save & Update</button>
+                                </div>
                             </form>
                         </div>
                         <!-- Modal Footer -->

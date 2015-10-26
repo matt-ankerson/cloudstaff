@@ -88,7 +88,7 @@ namespace ABLCloudStaff.Controllers
         /// <param name="returnTime">The new return time.</param>
         /// <returns>Redirects to home page.</returns>
         [HttpPost]
-        public ActionResult SubmitStatusOrLocationUpdateForGroup(List<string> userIDs, string statusID, string locationID, string returnTime)
+        public ActionResult SubmitStatusOrLocationUpdateForGroup(List<string> members, string statusID, string locationID, string returnTime)
         {
             try
             {
@@ -97,10 +97,10 @@ namespace ABLCloudStaff.Controllers
                 int actualLocationID = Convert.ToInt32(locationID);
 
                 // Integer list for saving a group to the Group table.
-                List<int> members = new List<int>();
+                List<int> actualMembers = new List<int>();
                 
                 // For each userID:
-                foreach (string userIDStr in userIDs)
+                foreach (string userIDStr in members)
                 {
                     if(!string.IsNullOrEmpty(userIDStr))
                     {
@@ -108,12 +108,9 @@ namespace ABLCloudStaff.Controllers
                         // Perform the update for this user:
                         _submitStateUpdateForUser(actualUserID, actualStatusID, actualLocationID, returnTime);
                         // Add the userID to the member list.
-                        members.Add(actualUserID);
+                        actualMembers.Add(actualUserID);
                     }  
                 }
-
-                // Add a group
-                //GroupUtilities.AddGroup(members);
             }
             catch (Exception ex)
             {
