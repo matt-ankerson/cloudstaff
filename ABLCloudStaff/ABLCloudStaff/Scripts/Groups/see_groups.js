@@ -36,14 +36,14 @@ $(document).ready(function () {
             if (list[i].Active == 'True') {
                 // Group is out. (or 'Active')
                 list_group.append('<button type="button" class="list-group-item btn_group_is_out btn_group_name" data-dismiss="modal" value="' + list[i].GroupID + '">' +
-                    list[i].Name +
+                    '<div class="group_name_inner jsOnly">' + list[i].Name + '</div>' + list[i].Name +
                     '<span class="pull-right badge">Out</span>' +
                     '</button>');
             }
             else {
                 // Group is in. (or 'Inactive')
                 list_group.append('<button type="button" class="list-group-item btn_group_is_in btn_group_name" data-dismiss="modal" value="' + list[i].GroupID + '">' +
-                    '<div class="group_name_inner">' + list[i].Name + '</div>' +
+                    '<div class="group_name_inner jsOnly">' + list[i].Name + '</div>' + list[i].Name +
                     '<span class="pull-right badge">In</span>' +
                     '</button>');
             }

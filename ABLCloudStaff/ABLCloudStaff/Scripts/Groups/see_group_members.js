@@ -27,6 +27,21 @@ $(document).ready(function () {
 
             // Get refine members multiselect
             refine_group_members_multiselect = $('#refine_group_members');
+
+            for (var i = 0; i < list.length; i++) {
+                refine_group_members_multiselect.append('<option value="' + list[i].userID + '">' + list[i].firstName + ' ' + list[i].lastName + '</option>');
+            }
+            // Create the multiselect (with all members already selected.)
+            refine_group_members_multiselect.multiselect({
+                includeSelectAllOption: true,
+                enableFiltering: true,
+                allSelectedText: 'All Selected',
+                filterPlaceholder: 'Search...',
+                maxHeight: 400,
+            });
+
+            refine_group_members_multiselect.multiselect('selectAll', false);
+            refine_group_members_multiselect.multiselect('updateButtonText');
         }
 
         function get_members_errorFunc(error) {
