@@ -46,8 +46,8 @@ namespace ABLCloudStaff.Models
         {
             List<Group> groups = new List<Group>();
 
-            groups.Add(new Group { Active = true, Name = "Coffee", Priority = 0 });
-            groups.Add(new Group { Active = true, Name = "Golf", Priority = 0 });
+            groups.Add(new Group { Active = false, Name = "Coffee", Priority = 0 });
+            groups.Add(new Group { Active = false, Name = "Golf", Priority = 0 });
 
             foreach (Group g in groups)
                 dbContext.Groups.Add(g);

@@ -87,13 +87,15 @@ $(document).ready(function () {
                         error: get_members_of_group_errorFunc
                     });
 
-                    function get_members_of_group_success_func(current_members, status) {
+                    function get_members_of_group_success_func(data, status) {
                         // Put the keys of this dict into a set
-                        members_of_this_group_set = new Set();
-                        for (var key in Object.keys(current_members)) {
-                            members_of_this_group_set.add(parseInt(key));
-                            console.log(parseInt(key));
+                        members_of_this_group_set = {};
+
+                        for (var key in data)
+                        {
+                            members_of_this_group_set[key] = true;
                         }
+
 
                         // Populate the members multiselect.
                         // If a user's userID is in 'members_of_this_group_set', make it selected.
@@ -101,7 +103,8 @@ $(document).ready(function () {
                         // Get the multi select element
                         members_of_group_multiselect = $('#edit_members_of_group')
 
-                        for (var key in all_users_dict) {
+                        for (var key in all_users_dict)
+                        {
                             if (key in members_of_this_group_set) {
                                 members_of_group_multiselect.append('<option value="' + key + '" selected="selected">' + all_users_dict[key] + '</option>');
                             }

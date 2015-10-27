@@ -47,11 +47,8 @@ namespace ABLCloudStaff.Models
         {
             List<Group> groups = new List<Group>();
 
-            for (int i = 1; i < 4; i++)
-            {
-                groups.Add(new Group { Active = false, Name = "Group " + i.ToString(), Priority = 0 });
-            }
-            groups.Add(new Group { Active = true, Name = "Group 4", Priority = 0 });
+            groups.Add(new Group { Active = false, Name = "Coffee", Priority = 0 });
+            groups.Add(new Group { Active = false, Name = "Golf", Priority = 0 });
 
             foreach (Group g in groups)
                 dbContext.Groups.Add(g);
@@ -69,13 +66,7 @@ namespace ABLCloudStaff.Models
             uigs.Add(new UserInGroup { GroupID = 1, UserID = 22 });
             uigs.Add(new UserInGroup { GroupID = 2, UserID = 23 });
             uigs.Add(new UserInGroup { GroupID = 2, UserID = 24 });
-            uigs.Add(new UserInGroup { GroupID = 2, UserID = 25 }); 
-            uigs.Add(new UserInGroup { GroupID = 3, UserID = 26 });
-            uigs.Add(new UserInGroup { GroupID = 3, UserID = 27 }); 
-            uigs.Add(new UserInGroup { GroupID = 3, UserID = 28 });
-            uigs.Add(new UserInGroup { GroupID = 4, UserID = 17 });
-            uigs.Add(new UserInGroup { GroupID = 4, UserID = 18 });
-            uigs.Add(new UserInGroup { GroupID = 4, UserID = 19 });
+            uigs.Add(new UserInGroup { GroupID = 2, UserID = 25 });
             foreach (UserInGroup uig in uigs)
                 dbContext.UserInGroups.Add(uig);
             dbContext.SaveChanges();
