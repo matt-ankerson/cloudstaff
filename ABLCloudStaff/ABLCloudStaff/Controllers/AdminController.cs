@@ -32,6 +32,14 @@ namespace ABLCloudStaff.Controllers
             else
             {
                 // We have a username in session, return the admin screen.
+
+                // Check for any error messages in TempData that we should propagate to the UI.
+                if (TempData["Message"] != null)
+                {
+                    ViewBag.Message = TempData["Message"].ToString();
+                }
+                
+
                 return View();
             }
         }
@@ -663,8 +671,7 @@ namespace ABLCloudStaff.Controllers
             catch (Exception ex)
             {
                 // Report the error
-                ViewBag.Message = "There was an error: " + ex.Message;
-                return View("Admin");
+                TempData["Message"] = "There was an error: " + ex.Message;
             }
 
             return RedirectToAction("Admin", "Admin");
