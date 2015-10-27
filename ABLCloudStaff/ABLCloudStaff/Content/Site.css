@@ -217,14 +217,16 @@ input[type="checkbox"].input-validation-error {
 /* Administration EDIT Modals */
 #admin-edit-status-modal-header,
 #admin-edit-location-modal-header,
-#admin-edit-user-modal-header {
+#admin-edit-user-modal-header,
+#admin-edit-group-modal-header {
     background-color: lightgray;
     padding:35px 50px;
 }
 
 #edit-status-modal-title,
 #edit-location-modal-title,
-#edit-user-modal-title {
+#edit-user-modal-title,
+#edit-group-modal-title {
     background-color: lightgray;
 }
 

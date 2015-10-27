@@ -129,6 +129,25 @@ namespace ABLCloudStaff.Controllers
         }
 
         /// <summary>
+        /// Get a dicitonary of all general and admin users
+        /// </summary>
+        /// <returns>Return json dict of users.</returns>
+        public JsonResult GetGeneralAndAdminUsers()
+        {
+            // This dictionary will hold userID and corresponding name
+            Dictionary<string, string> usersDict = new Dictionary<string, string>();
+
+            List<User> rawUsers = UserUtilities.GetGeneralAndAdminUsers();
+
+            foreach (User u in rawUsers)
+            {
+                usersDict.Add(u.UserID.ToString(), u.FirstName + " " + u.LastName);
+            }
+
+            return Json(usersDict, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
         /// Get all users in verbose detail
         /// </summary>
         /// <returns>An Ienumberable of type UserInfo in JSON format</returns>
@@ -627,8 +646,8 @@ namespace ABLCloudStaff.Controllers
                     throw new Exception("Group ID failed to propagate.");
                 if (string.IsNullOrEmpty(name))
                     throw new Exception("No group name supplied.");
-                if (members.Count <= 0)
-                    throw new Exception("More than zero members must be supplied for a group.");
+                if ((members.Count <= 0)||(members == null))
+                    throw new Exception("At least one member must be supplied for a group.");
 
                 int actualGroupID = Convert.ToInt32(groupID);
                 int actualPriority = Convert.ToInt32(priority);
@@ -640,6 +659,29 @@ namespace ABLCloudStaff.Controllers
 
                 // Perform the update. This will replace members with those supplied.
                 GroupUtilities.UpdateGroup(actualGroupID, name, actualPriority, actualMembers);
+            }
+            catch (Exception ex)
+            {
+                // Report the error
+                ViewBag.Message = "There was an error: " + ex.Message;
+                return View("Admin");
+            }
+
+            return RedirectToAction("Admin", "Admin");
+        }
+
+        /// <summary>
+        /// Remove an indicated group.
+        /// </summary>
+        /// <param name="groupID">The group to remove.</param>
+        /// <returns>Redirects to admin home.</returns>
+        public ActionResult RemoveGroup(string groupID)
+        {
+            try
+            {
+                int actualGroupID = Convert.ToInt32(groupID);
+                // Perform the deletion:
+                GroupUtilities.RemoveGroup(actualGroupID);
             }
             catch (Exception ex)
             {

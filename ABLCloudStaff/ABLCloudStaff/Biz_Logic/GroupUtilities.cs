@@ -294,6 +294,33 @@ namespace ABLCloudStaff.Biz_Logic
                 throw ex;
             }
         }
+
+        /// <summary>
+        /// Remove the indicated group and all members associated with it.
+        /// </summary>
+        /// <param name="groupID">The group to remove.</param>
+        public static void RemoveGroup(int groupID)
+        {
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    // Remove the UserInGroup instances associated with this group.
+                    List<UserInGroup> uigsToDelete = context.UserInGroups.Where(x => x.GroupID == groupID).ToList();
+                    context.UserInGroups.RemoveRange(uigsToDelete);
+                    context.SaveChanges();
+                    // Remove the actual group instance.
+                    Group groupToDelete = context.Groups.FirstOrDefault(x => x.GroupID == groupID);
+                    context.Groups.Remove(groupToDelete);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
+            }
+        }
     }
 
     public class GroupInfo

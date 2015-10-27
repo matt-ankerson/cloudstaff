@@ -25,8 +25,11 @@
     <script src="../../Scripts/add_location_autocomplete.js"></script>
     <script src="../../Scripts/remove_location_autocomplete.js"></script>
     <script src="../../Scripts/link_modifier.js"></script>
+    <script src="../../Scripts/bootstrap-multiselect.js"></script>
+    <script src="../../Scripts/Groups/fill_group_table.js"></script>
     <link rel="stylesheet" href="../../Content/bootstrap.min.css">
     <link rel="stylesheet" href="../../Content/spinner.css" type="text/css">
+    <link rel="stylesheet" type="text/css" href="../../Content/bootstrap-multiselect.css" />
     <link rel="stylesheet" href="../../Content/Site.css">
     <link rel="stylesheet" href="../../Content/bootstrap-switch.css">
     <link rel="stylesheet" href="../../Content/jquery-ui.min.css"/>
@@ -94,6 +97,9 @@
             </div>
         </div>
     }
+    
+    <!-- Useful constant values -->
+    <input type="hidden" id="max_priority" value="@ABLCloudStaff.Biz_Logic.Constants.MAX_PRIORITY" />
 
     <div class="container-fluid">
         <div class="row">
@@ -491,6 +497,51 @@
                                     </div>
 
                                     <button id="update-user-button" type="submit" class="btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span> Update & Save</button>
+                                </form>
+                            </div>
+                            <!-- Modal Footer -->
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /modal -->
+            </div>
+        </div>
+        <!-- /row -->
+
+        <div class="row">
+            <div class="container">
+                <!--------------- Edit Group Modal---------------------->
+                <div class="modal fade" id="edit-group-modal" role="dialog" data-backdrop="static">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header" id="admin-edit-group-modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 id="edit-group-modal-title">Edit: </h4>
+                            </div>
+                            <!-- Modal Content -->
+                            <div class="modal-body" style="padding:40px 50px;">
+                                <form id="edit-group-form" action="/Admin/UpdateGroup" method="post" role="form">
+                                    <div class="form-group">
+                                        <label for="edit-group-name">Name</label>
+                                        <input id="edit-group-name" type="text" name="name" class="form-control" required />
+                                        <br />
+                                        <label for="edit-group-priority">Group priority: (0 indicates highest priority)</label>
+                                        <select id="edit-group-priority" name="priority" class="form-control">
+                                            <!-- Select options go here. -->
+                                        </select>
+                                        <br />
+                                        <!-- Members multiselect -->
+                                        <label for="edit_members_of_group">Members:</label>
+                                        <select id="edit_members_of_group" multiple="multiple" name="members[]">
+                                            <!-- Select options go here. -->
+                                        </select>
+                                        <br /><br />
+                                    </div>
+                                    <button id="update-group-button" type="submit" class="btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span> Update & Save</button>
                                 </form>
                             </div>
                             <!-- Modal Footer -->

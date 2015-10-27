@@ -26,5 +26,6 @@ namespace ABLCloudStaff.Biz_Logic
         public static readonly int[] DEFAULT_STATUSES = { 1, 2, 3, 4, 5, 6, 8 };
         public static readonly int[] DEFAULT_LOCATIONS = { 1, 2, 3, 4, 6 , 7 };
         public static readonly string CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        public const int MAX_PRIORITY = 10;
     }
 }
