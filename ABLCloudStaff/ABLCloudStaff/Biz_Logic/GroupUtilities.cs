@@ -146,7 +146,7 @@ namespace ABLCloudStaff.Biz_Logic
                 using (var context = new ABLCloudStaffContext())
                 {
                     // Get all active groups from database.
-                    groups = context.Groups.ToList();
+                    groups = context.Groups.OrderBy(x => x.Priority).ToList();
                 }
             }
             catch (Exception ex)

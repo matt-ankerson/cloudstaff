@@ -80,18 +80,13 @@ $(document).ready(function () {
             success: get_locations_success_func,
             error: errorFunc
         });
-        //*******Change IDs here to match controls on update group modal 
+
         function get_statuses_success_func(data, status) {
             var list = data;
             // Populate the Dropdown list for statuses
             $.each(list, function (index, item) {
-                // If the status index is equal to 'thisUsersStatusID', make the option selected
-                if (index == thisUsersStatusID) {
-                    $("#status-list").append('<option value="' + index + '" selected>' + item + '</option>');
-                }
-                else {
-                    $("#status-list").append('<option value="' + index + '">' + item + '</option>');
-                }
+
+                $("#status-list_for_group").append('<option value="' + index + '">' + item + '</option>');
             });
         }
 
@@ -99,13 +94,8 @@ $(document).ready(function () {
             var list = data;
             // Populate the Dropdown list for locations
             $.each(list, function (index, item) {
-                // if the location index is equal to 'thisUsersLocationID', make the option selected.
-                if (index == thisUsersLocationID) {
-                    $("#location-list").append('<option value="' + index + '" selected>' + item + '</option>');
-                }
-                else {
-                    $("#location-list").append('<option value="' + index + '">' + item + '</option>');
-                }
+
+                $("#location-list_for_group").append('<option value="' + index + '">' + item + '</option>');
             });
         }
 
@@ -118,6 +108,12 @@ $(document).ready(function () {
         // /Ajax requests for statuses and locations
         //------------------------------------------------------------------
 
+        // Unbind the trigger for our modal form submission
+        // ...doing this stops the form being submitted multiple times.
+        $('#see_group_members_modal').on('hide.bs.modal', function (e) {
+            $("#myModal form").trigger('submit');
+            $("#myModal form").unbind('submit');
+        });
     });
 
 });

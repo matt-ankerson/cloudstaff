@@ -217,6 +217,7 @@
     <Content Include="Images\bg.png" />
     <Content Include="Scripts\bootstrap-multiselect.js" />
     <Content Include="Scripts\Groups\add_group.js" />
+    <Content Include="Scripts\Groups\datetime_selection_for_group.js" />
     <Content Include="Scripts\Groups\see_groups.js" />
     <Content Include="Scripts\add_location_autocomplete.js" />
     <Content Include="Scripts\add_location_form.js" />
@@ -242,7 +243,7 @@
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\changelog_tables.js" />
     <Content Include="Scripts\fill_user_table.js" />
-    <Content Include="Scripts\Groups\see_group_members.js" />
+    <Content Include="Scripts\Groups\update_group_modal.js" />
     <Content Include="Scripts\init_modal.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

@@ -88,16 +88,13 @@ namespace ABLCloudStaff.Controllers
         /// <param name="returnTime">The new return time.</param>
         /// <returns>Redirects to home page.</returns>
         [HttpPost]
-        public ActionResult SubmitStatusOrLocationUpdateForGroup(List<string> members, string statusID, string locationID, string returnTime)
+        public ActionResult SubmitStatusOrLocationUpdateForGroup(List<string> members, string statusID, string locationID, string returnTime, string groupID, string returningGroup = "")
         {
             try
             {
                 // Convert our parameters into a useful data type
                 int actualStatusID = Convert.ToInt32(statusID);
                 int actualLocationID = Convert.ToInt32(locationID);
-
-                // Integer list for saving a group to the Group table.
-                List<int> actualMembers = new List<int>();
                 
                 // For each userID:
                 foreach (string userIDStr in members)
@@ -107,9 +104,26 @@ namespace ABLCloudStaff.Controllers
                         int actualUserID = Convert.ToInt32(userIDStr);
                         // Perform the update for this user:
                         _submitStateUpdateForUser(actualUserID, actualStatusID, actualLocationID, returnTime);
-                        // Add the userID to the member list.
-                        actualMembers.Add(actualUserID);
-                    }  
+                    }
+                }
+
+                // Sign the group in or out.
+                if (!string.IsNullOrEmpty(groupID))
+                {
+                    // Convert the groupID to a usable type
+                    int actualGroupID = Convert.ToInt32(groupID);
+
+                    // If this is a returning group, indicate that they've returned (in the group table)
+                    if (string.IsNullOrEmpty(returningGroup))
+                    {
+                        // Group is leaving
+                        GroupUtilities.ActivateGroup(actualGroupID);
+                    }
+                    else
+                    {
+                        // Group is returning
+                        GroupUtilities.DeactivateGroup(actualGroupID);
+                    }
                 }
             }
             catch (Exception ex)
@@ -512,6 +526,29 @@ namespace ABLCloudStaff.Controllers
         }
 
         /// <summary>
+        /// Get all statuses
+        /// </summary>
+        /// <returns>Dictionary of all statuses.</returns>
+        public JsonResult GetDefaultStatusesAjax()
+        {
+            Dictionary<string, string> statusDict = new Dictionary<string, string>();
+
+            try
+            {
+                List<Status> statuses = StatusUtilities.GetDefaultStatuses();
+                // Pull out the actual status names for the string list
+                foreach (var status in statuses)
+                    statusDict.Add(status.StatusID.ToString(), status.Name);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return Json(statusDict, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
         /// Get all the Locations available to a specific username
         /// </summary>
         /// <param name="userID">The username to search on.</param>
@@ -526,6 +563,30 @@ namespace ABLCloudStaff.Controllers
 
                 // Get the list of Locations available to this username
                 List<Location> locations = LocationUtilities.GetAvailableLocations(thisUserID);
+
+                // Pull out the actual location names for the string list
+                foreach (Location loc in locations)
+                    locationDict.Add(loc.LocationID.ToString(), loc.Name);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return Json(locationDict, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// Get all locations
+        /// </summary>
+        /// <returns>Dictionary of locations</returns>
+        public JsonResult GetDefaultLocationsAjax()
+        {
+            Dictionary<string, string> locationDict = new Dictionary<string, string>();
+
+            try
+            {
+                List<Location> locations = LocationUtilities.GetDefaultLocations();
 
                 // Pull out the actual location names for the string list
                 foreach (Location loc in locations)

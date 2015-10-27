@@ -426,8 +426,9 @@
                             <h4 class="global_modal_header" id="member_list_heading">Group Members</h4>
                         </div>
                         <div class="modal-body" style="padding:40px 50px;">
-                            <input type="hidden" id="group_id_for_members"/>
+                            
                             <form id="form-update-status-or-location_for_group" action="/Home/SubmitStatusOrLocationUpdateForGroup" method="post" role="form">
+                                <input type="hidden" id="group_id_for_members" name="groupID" /> <!-- Group ID -->
                                 <label for="refine_group_members">Refine Members: </label>
                                 <select id="refine_group_members" multiple="multiple" name="members[]">
                                     <!-- Select options go here. -->
@@ -468,22 +469,23 @@
                                                 </label>
                                             </div>
                                             <div class="col-xs-4">
-                                                <button id="cancel_time_for_group" class="btn btn-default form-control">
+                                                <button id="cancel_time_for_group" type="button" class="btn btn-default form-control" value="1">
                                                     <span class="glyphicon glyphicon-calendar"> </span>
                                                     <span class="glyphicon glyphicon-time"> </span> Cancel
                                                 </button>
                                             </div>
                                         </div>
                                         <br />
+                                        
                                         <div class="row">
-                                            <!-- Datepicker goes here. -->
                                             <div class="col-xs-1">
                                                 <p><font size="6"><span class="glyphicon glyphicon-calendar"></span></font></p>
                                             </div>
                                             <div class="col-xs-11">
-                                                <input type="text" class="form-control" placeholder="touch here..." id="datepicker" name="returnDate" />
+                                                <input type="text" class="form-control" placeholder="touch here..." id="datepicker_for_group" name="returnDate" />
                                             </div>
                                         </div>
+                                        
                                         <br />
                                         <div class="row">
                                             <!-- Time slider goes here. -->
@@ -502,7 +504,7 @@
                                         <br />
                                     </div>
                                     <!-- Submit button -->
-                                    <button id="update-group-submit" type="submit" class="btn btn-info btn-block"><span class="glyphicon glyphicon-floppy-disk"></span> Save & Update</button>
+                                    <button id="update-group-submit" type="submit" class="btn btn-info btn-block submit"><span class="glyphicon glyphicon-floppy-disk"></span> Save & Update</button>
                                 </div>
                             </form>
                         </div>
