@@ -20,6 +20,7 @@
     <script src="../../Scripts/add_status_autocomplete.js"></script>
     <script src="../../Scripts/add_status_form.js"></script>
     <script src="../../Scripts/remove_status_autocomplete.js"></script>
+    <script src="../../Scripts/Groups/remove_group_autocomplete.js"></script>
     <script src="../../Scripts/all_locations_table.js"></script>
     <script src="../../Scripts/add_location_form.js"></script>
     <script src="../../Scripts/add_location_autocomplete.js"></script>
@@ -229,8 +230,17 @@
                                         <div class="tab-pane" id="remove-group">
                                             <h3>Remove Group</h3>
                                             <div class="container nested-tabs">
-                                                <form>
-
+                                                <!-- Remove Status Form -->
+                                                <form id="remove-group-form" action="/Admin/RemoveGroup" method="post" role="form">
+                                                    <div class="ui-widget">
+                                                        <label for="remove-group-user-autocomplete">Which Group?</label>
+                                                        <input id="remove-group-user-autocomplete" class="form-control" placeholder="Group name" required>
+                                                        <br />
+                                                        <p id="remove-group-groupID-display"></p>
+                                                        <input type="hidden" name="groupID" id="remove-group-groupID" />
+                                                    </div>
+                                                    <br />
+                                                    <button id="remove-group-submit" type="submit" class="btn btn-default">Remove Group</button>
                                                 </form>
                                             </div>
                                         </div>

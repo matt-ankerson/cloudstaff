@@ -693,8 +693,7 @@ namespace ABLCloudStaff.Controllers
             catch (Exception ex)
             {
                 // Report the error
-                ViewBag.Message = "There was an error: " + ex.Message;
-                return View("Admin");
+                TempData["Message"] = "There was an error: " + ex.Message;
             }
 
             return RedirectToAction("Admin", "Admin");

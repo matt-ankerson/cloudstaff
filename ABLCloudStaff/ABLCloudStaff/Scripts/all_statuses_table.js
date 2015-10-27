@@ -71,7 +71,7 @@ $(document).ready(function () {
     }
 
     function errorFunc(error) {
-        alert('error' + error.responseText);
+        //alert('error' + error.responseText);
     }
 
     // Click handler for submit button on modal form

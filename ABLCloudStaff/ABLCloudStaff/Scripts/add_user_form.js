@@ -30,7 +30,7 @@ $(document).ready(function () {
     }
 
     function errorFunc(error) {
-        alert('Error getting user types: ' + error.responseText);
+        //alert('Error getting user types: ' + error.responseText);
     }
 
     // Ensure that the form is not submitted without required data.

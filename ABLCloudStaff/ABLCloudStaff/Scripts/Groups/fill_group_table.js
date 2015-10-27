@@ -144,13 +144,11 @@ $(document).ready(function () {
 
                     function get_members_of_group_errorFunc(error) {
                         // Do nothing.
-                        //alert('error getting members of group.');
                     }
                 }
 
                 function get_general_admin_users_errorFunc(error) {
                     // Do nothing.
-                    //alert('error getting general and admin users.');
                 }
             });
         });
