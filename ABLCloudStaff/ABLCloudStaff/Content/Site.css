@@ -271,3 +271,7 @@ input[type="checkbox"].input-validation-error {
 .vertical_aligned {
     margin-top: 8px;
 }
+
+.padding_top {
+    padding-top: 20px;
+}

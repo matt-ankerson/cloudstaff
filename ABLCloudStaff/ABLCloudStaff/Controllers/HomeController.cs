@@ -239,6 +239,8 @@ namespace ABLCloudStaff.Controllers
                 // Check for valid name:
                 if (string.IsNullOrEmpty(name))
                     throw new Exception("No name supplied.");
+                if (members == null)
+                    throw new Exception("At least one member is required for a group.");
 
                 // Build list of integer userIDs
                 List<int> actualMembers = new List<int>();
