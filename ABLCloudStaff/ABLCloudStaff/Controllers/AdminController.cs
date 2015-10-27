@@ -563,5 +563,14 @@ namespace ABLCloudStaff.Controllers
 
             return Json(data, JsonRequestBehavior.AllowGet);
         }
+
+        /// <summary>
+        /// Get a list of all groups (active or not)
+        /// </summary>
+        /// <returns>List of GroupInfo objects in JSON format.</returns>
+        public JsonResult GetAllGroups()
+        {
+            return null;
+        }
 	}
 }

@@ -103,6 +103,7 @@
                 <div id="all-content">
                     <ul class="tabs nav nav-tabs" data-tabs="tabs">
                         <li class="active"><a href="#users" data-toggle="tab">Users</a></li>
+                        <li><a href="#groups" data-toggle="tab">Groups</a></li>
                         <li><a href="#statuses" data-toggle="tab">Statuses</a></li>
                         <li><a href="#locations" data-toggle="tab">Locations</a></li>
                         <li><a href="#change-log" data-toggle="tab">Change Log</a></li>
@@ -189,8 +190,50 @@
                                 </div>
                             </div>          
                             <!-- /end User tab set -->
+                        </div>
+
+                        <!-- Groups tab set. -->
+                        <div class="tab-pane" id="groups">
+
+                            <div class="container well nested-tabs">
+                                <div id="groups-content">
+                                    <ul class="tabs nav nav-tabs" data-tabs="tabs">
+                                        <li class="active"><a href="#see-all-groups" data-toggle="tab">See All</a></li>
+                                        <li><a href="#remove-group" data-toggle="tab">Remove Group</a></li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div class="tab-pane active" id="see-all-groups">
+                                            <h3>All Groups</h3>
+                                            <div class="container nested-tabs">
+                                                <div class="panel panel-default">
+                                                    <!-- Table -->
+                                                    <table id="all-groups-table" class="table table-striped">
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Group name</th>
+                                                            <th>Group out</th>
+                                                            <th>Priority</th>
+                                                            <th>Edit</th>
+                                                        </tr>
+                                                        <!-- Groups go here. -->
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="remove-group">
+                                            <h3>Remove Group</h3>
+                                            <div class="container nested-tabs">
+                                                <form>
+
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                         </div>
+
                         <div class="tab-pane" id="statuses">
 
                             <!-- Status tab set -->
