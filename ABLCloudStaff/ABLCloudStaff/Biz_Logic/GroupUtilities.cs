@@ -252,6 +252,48 @@ namespace ABLCloudStaff.Biz_Logic
                 throw ex;
             }
         }
+
+        /// <summary>
+        /// Update the indicated group with the given information.
+        /// </summary>
+        /// <remarks>
+        /// Updates useringroup table with newMembers.
+        /// </remarks>
+        /// <param name="groupID">The group to update</param>
+        /// <param name="newName">The new name for the group.</param>
+        /// <param name="newPriority">The new priority for the group.</param>
+        /// <param name="newMembers">The new list of members for the group.</param>
+        public static void UpdateGroup(int groupID, string newName, int newPriority, List<int> newMembers)
+        {
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    // Get the appropriate group from the database.
+                    Group groupToUpdate = context.Groups.FirstOrDefault(x => x.GroupID == groupID);
+                    // Update fields:
+                    groupToUpdate.Name = newName;
+                    groupToUpdate.Priority = newPriority;
+                    context.SaveChanges();
+                    // Pull up UserInGroup instances for this group
+                    List<UserInGroup> uigs = context.UserInGroups.Where(x => x.GroupID == groupID).ToList();
+                    // Remove these instances of UserInGroup
+                    context.UserInGroups.RemoveRange(uigs);
+                    context.SaveChanges();
+                }
+
+                // Add new UserInGroup instances for the list of new members
+                foreach (int userID in newMembers)
+                {
+                    AddUserToGroup(userID, groupID);
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
+            }
+        }
     }
 
     public class GroupInfo

@@ -570,7 +570,85 @@ namespace ABLCloudStaff.Controllers
         /// <returns>List of GroupInfo objects in JSON format.</returns>
         public JsonResult GetAllGroups()
         {
-            return null;
+            List<GroupInfo> groupInfos = new List<GroupInfo>();           
+            List<Group> groups = GroupUtilities.GetAllGroups();
+
+            foreach (Group g in groups)
+            {
+                groupInfos.Add(new GroupInfo {
+                     GroupID = g.GroupID.ToString(),
+                     Active = g.Active.ToString(),
+                     Name = g.Name,
+                     Priority = g.Priority.ToString()
+                });
+            }
+
+            IEnumerable<GroupInfo> data = groupInfos;
+
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// Return a list of users belonging to an indicated group.
+        /// </summary>
+        /// <param name="groupID">The group to get members of.</param>
+        /// <returns>Dictionary of users and thier id.</returns>
+        public JsonResult GetMembersOfGroup(string groupID)
+        {
+            Dictionary<string, string> members = new Dictionary<string, string>();
+
+            if(!string.IsNullOrEmpty(groupID))
+            {
+                int actualGroupID = Convert.ToInt32(groupID);
+                List<User> rawMembers = GroupUtilities.GetMembersOfGroup(actualGroupID);
+
+                foreach (User u in rawMembers)
+                {
+                    members.Add(u.UserID.ToString(), u.FirstName + " " + u.LastName);
+                }
+            }
+
+            return Json(members, JsonRequestBehavior.AllowGet);
+            
+        }
+
+        /// <summary>
+        /// Update an indicated group with the given information.
+        /// </summary>
+        /// <param name="groupID">Group to update</param>
+        /// <param name="name">New name for group</param>
+        /// <param name="priority">New priority value for group</param>
+        /// <returns></returns>
+        public ActionResult UpdateGroup(string groupID, string name, List<string> members, string priority="0")
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(groupID))
+                    throw new Exception("Group ID failed to propagate.");
+                if (string.IsNullOrEmpty(name))
+                    throw new Exception("No group name supplied.");
+                if (members.Count <= 0)
+                    throw new Exception("More than zero members must be supplied for a group.");
+
+                int actualGroupID = Convert.ToInt32(groupID);
+                int actualPriority = Convert.ToInt32(priority);
+                List<int> actualMembers = new List<int>();
+
+                // Build list of integer IDs for members
+                foreach (string userIDStr in members)
+                    actualMembers.Add(Convert.ToInt32(userIDStr));
+
+                // Perform the update. This will replace members with those supplied.
+                GroupUtilities.UpdateGroup(actualGroupID, name, actualPriority, actualMembers);
+            }
+            catch (Exception ex)
+            {
+                // Report the error
+                ViewBag.Message = "There was an error: " + ex.Message;
+                return View("Admin");
+            }
+
+            return RedirectToAction("Admin", "Admin");
         }
 	}
 }
