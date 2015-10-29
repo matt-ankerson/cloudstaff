@@ -210,6 +210,7 @@
     <Content Include="Content\mobile-range-slider.css" />
     <Content Include="Content\slider.css" />
     <Content Include="Content\spinner.css" />
+    <Content Include="COPYING.txt" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />

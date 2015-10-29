@@ -28,8 +28,8 @@ namespace ABLCloudStaff.Models
 #if DEBUG
                 connString = ConfigurationManager.ConnectionStrings["debug"].ConnectionString;
 #else
-                connString = ConfigurationManager.ConnectionStrings["staging"].ConnectionString;
-                //connString = ConfigurationManager.ConnectionStrings["release"].ConnectionString;
+                //connString = ConfigurationManager.ConnectionStrings["staging"].ConnectionString;
+                connString = ConfigurationManager.ConnectionStrings["release"].ConnectionString;
 #endif
 
                 return connString;               
