@@ -35,4 +35,5 @@ Ankh.NoLoad
 *.pidb
 *.userprefs
 
-#Tooling
+#Config Files
+Web.config

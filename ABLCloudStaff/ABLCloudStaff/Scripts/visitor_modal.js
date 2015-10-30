@@ -19,7 +19,8 @@ $(document).ready(function () {
     date_picker.datepicker({
         showOn: "focus",
         minDate: new Date(),
-        onSelect: date_selected
+        onSelect: date_selected,
+        dateFormat: 'dd/mm/yy'
     });
 
     //----------------------------------------------
@@ -57,8 +58,8 @@ $(document).ready(function () {
     // Return a js date object from a given
     function construct_js_date(date_str) {
         var arr = date_str.split('/');
-        mm = parseInt(arr[0]) - 1; // months are indexed from 0 in JS
-        dd = parseInt(arr[1]);
+        mm = parseInt(arr[1]) - 1; // months are indexed from 0 in JS
+        dd = parseInt(arr[0]);
         yyyy = parseInt(arr[2]);
         // Return a JS date.
         return new Date(yyyy, mm, dd);
@@ -68,18 +69,18 @@ $(document).ready(function () {
         mm = js_date.getMonth() + 1;
         dd = js_date.getDate();
         yyyy = js_date.getFullYear();
-        return mm + '/' + dd + '/' + yyyy;
+        return dd + '/' + mm + '/' + yyyy;
     }
 
     function pretty_datetime(ugly_date, ugly_time) {
         // Convert a date from the datepicker into something C# can parse.
         var date_arr = ugly_date.split('/');
-        // arr[0] = mm
-        // arr[1] = dd
+        // arr[0] = dd
+        // arr[1] = mm
         // arr[2] = yyyy
         var time_left = ugly_time.replace(ugly_time.slice(-2), '');
         var time_right = ugly_time.slice(-2);
-        var pretty_datetime = date_arr[2] + '-' + date_arr[0] + '-' + date_arr[1] + ' ' + time_left + ' ' + time_right;
+        var pretty_datetime = date_arr[2] + '-' + date_arr[1] + '-' + date_arr[0] + ' ' + time_left + ' ' + time_right;
         return pretty_datetime;
     }
 

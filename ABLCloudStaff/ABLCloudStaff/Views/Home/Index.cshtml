@@ -14,14 +14,19 @@
     <link rel="stylesheet" href="../../Content/bootstrap-switch.css">
     <link rel="stylesheet" href="../../Content/jquery.timepicker.css" />
     <script src="../../Scripts/bootstrap-switch.min.js"></script>
+    <script src="../../Scripts/bootstrap-multiselect.js"></script>
     <script src="../../Scripts/swipe_to_change_status.js"></script>
     <script src="../../Scripts/init_modal.js"></script>
     <script src="../../Scripts/visitor_modal.js"></script>
+    <script src="../../Scripts/Groups/see_groups.js"></script>
+    <script src="../../Scripts/Groups/add_group.js"></script>
+    <script src="../../Scripts/Groups/update_group_modal.js"></script>
     <script src="../../Scripts/mobile-range-slider.js"></script>
     <script src="../../Scripts/datetime_selection.js"></script>
     <script src="../../Scripts/link_modifier.js"></script>
     <script src="../../Scripts/jquery.timepicker.js"></script>
     <script src="../../Scripts/admin_error_window.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../Content/bootstrap-multiselect.css" />
     <link rel="stylesheet" href="../../Content/Site.css">
     <link rel="stylesheet" href="../../Content/mobile-range-slider.css" />
     <link rel="stylesheet" href="../../Content/jquery-ui.min.css" />
@@ -83,15 +88,16 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><button class="form-control btn btn-primary" id="visitor_button"><span class="glyphicon glyphicon-plus"></span> Visitor</button></li>
+                    <li>&nbsp;</li>
+                    <li><button class="form-control btn btn-primary" id="see_groups_button">Groups</button></li>
                 </ul>
             </div>
         </div>
     </div>
-    <br />
 
     @if (ViewBag.Message != null)
     {
-        <div class="row" id="admin_error_window">
+        <div class="row padding_top" id="admin_error_window">
             <div class="container-fluid">
                 <div class="col-md-12">
                     <div class="container well">
@@ -103,6 +109,10 @@
         </div>
     }
     
+    <!-- Get some handy constants from serverside for use in JS. -->
+    <input type="hidden" id="default_in_status_id" value="@ABLCloudStaff.Biz_Logic.Constants.DEFAULT_IN_STATUS" />
+    <input type="hidden" id="default_in_location_id" value="@ABLCloudStaff.Biz_Logic.Constants.DEFAULT_LOCATION" />
+    
     <div class="container-fluid">
         <div class="row">
             <!-- We require a variable to uniquely identify each module (UserID) -->
@@ -111,7 +121,7 @@
                 <div class="col-xs-10 col-xs-offset-1 col-sm-4 col-sm-offset-0 col-md-3 col-md-offset-0 col-lg-2 col-lg-offset-0">
                     <div class="container-fluid">
                         <!-- When clicked, this is the invoker. -->
-                        <div class="panel-group top-half-of-panel">
+                        <div class="panel-group top-half-of-panel no__bottom_margin small_top_margin">
                             <div class="panel-default panel staff-modules-panels">
                                 <div id="@core.UserID" class="panel-heading staff-name @(core.StatusID == ABLCloudStaff.Biz_Logic.Constants.VISITING_STATUS ? "staff-modules visitor-modules default-cursur" : "staff-modules")">
                                     <!-- Useful fields for initialising the change modal -->
@@ -126,7 +136,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-xs-6">
-                                            <p>
+                                            <p class="reduced_p_margin">
                                                 <small class="status_location_details">
                                                     @core.Status.Name
                                                     <br />
@@ -193,37 +203,47 @@
                                                         }
                                                     }
                                                 }
+                                                else
+                                                {
+                                                    <small>
+                                                        <br />
+                                                        <br />
+                                                    </small>  
+                                                }
                                             </p>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="panel-body default-cursur">
+                                <div class="panel-body default-cursur reduced_panel_body">
                                     @if (core.StatusID == ABLCloudStaff.Biz_Logic.Constants.VISITING_STATUS)
                                     {
-                                        <div class="centered">
-                                            <!-- Button to handle visitor deletion. -->
-                                            <button class="remove_user_button btn btn-info" value="@core.UserID">Leave Office</button>
-                                            <input id="userID" type="hidden" value="@core.UserID" />
+                                        <div class="container-switch">
+                                            <p>
+                                                <!-- Button to handle visitor deletion. -->
+                                                <button class="remove_user_button btn btn-info" value="@core.UserID">Leave Office</button>
+                                                <!--<input type="checkbox" name="visitor-state" value="@core.UserID" data-on-color="abacusbio" data-off-color="warning" data-off-text="Out" data-on-text="In">-->
+                                                <input id="userID" type="hidden" value="@core.UserID" />
+                                            </p>
                                         </div>
                                     }
                                     else
                                     {
                                         <!-- This is not a visitor, give them the sign in/out switch. -->
                                         <div class="container-switch">
-                                        <p>
-                                            @if (core.Status.Available == true)
-                                            {
-                                                <input type="checkbox" name="staff-state" value="@core.UserID" checked data-on-color="abacusbio" data-off-color="warning" data-on-text="In" data-off-text="Out">
-                                            }
-                                            else
-                                            {
-                                                <input type="checkbox" name="staff-state" value="@core.UserID" data-on-color="abacusbio" data-off-color="warning" data-off-text="Out" data-on-text="In">
-                                            }
-                                        </p>
+                                            <p>
+                                                @if (core.Status.Available == true)
+                                                {
+                                                    <input type="checkbox" name="staff-state" value="@core.UserID" checked data-on-color="abacusbio" data-off-color="warning" data-on-text="In" data-off-text="Out">
+                                                }
+                                                else
+                                                {
+                                                    <input type="checkbox" name="staff-state" value="@core.UserID" data-on-color="abacusbio" data-off-color="warning" data-off-text="Out" data-on-text="In">
+                                                }
+                                            </p>
                                         </div>
                                         <input id="userID" type="hidden" value="@core.UserID" />
                                     }
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -325,7 +345,181 @@
         </div>
     </div>
     <!-- /row -->
+    <!------------------------------------------------------------------------>
+    <div class="row">
+        <div class="container">
+            <!-- See groups modal -->
+            <div class="modal fade" id="see_groups_modal" role="dialog" data-backdrop="static">
+                <div class="modal-dialog">
+                    <!-- Modal content -->
+                    <div class="modal-content">
+                        <div id="main-modal-header" class="modal-header" style="padding:35px 50px;">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="global_modal_header">Groups</h4>
+                        </div>
+                        <div class="modal-body" style="padding:40px 50px;">
+                            <!-- List groups here (active or not) -->
+                            <div class="list-group" id="current_group_list">
+                                <!--<button type="button" class="list-group-item">Group 1</button>-->
+                            </div>
+                        </div>
+                        <!-- Modal Footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+                            <button type="button" class="pull-right btn btn-success" id="add_group_button" data-dismiss="modal"><span class="glyphicon glyphicon-plus"></span> New</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /see groups modal -->
+        </div>
+    </div>
+    <!-- /row -->
+    <!------------------------------------------------------------------------>
+    <div class="row">
+        <div class="container">
+            <!-- Add group modal -->
+            <div class="modal fade" id="add_group_modal" role="dialog" data-backdrop="static">
+                <div class="modal-dialog">
+                    <!-- Modal content -->
+                    <div class="modal-content">
+                        <div id="main-modal-header" class="modal-header" style="padding:35px 50px;">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="global_modal_header">Add Group</h4>
+                        </div>
+                        <div class="modal-body" style="padding:40px 50px;">
+                            <!-- Modal content here (add group form) -->
+                            <form id="form-add-group" action="/Home/AddGroup" method="post" role="form">
+                                <label for="add_group_name_field">Name</label>
+                                <input type="text" id="add_group_name_field" class="form-control" name="name" required />
+                                <br />
+                                <label for="members_of_group">Members:</label>
+                                <select id="members_of_group" multiple="multiple" name="members[]">
+                                    <!-- Select options go here. -->
+                                </select>
+                                <br /><br />
+                                <button id="add-group-submit" type="submit" class="btn btn-info btn-block"><span class="glyphicon glyphicon-floppy-disk"></span> Save Group</button>
+                            </form>
+                        </div>
+                        <!-- Modal Footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /add group modal -->
+        </div>
+    </div>
+    <!-- /row -->
+    <!------------------------------------------------------------------------>
+    <!--See Group Members Modal-->
+    <div class="row">
+        <div class="container">
+            <!-- See group members modal -->
+            <div class="modal fade" id="see_group_members_modal" role="dialog" data-backdrop="static">
+                <div class="modal-dialog">
+                    <!-- Modal content -->
+                    <div class="modal-content">
+                        <div id="main-modal-header" class="modal-header" style="padding:35px 50px;">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="global_modal_header" id="member_list_heading">Group Members</h4>
+                        </div>
+                        <div class="modal-body" style="padding:40px 50px;">
+                            
+                            <form id="form-update-status-or-location_for_group" action="/Home/SubmitStatusOrLocationUpdateForGroup" method="post" role="form">
+                                <input type="hidden" id="group_id_for_members" name="groupID" /> <!-- Group ID -->
+                                <label for="refine_group_members">Refine Members: </label>
+                                <select id="refine_group_members" multiple="multiple" name="members[]">
+                                    <!-- Select options go here. -->
+                                </select>
+                                <br /><br />
+                                <div id="alternate_options_for_groups_in_or_out">
+                                    <!-- This div holds form options for either a group which is in, or a group which is out.
+                                            By default it will hold options for a group which is currently in. -->
 
+                                    <div class="form-group container-fluid">
+                                        <div class="row">
+                                            <div class="col-xs-6">
+                                                <label for="status-list_for_group"><span class="glyphicon glyphicon-user"></span> Status</label>
+                                                <br />
+                                                <!-- Status Dropdown -->
+                                                <select id="status-list_for_group" class="form-control" name="statusID">
+                                                    <!-- Statuses go here. -->
+                                                </select>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <label for="location-list_for_group"><span class="glyphicon glyphicon-map-marker"></span> Location</label>
+                                                <br />
+                                                <!-- Location Dropdown -->
+                                                <select id="location-list_for_group" class="form-control" name="locationID">
+                                                    <!-- Locations go here. -->
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-xs-8" id="time_display_for_group">
+                                                <label for="time_slider_for_group">
+                                                    Return
+                                                    <span class="glyphicon glyphicon-calendar"> </span>
+                                                    <span class="glyphicon glyphicon-time"> </span>
+                                                    <span id="date_picker_val_for_group"> </span>
+                                                    <span id="time_slider_val_for_group"> </span>
+                                                </label>
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <button id="cancel_time_for_group" type="button" class="btn btn-default form-control" value="1">
+                                                    <span class="glyphicon glyphicon-calendar"> </span>
+                                                    <span class="glyphicon glyphicon-time"> </span> Cancel
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        
+                                        <div class="row">
+                                            <div class="col-xs-1">
+                                                <p><font size="6"><span class="glyphicon glyphicon-calendar"></span></font></p>
+                                            </div>
+                                            <div class="col-xs-11">
+                                                <input type="text" class="form-control" placeholder="touch here..." id="datepicker_for_group" name="returnDate" />
+                                            </div>
+                                        </div>
+                                        
+                                        <br />
+                                        <div class="row">
+                                            <!-- Time slider goes here. -->
+                                            <div class="col-xs-1">
+                                                <p><font size="6"><span class="glyphicon glyphicon-time"></span></font></p>
+                                            </div>
+                                            <div class="col-xs-11">
+                                                <div id="time_slider_for_group" class="slider">
+                                                    <div class="track" id="custom_track"></div>
+                                                    <div class="knob"></div>
+                                                </div>
+                                                <!-- Hidden field for datetime information -->
+                                                <input type="hidden" id="time_value_for_group" name="returnTime" value="" />
+                                            </div>
+                                        </div>
+                                        <br />
+                                    </div>
+                                    <!-- Submit button -->
+                                    <button id="update-group-submit" type="submit" class="btn btn-info btn-block submit"><span class="glyphicon glyphicon-floppy-disk"></span> Save & Update</button>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- Modal Footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /see group members modal -->
+        </div>
+    </div>
+    <!--/See Group Members Modal-->
+    <!------------------------------------------------------------------------>
     <div class="row">
         <div class="container">
 

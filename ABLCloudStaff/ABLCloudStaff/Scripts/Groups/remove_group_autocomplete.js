@@ -1,16 +1,16 @@
 ﻿// Author: Matt Ankerson
-// Date: 23 July 2015
+// Date: 27 October 2015
 $(document).ready(function () {
 
     // The list of available autocomplete options:
     var availableTags = [];
 
-    // Use ajax to fetch all users
-    var get_users_url = "/Admin/GetAllUsers";
+    // Use ajax to fetch all statuses
+    var get_groups_url = "/Admin/GetAllGroups";
 
     $.ajax({
         type: "GET",
-        url: get_users_url,
+        url: get_groups_url,
         data: null,
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -19,11 +19,11 @@ $(document).ready(function () {
     });
 
     function success_func(data, status) {
-        var dict = data;
+        var list = data;
 
         // Pull values out of dictionary and assign to array
-        for (var key in dict) {
-            availableTags.push({ label: dict[key], value: key });
+        for (var i = 0; i < list.length; i++) {
+            availableTags.push({ label: list[i].Name, value: list[i].GroupID });
         }
     }
 
@@ -31,11 +31,12 @@ $(document).ready(function () {
         //alert('error' + error.responseText);
     }
 
-    $("#add-location-user-autocomplete").autocomplete({
+    $("#remove-group-user-autocomplete").autocomplete({
         source: availableTags,
         select: function (event, ui) {
-            $('#add-location-user-autocomplete').val(ui.item.label);
-            $('#add-location-userID').val(ui.item.value);
+            $('#remove-group-user-autocomplete').val(ui.item.label);
+            $('#remove-group-groupID').val(ui.item.value);
+            $('#remove-group-groupID-display').text("# " + ui.item.value);
             return false;
         }
     });

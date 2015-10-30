@@ -72,7 +72,7 @@ namespace ABLCloudStaff.Biz_Logic
             {
                 using (var context = new ABLCloudStaffContext())
                 {
-                    visitors = context.Users.Include("UserType").Where(x => x.UserType.Type == Constants.VISITOR_TYPE).OrderBy(x => x.FirstName).ToList();
+                    visitors = context.Users.Include("UserType").Where(x => x.UserType.Type == Constants.VISITOR_TYPE).Where(x => x.IsActive == false).ToList();
                 }
             }
             catch (Exception ex)

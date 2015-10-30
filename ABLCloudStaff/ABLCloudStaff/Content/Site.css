@@ -4,6 +4,10 @@
     background-color: #7a7a7a;
 }
 
+.jsOnly {
+    display: none;
+}
+
 .no_top_margin {
     padding-top: 0px;
 }
@@ -117,8 +121,17 @@ input[type="checkbox"].input-validation-error {
     cursor: default;
 }
 
-#visitor_button {
+#visitor_button,
+#see_groups_button {
     margin-top: 7px;
+}
+
+.btn_group_is_in {
+    background-color: #94D6F2;
+}
+
+.btn_group_is_out {
+    background-color: #F2C8B6;
 }
 
 /* Staff modules */
@@ -151,7 +164,19 @@ input[type="checkbox"].input-validation-error {
     margin: auto;
 }
 
-/* Main Board Modal */
+.reduced_panel_body {
+    padding: 6px;
+}
+
+.reduced_p_margin {
+    margin: 0 0 2px;
+}
+
+.btn_nopadding {
+    padding: 0px 0px;
+}
+
+/* Main board singular status/location update modal */
 #main-modal-header,
 #modal-title {
     background-color: #0099da;
@@ -164,6 +189,7 @@ input[type="checkbox"].input-validation-error {
 #custom_track {
     z-index: 0;
 }
+
 
 /********************************/
 
@@ -191,14 +217,16 @@ input[type="checkbox"].input-validation-error {
 /* Administration EDIT Modals */
 #admin-edit-status-modal-header,
 #admin-edit-location-modal-header,
-#admin-edit-user-modal-header {
+#admin-edit-user-modal-header,
+#admin-edit-group-modal-header {
     background-color: lightgray;
     padding:35px 50px;
 }
 
 #edit-status-modal-title,
 #edit-location-modal-title,
-#edit-user-modal-title {
+#edit-user-modal-title,
+#edit-group-modal-title {
     background-color: lightgray;
 }
 
@@ -242,4 +270,8 @@ input[type="checkbox"].input-validation-error {
 }
 .vertical_aligned {
     margin-top: 8px;
+}
+
+.padding_top {
+    padding-top: 20px;
 }

@@ -150,6 +150,7 @@
     <Compile Include="Biz_Logic\DateTimeUtilities.cs" />
     <Compile Include="Biz_Logic\EncryptionUtilities.cs" />
     <Compile Include="Biz_Logic\ErrorUtilities.cs" />
+    <Compile Include="Biz_Logic\GroupUtilities.cs" />
     <Compile Include="Biz_Logic\LocationUtilities.cs" />
     <Compile Include="Biz_Logic\StatusUtilities.cs" />
     <Compile Include="Biz_Logic\UserUtilities.cs" />
@@ -168,11 +169,13 @@
     <Compile Include="Models\CreateABLCloudStaffIfNotExists.cs" />
     <Compile Include="Models\DropCreateABLCloudStaffAlways.cs" />
     <Compile Include="Models\Error.cs" />
+    <Compile Include="Models\Group.cs" />
     <Compile Include="Models\Location.cs" />
     <Compile Include="Models\LocationChangeLog.cs" />
     <Compile Include="Models\Status.cs" />
     <Compile Include="Models\StatusChangeLog.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Models\UserInGroup.cs" />
     <Compile Include="Models\UserLocation.cs" />
     <Compile Include="Models\UserStatus.cs" />
     <Compile Include="Models\UserType.cs" />
@@ -180,6 +183,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-multiselect.css" />
     <Content Include="Content\bootstrap-switch.css" />
     <Content Include="Content\bootstrap-switch.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -206,11 +210,17 @@
     <Content Include="Content\mobile-range-slider.css" />
     <Content Include="Content\slider.css" />
     <Content Include="Content\spinner.css" />
+    <Content Include="COPYING.txt" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\bg.png" />
+    <Content Include="Scripts\bootstrap-multiselect.js" />
+    <Content Include="Scripts\Groups\add_group.js" />
+    <Content Include="Scripts\Groups\fill_group_table.js" />
+    <Content Include="Scripts\Groups\remove_group_autocomplete.js" />
+    <Content Include="Scripts\Groups\see_groups.js" />
     <Content Include="Scripts\add_location_autocomplete.js" />
     <Content Include="Scripts\add_location_form.js" />
     <Content Include="Scripts\add_status_autocomplete.js" />
@@ -235,6 +245,7 @@
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\changelog_tables.js" />
     <Content Include="Scripts\fill_user_table.js" />
+    <Content Include="Scripts\Groups\update_group_modal.js" />
     <Content Include="Scripts\init_modal.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -254,7 +265,9 @@
     <Content Include="Scripts\datetime_selection.js" />
     <Content Include="Scripts\visitor_modal.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>

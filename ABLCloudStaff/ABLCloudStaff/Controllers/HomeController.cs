@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
+using System.Collections.Specialized;
 using ABLCloudStaff.Models;
 using ABLCloudStaff.Biz_Logic;
 
@@ -23,6 +24,30 @@ namespace ABLCloudStaff.Controllers
         }
 
         /// <summary>
+        /// Push a status, location and return time to the database for a specific user.
+        /// </summary>
+        /// <remarks>
+        /// Only performs update if necessary.
+        /// </remarks>
+        /// <param name="userID">The userID of the user to perform the update for.</param>
+        /// <param name="statusID">The new statusID</param>
+        /// <param name="locationID">The new locationID.</param>
+        /// <param name="returnTime">The new return time.</param>
+        private void _submitStateUpdateForUser(int userID, int statusID, int locationID, string returnTime)
+        {
+            try
+            {
+                // Perform the update. ReturnTime is handled as an optional field. 
+                CoreUtilities.UpdateStatus(userID, statusID, returnTime);
+                CoreUtilities.UpdateLocation(userID, locationID);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
         /// Push a status and location to the database for a specific username
         /// </summary>
         /// <returns>An ActionResult object</returns>
@@ -39,18 +64,75 @@ namespace ABLCloudStaff.Controllers
                     int actualStatusID = Convert.ToInt32(statusID);
                     int actualLocationID = Convert.ToInt32(locationID);
 
-                    // Perform the update. ReturnTime is handled as an optional field. 
-                    CoreUtilities.UpdateStatus(actualUserID, actualStatusID, returnTime);
-                    CoreUtilities.UpdateLocation(actualUserID, actualLocationID);
+                    _submitStateUpdateForUser(actualUserID, actualStatusID, actualLocationID, returnTime);
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ViewBag.Message = "Failed to perform update for user. " + ex.Message;
+                List<Core> coreInfo = CoreUtilities.GetAllCoreInstances();
+                return View("Index", coreInfo);
             }
 
             //List<Core> coreInfo = CoreUtilities.GetAllCoreInstances();
             //return View("Index", coreInfo);
+            return RedirectToAction("Index", "Home");
+        }
+
+        /// <summary>
+        /// Push a status, location and return time to the database for a set of users.
+        /// </summary>
+        /// <param name="userIDs">All userIDs to perform the update for.</param>
+        /// <param name="statusID">The new statusID</param>
+        /// <param name="locationID">The new locationID</param>
+        /// <param name="returnTime">The new return time.</param>
+        /// <returns>Redirects to home page.</returns>
+        [HttpPost]
+        public ActionResult SubmitStatusOrLocationUpdateForGroup(List<string> members, string statusID, string locationID, string returnTime, string groupID, string returningGroup = "")
+        {
+            try
+            {
+                // Convert our parameters into a useful data type
+                int actualStatusID = Convert.ToInt32(statusID);
+                int actualLocationID = Convert.ToInt32(locationID);
+                
+                // For each userID:
+                foreach (string userIDStr in members)
+                {
+                    if(!string.IsNullOrEmpty(userIDStr))
+                    {
+                        int actualUserID = Convert.ToInt32(userIDStr);
+                        // Perform the update for this user:
+                        _submitStateUpdateForUser(actualUserID, actualStatusID, actualLocationID, returnTime);
+                    }
+                }
+
+                // Sign the group in or out.
+                if (!string.IsNullOrEmpty(groupID))
+                {
+                    // Convert the groupID to a usable type
+                    int actualGroupID = Convert.ToInt32(groupID);
+
+                    // If this is a returning group, indicate that they've returned (in the group table)
+                    if (string.IsNullOrEmpty(returningGroup))
+                    {
+                        // Group is leaving
+                        GroupUtilities.ActivateGroup(actualGroupID);
+                    }
+                    else
+                    {
+                        // Group is returning
+                        GroupUtilities.DeactivateGroup(actualGroupID);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = "Failed to perform update for group. " + ex.Message;
+                List<Core> coreInfo = CoreUtilities.GetAllCoreInstances();
+                return View("Index", coreInfo);
+            }
+
             return RedirectToAction("Index", "Home");
         }
 
@@ -144,6 +226,43 @@ namespace ABLCloudStaff.Controllers
         }
 
         /// <summary>
+        /// Add a new group to the database and all indicated members.
+        /// </summary>
+        /// <param name="name">The name of this group</param>
+        /// <param name="userIDs">The members to add.</param>
+        /// <param name="active">Whether or not this group is out or in. (true would indicate they're out)</param>
+        /// <returns>Error or redirects to home.</returns>
+        public ActionResult AddGroup(string name, List<string> members)
+        {
+            try
+            {
+                // Check for valid name:
+                if (string.IsNullOrEmpty(name))
+                    throw new Exception("No name supplied.");
+                if (members == null)
+                    throw new Exception("At least one member is required for a group.");
+
+                // Build list of integer userIDs
+                List<int> actualMembers = new List<int>();
+                foreach(string member in members)
+                {
+                    actualMembers.Add(Convert.ToInt32(member));
+                }
+
+                // Add the group. (This operation will also add members to the group)
+                GroupUtilities.AddGroup(actualMembers, name);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = "Could not add group, " + ex.Message;
+                List<Core> coreInfo = CoreUtilities.GetAllCoreInstances();
+                return View("Index", coreInfo);
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        /// <summary>
         /// Remove a given visitor
         /// </summary>
         /// <remarks>
@@ -193,6 +312,57 @@ namespace ABLCloudStaff.Controllers
         }
 
         /// <summary>
+        /// Get an ordered dictionary of all general or admin users and their respective IDs.
+        /// </summary>
+        /// <returns>Json dictionary of users and IDs.</returns>
+        public JsonResult GetGeneralAndAdminUsersOrdered()
+        {
+            // This dictionary will hold userID and corresponding name
+            OrderedDictionary usersDict = new OrderedDictionary();
+
+            List<User> rawUsers = UserUtilities.GetGeneralAndAdminUsers();
+
+            foreach (User u in rawUsers)
+            {
+                usersDict.Add(u.UserID.ToString(), u.FirstName + " " + u.LastName);
+            }
+
+            return Json(usersDict, JsonRequestBehavior.AllowGet);
+        }
+
+
+        /// <summary>
+        /// Get members of a particular group.
+        /// </summary>
+        /// <param name="groupID">The groupID to seach on.</param>
+        /// <returns>List of users.</returns>
+        public JsonResult GetMembersOfGroup(string groupID)
+        {
+            List<UserInfo> userInfos = new List<UserInfo>();
+            List<User> rawUsers = new List<User>();
+
+            if (!string.IsNullOrEmpty(groupID))
+            {
+                int actualGroupID = Convert.ToInt32(groupID);
+
+                // Get all users of this group
+                rawUsers = GroupUtilities.GetMembersOfGroup(actualGroupID);
+            }
+
+            // Build list of serialisible user info objects.
+            foreach (User u in rawUsers)
+            {
+                userInfos.Add(new UserInfo{ userID = u.UserID.ToString(), 
+                    firstName = u.FirstName, 
+                    lastName = u.LastName, 
+                    isActive = u.IsActive.ToString()});
+            }
+
+            IEnumerable<UserInfo> data = userInfos;
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
         /// Get a dictionary of all visitor type users and thier respective IDs
         /// </summary>
         /// <returns>Json dictionary of users and their IDs.</returns>
@@ -203,12 +373,44 @@ namespace ABLCloudStaff.Controllers
 
             List<User> rawUsers = UserUtilities.GetVisitorUsers();
 
+            // For each user, pull up their last visitor log instance, so we can provide 
+            // some distinguishing information in the UI.
             foreach (User u in rawUsers)
             {
-                usersDict.Add(u.UserID.ToString(), u.FirstName + " " + u.LastName);
+                // Get this user's last visit.
+                VisitorLog lastVl = VisitorLogUtilities.GetLastLogForVisitor(u.UserID);
+                // Append some useful information in the dict.
+                usersDict.Add(u.UserID.ToString(), u.FirstName + " " + u.LastName + " (" + lastVl.Company + ")");
             }
 
             return Json(usersDict, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// Get a list of all Groups stored in the db.
+        /// </summary>
+        /// <returns>List of groups</returns>
+        public JsonResult GetAllGroups()
+        {
+            List<GroupInfo> groupsSerialized = new List<GroupInfo>();
+
+            // Get list of all our groups:
+            List<Group> groups = GroupUtilities.GetAllGroups();
+
+            // Build list of serialized objects
+            foreach (Group g in groups)
+            {
+                groupsSerialized.Add(new GroupInfo {
+                     GroupID = g.GroupID.ToString(),
+                     Active = g.Active.ToString(),
+                     Name = g.Name,
+                     Priority = g.Priority.ToString()
+                });
+            }
+
+            IEnumerable<GroupInfo> data = groupsSerialized;
+
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
@@ -326,6 +528,29 @@ namespace ABLCloudStaff.Controllers
         }
 
         /// <summary>
+        /// Get all statuses
+        /// </summary>
+        /// <returns>Dictionary of all statuses.</returns>
+        public JsonResult GetDefaultStatusesAjax()
+        {
+            Dictionary<string, string> statusDict = new Dictionary<string, string>();
+
+            try
+            {
+                List<Status> statuses = StatusUtilities.GetDefaultStatuses();
+                // Pull out the actual status names for the string list
+                foreach (var status in statuses)
+                    statusDict.Add(status.StatusID.ToString(), status.Name);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return Json(statusDict, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
         /// Get all the Locations available to a specific username
         /// </summary>
         /// <param name="userID">The username to search on.</param>
@@ -340,6 +565,30 @@ namespace ABLCloudStaff.Controllers
 
                 // Get the list of Locations available to this username
                 List<Location> locations = LocationUtilities.GetAvailableLocations(thisUserID);
+
+                // Pull out the actual location names for the string list
+                foreach (Location loc in locations)
+                    locationDict.Add(loc.LocationID.ToString(), loc.Name);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return Json(locationDict, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// Get all locations
+        /// </summary>
+        /// <returns>Dictionary of locations</returns>
+        public JsonResult GetDefaultLocationsAjax()
+        {
+            Dictionary<string, string> locationDict = new Dictionary<string, string>();
+
+            try
+            {
+                List<Location> locations = LocationUtilities.GetDefaultLocations();
 
                 // Pull out the actual location names for the string list
                 foreach (Location loc in locations)

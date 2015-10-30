@@ -56,7 +56,7 @@ $(document).ready(function () {
                 status_location_details.html(data.status + '<br /><br />');
                 // - time_details (remove time details)
                 var time_details = module.find('.time_details');
-                time_details.html('');
+                time_details.html('<small><br /><br /></small>');
             }
         }
 

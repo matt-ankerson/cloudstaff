@@ -20,13 +20,17 @@
     <script src="../../Scripts/add_status_autocomplete.js"></script>
     <script src="../../Scripts/add_status_form.js"></script>
     <script src="../../Scripts/remove_status_autocomplete.js"></script>
+    <script src="../../Scripts/Groups/remove_group_autocomplete.js"></script>
     <script src="../../Scripts/all_locations_table.js"></script>
     <script src="../../Scripts/add_location_form.js"></script>
     <script src="../../Scripts/add_location_autocomplete.js"></script>
     <script src="../../Scripts/remove_location_autocomplete.js"></script>
     <script src="../../Scripts/link_modifier.js"></script>
+    <script src="../../Scripts/bootstrap-multiselect.js"></script>
+    <script src="../../Scripts/Groups/fill_group_table.js"></script>
     <link rel="stylesheet" href="../../Content/bootstrap.min.css">
     <link rel="stylesheet" href="../../Content/spinner.css" type="text/css">
+    <link rel="stylesheet" type="text/css" href="../../Content/bootstrap-multiselect.css" />
     <link rel="stylesheet" href="../../Content/Site.css">
     <link rel="stylesheet" href="../../Content/bootstrap-switch.css">
     <link rel="stylesheet" href="../../Content/jquery-ui.min.css"/>
@@ -81,7 +85,7 @@
     </div>
     <br />
 
-    @if(ViewBag.Message != null)
+    @if(!string.IsNullOrEmpty(ViewBag.Message))
     {
         <div class="row" id="admin_error_window">
             <div class="container-fluid">
@@ -94,6 +98,9 @@
             </div>
         </div>
     }
+    
+    <!-- Useful constant values -->
+    <input type="hidden" id="max_priority" value="@ABLCloudStaff.Biz_Logic.Constants.MAX_PRIORITY" />
 
     <div class="container-fluid">
         <div class="row">
@@ -103,6 +110,7 @@
                 <div id="all-content">
                     <ul class="tabs nav nav-tabs" data-tabs="tabs">
                         <li class="active"><a href="#users" data-toggle="tab">Users</a></li>
+                        <li><a href="#groups" data-toggle="tab">Groups</a></li>
                         <li><a href="#statuses" data-toggle="tab">Statuses</a></li>
                         <li><a href="#locations" data-toggle="tab">Locations</a></li>
                         <li><a href="#change-log" data-toggle="tab">Change Log</a></li>
@@ -189,8 +197,59 @@
                                 </div>
                             </div>          
                             <!-- /end User tab set -->
+                        </div>
+
+                        <!-- Groups tab set. -->
+                        <div class="tab-pane" id="groups">
+
+                            <div class="container well nested-tabs">
+                                <div id="groups-content">
+                                    <ul class="tabs nav nav-tabs" data-tabs="tabs">
+                                        <li class="active"><a href="#see-all-groups" data-toggle="tab">See All</a></li>
+                                        <li><a href="#remove-group" data-toggle="tab">Remove Group</a></li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div class="tab-pane active" id="see-all-groups">
+                                            <h3>All Groups</h3>
+                                            <div class="container nested-tabs">
+                                                <div class="panel panel-default">
+                                                    <!-- Table -->
+                                                    <table id="all-groups-table" class="table table-striped">
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Group name</th>
+                                                            <th>Group is out</th>
+                                                            <th>Priority</th>
+                                                            <th>Edit</th>
+                                                        </tr>
+                                                        <!-- Groups go here. -->
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="remove-group">
+                                            <h3>Remove Group</h3>
+                                            <div class="container nested-tabs">
+                                                <!-- Remove Status Form -->
+                                                <form id="remove-group-form" action="/Admin/RemoveGroup" method="post" role="form">
+                                                    <div class="ui-widget">
+                                                        <label for="remove-group-user-autocomplete">Which Group?</label>
+                                                        <input id="remove-group-user-autocomplete" class="form-control" placeholder="Group name" required>
+                                                        <br />
+                                                        <p id="remove-group-groupID-display"></p>
+                                                        <input type="hidden" name="groupID" id="remove-group-groupID" />
+                                                    </div>
+                                                    <br />
+                                                    <button id="remove-group-submit" type="submit" class="btn btn-default">Remove Group</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                         </div>
+
                         <div class="tab-pane" id="statuses">
 
                             <!-- Status tab set -->
@@ -448,6 +507,51 @@
                                     </div>
 
                                     <button id="update-user-button" type="submit" class="btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span> Update & Save</button>
+                                </form>
+                            </div>
+                            <!-- Modal Footer -->
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /modal -->
+            </div>
+        </div>
+        <!-- /row -->
+
+        <div class="row">
+            <div class="container">
+                <!--------------- Edit Group Modal---------------------->
+                <div class="modal fade" id="edit-group-modal" role="dialog" data-backdrop="static">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header" id="admin-edit-group-modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 id="edit-group-modal-title">Edit: </h4>
+                            </div>
+                            <!-- Modal Content -->
+                            <div class="modal-body" style="padding:40px 50px;">
+                                <form id="edit-group-form" action="/Admin/UpdateGroup" method="post" role="form">
+                                    <div class="form-group">
+                                        <label for="edit-group-name">Name</label>
+                                        <input id="edit-group-name" type="text" name="name" class="form-control" required="required" />
+                                        <br />
+                                        <label for="edit-group-priority">Group priority: (0 indicates highest priority)</label>
+                                        <select id="edit-group-priority" name="priority" class="form-control">
+                                            <!-- Select options go here. -->
+                                        </select>
+                                        <br />
+                                        <!-- Members multiselect -->
+                                        <label for="edit_members_of_group">Members:</label>
+                                        <select id="edit_members_of_group" multiple="multiple" name="members[]">
+                                            <!-- Select options go here. -->
+                                        </select>
+                                        <br /><br />
+                                    </div>
+                                    <button id="update-group-button" type="submit" class="btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span> Update & Save</button>
                                 </form>
                             </div>
                             <!-- Modal Footer -->

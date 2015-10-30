@@ -121,7 +121,7 @@ $(document).ready(function () {
                 }
 
                 function get_usertypes_errorFunc(error) {
-                    alert('Error getting user types: ' + error.responseText);
+                    //alert('Error getting user types: ' + error.responseText);
                 }
 
                 $("#edit-user-modal-title").text("Edit: " + firstName + " " + lastName);
@@ -168,18 +168,6 @@ $(document).ready(function () {
         form.submit();
 
     });
-
-    //// Intercept the form submittal, only submit if the userID is valid
-    //$("#edit-user-form").on("submit", function (e) {
-
-    //    e.preventDefault();
-    //    alert("here");
-    //    var form = $("#edit-user-form");
-    //    var userID = form.find("#userID").val();
-
-    //    if (userID != undefined && userID != null && userID != 0)
-    //        form.submit();
-    //});
 
     // Unbind the trigger for our modal form submission
     // ...doing this stops the form being submitted multiple times.

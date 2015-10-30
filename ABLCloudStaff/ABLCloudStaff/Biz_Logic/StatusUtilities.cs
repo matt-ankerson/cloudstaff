@@ -44,7 +44,7 @@ namespace ABLCloudStaff.Biz_Logic
         }
 
         /// <summary>
-        /// Get all statuses, regarlesss of who they belong to.
+        /// Get all statuses, regardless of who they belong to.
         /// </summary>
         /// <returns>List of type Status</returns>
         public static List<Status> GetAllStatuses()
@@ -57,6 +57,30 @@ namespace ABLCloudStaff.Biz_Logic
                 {
                     // Get status objects
                     statuses = context.Statuses.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
+            }
+
+            return statuses;
+        }
+
+        /// <summary>
+        /// Get all default statuses (that all users should have)
+        /// </summary>
+        /// <returns>List of statuses</returns>
+        public static List<Status> GetDefaultStatuses()
+        {
+            List<Status> statuses = new List<Status>();
+
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    statuses = context.Statuses.Where(x => Constants.DEFAULT_STATUSES.Contains(x.StatusID)).ToList();
                 }
             }
             catch (Exception ex)

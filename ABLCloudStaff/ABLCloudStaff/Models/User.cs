@@ -28,6 +28,7 @@ namespace ABLCloudStaff.Models
         public virtual List<UserStatus> UserStatuses { get; set; }
         public virtual List<UserLocation> UserLocations { get; set; }
         public virtual UserType UserType { get; set; }
+        public virtual List<UserInGroup> UserInGroups { get; set; }
 
         [ForeignKey("AuthenticationID")]
         public virtual Authentication Authentication { get; set; }

@@ -65,6 +65,30 @@ namespace ABLCloudStaff.Biz_Logic
         }
 
         /// <summary>
+        /// Get all default locations
+        /// </summary>
+        /// <returns>List of locations</returns>
+        public static List<Location> GetDefaultLocations()
+        {
+            List<Location> locations = new List<Location>();
+
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    locations = context.Locations.Where(x => Constants.DEFAULT_LOCATIONS.Contains(x.LocationID)).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
+            }
+
+            return locations;
+        }
+
+        /// <summary>
         /// Get a list of IDs corresponding to all locations that're currently in use.
         /// </summary>
         /// <returns>Lit of LocationIDs</returns>
