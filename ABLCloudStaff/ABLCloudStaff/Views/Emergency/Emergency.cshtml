@@ -1,0 +1,190 @@
+﻿@model List<ABLCloudStaff.Models.Core>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="../../Scripts/jquery.min.js"></script>
+    <script src="../../Scripts/bootstrap.min.js"></script>
+    <script src="../../Scripts/less.js"></script>
+    <script src="../../Scripts/jquery-ui.min.js"></script>
+    <script src="../../Scripts/admin_error_window.js"></script>
+    <script src="../../Scripts/link_modifier.js"></script>
+    <link rel="stylesheet" href="../../Content/jquery-ui.min.css" />
+    <link rel="stylesheet" href="../../Content/bootstrap.min.css">
+    <link rel="stylesheet" href="../../Content/Site.css">
+    <!-- favicon from AbacusBio website -->
+    <link rel="apple-touch-icon" sizes="144x144" href="http://www.abacusbio.com/themes/abacusbio/assets/images/apple-touch-144x144-icon.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="http://www.abacusbio.com/themes/abacusbio/assets/images/apple-touch-114x114-icon.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="http://www.abacusbio.com/themes/abacusbio/assets/images/apple-touch-72x72-icon.png" />
+    <link rel="apple-touch-icon" href="http://www.abacusbio.com/themes/abacusbio/assets/images/apple-touch-57x57-icon.png" />
+    <link rel="shortcut icon" href="http://www.abacusbio.com/themes/abacusbio/favicon.ico" type="image/x-icon" />
+    <title>CloudStaff</title>
+    <script type="text/javascript">
+        // Global Javascript.
+        less.watch();
+    </script>
+</head>
+<body>
+
+    <!-- Navigation Bar-->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <div id="cloudstaff_title">
+                    <a href="/Home/Index" class="navbar-brand" id="redundant_link">
+                        <span>
+                            <img id="title_image" src="http://www.abacusbio.com/themes/abacusbio/assets/images/apple-touch-57x57-icon.png" width="25" height="25" />
+                        </span>
+                        CloudStaff
+                    </a>
+                </div>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Status Board", "Index", "Home")</li>
+                    <li><a href="/Admin/Admin">Administration <span class="glyphicon glyphicon-log-in"></span></a></li>
+                    <!--<li><a href="http://goo.gl/forms/u1cbZStRaA" target="_blank">Submit Feedback <span class="glyphicon glyphicon-list-alt"></span></a></li>-->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row padding_top" id="admin_error_window">
+        <div class="container-fluid">
+            <div class="col-md-12">
+                <div class="container well">
+                    <div class="row">
+                        <div class="col-xs-11">
+                            Note! Listed below are employees and visitors who are considered <i>available.</i> CloudStaff is not location aware and cannot guarantee the safety of employees or visitors.
+                        </div>
+                        <div class="col-xs-1">
+                            <button type="button" id="admin_error_window_close" class="btn btn-danger pull-right">&times;</button>
+                        </div>
+                    </div>     
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- We require a variable to uniquely identify each module (UserID) -->
+            @foreach (var core in @Model)
+            {
+                <div class="col-xs-12 col-xs-offset-0">
+                    <div class="container-fluid">
+                        <!-- When clicked, this is the invoker. -->
+                        <div class="panel-group top-half-of-panel default-cursur no__bottom_margin small_top_margin">
+                            <div class="panel-default panel staff-modules-panels">
+                                <div id="@core.UserID" class="panel-heading staff-name staff-modules">
+                                    <!-- Useful fields for initialising the change modal -->
+                                    <input type="hidden" class="thisUsersStatusID" value="@core.StatusID" />
+                                    <input type="hidden" class="thisUsersLocationID" value="@core.LocationID" />
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <p class="staff-name-text">
+                                                <b>@core.User.FirstName @core.User.LastName</b>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-5 col-sm-5">
+                                            <p>
+                                                <small class="status_location_details">
+                                                    @core.Status.Name
+                                                    <br />
+                                                    @if (core.LocationID != 1)
+                                                    {
+                                                        @core.Location.Name
+                                                    }
+                                                    else
+                                                    {
+                                                        <br />
+                                                    }
+                                                </small>
+                                            </p>
+                                        </div>
+                                        <div class="col-xs-3 col-sm-5">
+                                            <p class="time_details">
+                                                @if (core.IntendedEndTime != null)
+                                                {
+                                                    <!-- Appropriate date and time for display are computed here. -->
+                                                    DateTime eta = (DateTime)core.IntendedEndTime;
+                                                    DayOfWeek today = DateTime.Now.DayOfWeek;
+                                                    int days = today - DayOfWeek.Monday;
+                                                    DateTime startOfWeek = DateTime.Now.AddDays(-days);
+                                                    DateTime endOfWeek = startOfWeek.AddDays(6);
+                                                    DateTime now = DateTime.Now;
+
+                                                    if ((DateTime.Now.DayOfWeek == eta.DayOfWeek) && (DateTime.Now.Day == eta.Day) && (DateTime.Now.Year == eta.Year))
+                                                    {
+                                                        <!-- The return date is today -->
+                                                        if (now > eta)
+                                                        {
+                                                            <small class="out_of_time">Today<br /> @eta.ToShortTimeString()</small>
+                                                        }
+                                                        else
+                                                        {
+                                                            <small>Today<br /> @eta.ToShortTimeString()</small>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <!-- The return date is some other day. -->
+
+                                                        if (eta < endOfWeek)
+                                                        {
+                                                            if (now > eta)
+                                                            {
+                                                                <small class="out_of_time">@eta.DayOfWeek<br /> @eta.ToShortTimeString()</small>
+                                                            }
+                                                            else
+                                                            {
+                                                                <small>@eta.DayOfWeek<br /> @eta.ToShortTimeString()</small>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            if (now > eta)
+                                                            {
+                                                                <small class="out_of_time">@eta.ToShortDateString()<br /> @eta.ToShortTimeString()</small>
+                                                            }
+                                                            else
+                                                            {
+                                                                <small>@eta.ToShortDateString()<br /> @eta.ToShortTimeString()</small>
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            </p>
+                                        </div>
+                                        <div class="col-xs-3 col-xs-offset-1 col-sm-2 col-sm-offset-0">
+                                            @if (core.Status.Available == true)
+                                            {
+                                                <aside class="label label-info small_inout default-cursur"><p class="vertical_aligned">In</p></aside>
+                                            }
+                                            else
+                                            {
+                                                <aside class="label label-warning small_inout default-cursur"><p class="vertical_aligned">Out</p></aside>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</body>
+</html>

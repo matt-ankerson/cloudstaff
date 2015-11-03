@@ -86,6 +86,33 @@ namespace ABLCloudStaff.Biz_Logic
         }
 
         /// <summary>
+        /// Return a list of all cores who's user is in office.
+        /// </summary>
+        /// <returns></returns>
+        public static List<Core> GetAvailableCoresForEmergency()
+        {
+            List<Core> coresInOffice = new List<Core>();
+
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    coresInOffice = context.Cores.Include("User").Include("Status").Include("Location")
+                        .Where(x => x.User.IsActive == true)
+                        .Where(x => x.Status.Available == true)
+                        .OrderBy(x => x.User.FirstName).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
+            }
+
+            return coresInOffice;
+        }
+
+        /// <summary>
         /// Get a List of Core instances, by an arbitrarily lengthed list of CoreIDs
         /// </summary>
         /// <param name="coreIDs">The List of CoreIDs to fetch Core instances for</param>
