@@ -9,7 +9,7 @@ using System.Web;
 namespace ABLCloudStaff.Models
 {
     /// <summary>
-    /// Indicates the type of each user
+    /// Indicates the type of each username
     /// </summary>
     public class UserType
     {

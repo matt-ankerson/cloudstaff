@@ -15,14 +15,14 @@ namespace ABLCloudStaff.Controllers
     public class CloudStaffApiController : ApiController
     {
         /// <summary>
-        /// Issue and save a new api token for the indicated user, refuse if credentials invalid.
+        /// Issue and save a new api token for the indicated username, refuse if credentials invalid.
         /// <remarks>
         /// Sample Request:
         /// http://localhost:1169/api/cloudstaffapi/register/?userName=CloudStaff5&password=P@ssw0rd
         /// </remarks>
         /// </summary>
-        /// <param name="userName">The userName of this user.</param>
-        /// <param name="password">The password for this user.</param>
+        /// <param name="userName">The userName of this username.</param>
+        /// <param name="password">The password for this username.</param>
         /// <returns>A response message containing the token, or a message detailing the error.</returns>
         [HttpGet]
         public HttpResponseMessage Register(string userName, string password)
@@ -32,13 +32,17 @@ namespace ABLCloudStaff.Controllers
 
             try
             {
-                // Pull up the userID for the given user.
+                // Pull up the userID for the given username.
                 // We're relying on usernames being unique.
                 int userID = AuthenticationUtilities.GetUserIDOnUserName(userName);
 
                 // If userID is 0, throw an exception.
                 if (userID == 0)
                     throw new Exception("Supplied username is invalid.");
+
+                // If the supplied username is disabled, throw an exception.
+                if (!UserUtilities.IsActive(userID))
+                    throw new Exception("This username has been disabled, contact your system administrator.");
 
                 // Authenticate the userName and password
                 string authResponse = AuthenticationUtilities.AuthenticateUsernamePassword(userID, userName, password);
@@ -51,35 +55,36 @@ namespace ABLCloudStaff.Controllers
                 newApiToken = AuthenticationUtilities.IssueApiToken(userID);
 
                 // Create the succesful response.
-                // A successful response contains the api token and the userID for this user.
+                // A successful response contains the api token and the userID for this username.
                 RegisterInfo data = new RegisterInfo { UserID = userID, ApiToken = newApiToken };
 
                 response = Request.CreateResponse(HttpStatusCode.OK, data);
             }
             catch (Exception ex)
             {
+                AuthErrorInfo data = new AuthErrorInfo { Message = "Failed to authenticate", Detail = ex.Message };
                 // Create a response to report the problem.
-                response = Request.CreateResponse(HttpStatusCode.Unauthorized, ex.Message);
+                response = Request.CreateResponse(HttpStatusCode.Unauthorized, data);
             }
 
             return response;
         }
 
         /// <summary>
-        /// Get current status, location and time allotted for the indicated user
+        /// Get current status, location and time allotted for the indicated username
         /// <remarks>
         /// Sample request:
         /// http://localhost:1169/api/cloudstaffapi/getuserinfo/?userID=5&apiToken=XXXXXXXXXXX
         /// </remarks>
         /// </summary>
-        /// <param name="userID">The user to get information for.</param>
-        /// <returns>Information relavent for this user.</returns>
+        /// <param name="userID">The username to get information for.</param>
+        /// <returns>Information relavent for this username.</returns>
         [HttpGet]
         public HttpResponseMessage GetUserInfo(int userID, string apiToken)
         {
             HttpResponseMessage response;
 
-            // Authenticate this user
+            // Authenticate this username
             string authResult = AuthenticationUtilities.AuthenticateUserIDToken(userID, apiToken);
 
             if (authResult == "")
@@ -88,6 +93,10 @@ namespace ABLCloudStaff.Controllers
 
                 try
                 {
+                    // If the supplied username is disabled, throw an exception.
+                    if (!UserUtilities.IsActive(userID))
+                        throw new Exception("This username has been disabled, contact your system administrator.");
+
                     // Call to the application business logic
                     Core c = CoreUtilities.GetCoreInstanceByUserID(userID);
 
@@ -114,7 +123,8 @@ namespace ABLCloudStaff.Controllers
             else
             {
                 // There was an issue.
-                response = Request.CreateResponse(HttpStatusCode.Unauthorized, authResult);
+                AuthErrorInfo data = new AuthErrorInfo { Message = "Failed to authenticate", Detail = authResult };
+                response = Request.CreateResponse(HttpStatusCode.Unauthorized, data);
             }
 
             return response;
@@ -158,20 +168,20 @@ namespace ABLCloudStaff.Controllers
         }
 
         /// <summary>
-        /// Get all available statuses for the given user
+        /// Get all available statuses for the given username
         /// <remarks>
         /// Sample request:
         /// http://localhost:1169/api/cloudstaffapi/getavailablestatuses/?userID=5&apiToken=XXXXXXXXXXX
         /// </remarks>
         /// </summary>
-        /// <param name="userID">The user to query for</param>
+        /// <param name="userID">The username to query for</param>
         /// <returns>List of available statuses</returns>
         [HttpGet]
         public HttpResponseMessage GetAvailableStatuses(int userID, string apiToken)
         {
             HttpResponseMessage response;
 
-            // Authenticate this user
+            // Authenticate this username
             string authResult = AuthenticationUtilities.AuthenticateUserIDToken(userID, apiToken);
 
             if (authResult == "")
@@ -180,6 +190,10 @@ namespace ABLCloudStaff.Controllers
 
                 try
                 {
+                    // If the supplied username is disabled, throw an exception.
+                    if (!UserUtilities.IsActive(userID))
+                        throw new Exception("This username has been disabled, contact your system administrator.");
+
                     // Call to the application business logic
                     List<Status> rawStatuses = StatusUtilities.GetAvailableStatuses(userID);
                     List<StatusInfo> data = new List<StatusInfo>();
@@ -207,27 +221,28 @@ namespace ABLCloudStaff.Controllers
             else
             {
                 // There was an issue.
-                response = Request.CreateResponse(HttpStatusCode.Unauthorized, authResult);
+                AuthErrorInfo data = new AuthErrorInfo { Message = "Failed to authenticate", Detail = authResult };
+                response = Request.CreateResponse(HttpStatusCode.Unauthorized, data);
             }
 
             return response;
         }
 
         /// <summary>
-        /// Get all locations available to the given user
+        /// Get all locations available to the given username
         /// <remarks>
         /// Sample request:
         /// http://localhost:1169/api/cloudstaffapi/getavailablelocations/?userID=5&apiToken=XXXXXXXXXXX
         /// </remarks>
         /// </summary>
-        /// <param name="userID">The user to query on</param>
+        /// <param name="userID">The username to query on</param>
         /// <returns>List of location info objects</returns>
         [HttpGet]
         public HttpResponseMessage GetAvailableLocations(int userID, string apiToken)
         {
             HttpResponseMessage response;
 
-            // Authenticate this user
+            // Authenticate this username
             string authResult = AuthenticationUtilities.AuthenticateUserIDToken(userID, apiToken);
 
             if (authResult == "")
@@ -236,6 +251,10 @@ namespace ABLCloudStaff.Controllers
 
                 try
                 {
+                    // If the supplied username is disabled, throw an exception.
+                    if (!UserUtilities.IsActive(userID))
+                        throw new Exception("This username has been disabled, contact your system administrator.");
+
                     // Call to the application business logic
                     List<Location> rawLocations = LocationUtilities.GetAvailableLocations(userID);
                     List<LocationInfo> data = new List<LocationInfo>();
@@ -261,8 +280,9 @@ namespace ABLCloudStaff.Controllers
             }
             else
             {
-                // There was an issue
-                response = Request.CreateResponse(HttpStatusCode.Unauthorized, authResult);
+                // There was an issue.
+                AuthErrorInfo data = new AuthErrorInfo { Message = "Failed to authenticate", Detail = authResult };
+                response = Request.CreateResponse(HttpStatusCode.Unauthorized, data);
             }
 
             return response;
@@ -285,7 +305,7 @@ namespace ABLCloudStaff.Controllers
         /// Body:
         /// {'userID': '1', 'statusID': '1', 'locationID': '1', 'returnTime': '26-Aug-15 11:59:54 AM' }
         /// </remarks>
-        /// <param name="coreInfo">The new core info for the given user</param>
+        /// <param name="coreInfo">The new core info for the given username</param>
         [HttpPost]
         public HttpResponseMessage PostStatusOrLocationUpdate([FromBody] CoreInfo coreInfo, [FromUri]string apiToken)
         {
@@ -296,7 +316,7 @@ namespace ABLCloudStaff.Controllers
             int statusID = Convert.ToInt32(coreInfo.statusID);
             int locationID = Convert.ToInt32(coreInfo.locationID);
 
-            // Authenticate this user
+            // Authenticate this username
             string authResult = AuthenticationUtilities.AuthenticateUserIDToken(userID, apiToken);
 
             if (authResult == "")
@@ -305,6 +325,10 @@ namespace ABLCloudStaff.Controllers
 
                 try
                 {
+                    // If the supplied username is disabled, throw an exception.
+                    if (!UserUtilities.IsActive(userID))
+                        throw new Exception("This username has been disabled, contact your system administrator.");
+
                     // Perform the update. ReturnTime is handled as an optional field. 
                     CoreUtilities.UpdateStatus(userID, statusID, coreInfo.returnTime);
                     CoreUtilities.UpdateLocation(userID, locationID);
@@ -315,13 +339,15 @@ namespace ABLCloudStaff.Controllers
                 catch (Exception ex)
                 {
                     // Report the error.
-                    response = Request.CreateResponse(HttpStatusCode.BadRequest, ex.Message);
+                    CoreUpdateErrorInfo data = new CoreUpdateErrorInfo { Message = "Bad request, inspect your input parameters", Detail = ex.Message };
+                    response = Request.CreateResponse(HttpStatusCode.BadRequest, data);
                 }
             }
             else
             {
                 // There was an issue.
-                response = Request.CreateResponse(HttpStatusCode.Unauthorized, authResult);
+                AuthErrorInfo data = new AuthErrorInfo { Message = "Failed to authenticate", Detail = authResult };
+                response = Request.CreateResponse(HttpStatusCode.Unauthorized, data);
             }
 
             return response;

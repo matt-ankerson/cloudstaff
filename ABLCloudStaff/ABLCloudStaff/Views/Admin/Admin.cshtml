@@ -1,5 +1,4 @@
-﻿@model ABLCloudStaff.Models.Core
-
+﻿
 @{
     Layout = null;
 }
@@ -9,8 +8,8 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="../../Scripts/jquery.min.js"></script>
+    <script src="../../Scripts/bootstrap.min.js"></script>
     <script src="../../Scripts/jquery-ui.min.js"></script>
     <script src="../../Scripts/admin_error_window.js"></script>
     <script src="../../Scripts/remove-user_autocomplete.js"></script>
@@ -21,16 +20,29 @@
     <script src="../../Scripts/add_status_autocomplete.js"></script>
     <script src="../../Scripts/add_status_form.js"></script>
     <script src="../../Scripts/remove_status_autocomplete.js"></script>
+    <script src="../../Scripts/Groups/remove_group_autocomplete.js"></script>
     <script src="../../Scripts/all_locations_table.js"></script>
     <script src="../../Scripts/add_location_form.js"></script>
     <script src="../../Scripts/add_location_autocomplete.js"></script>
     <script src="../../Scripts/remove_location_autocomplete.js"></script>
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" href="http://css-spinners.com/css/spinner/spinner.css" type="text/css">
+    <script src="../../Scripts/link_modifier.js"></script>
+    <script src="../../Scripts/bootstrap-multiselect.js"></script>
+    <script src="../../Scripts/Groups/fill_group_table.js"></script>
+    <link rel="stylesheet" href="../../Content/bootstrap.min.css">
+    <link rel="stylesheet" href="../../Content/spinner.css" type="text/css">
+    <link rel="stylesheet" type="text/css" href="../../Content/bootstrap-multiselect.css" />
     <link rel="stylesheet" href="../../Content/Site.css">
     <link rel="stylesheet" href="../../Content/bootstrap-switch.css">
     <link rel="stylesheet" href="../../Content/jquery-ui.min.css"/>
-    <title>CloudStaff-Admin</title>
+
+    <!-- favicon from AbacusBio website -->
+    <link rel="apple-touch-icon" sizes="144x144" href="http://www.abacusbio.com/themes/abacusbio/assets/images/apple-touch-144x144-icon.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="http://www.abacusbio.com/themes/abacusbio/assets/images/apple-touch-114x114-icon.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="http://www.abacusbio.com/themes/abacusbio/assets/images/apple-touch-72x72-icon.png" />
+    <link rel="apple-touch-icon" href="http://www.abacusbio.com/themes/abacusbio/assets/images/apple-touch-57x57-icon.png" />
+    <link rel="shortcut icon" href="http://www.abacusbio.com/themes/abacusbio/favicon.ico" type="image/x-icon" />
+
+    <title>CloudStaff Admin</title>
 
     <script type="text/javascript">
         jQuery(document).ready(function ($) {
@@ -50,20 +62,30 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("CloudStaff", "Index", "Home", null, new { @class = "navbar-brand" })
+
+                <div id="cloudstaff_title">
+                    <a href="/Home/Index" class="navbar-brand" id="redundant_link">
+                        <span>
+                            <img id="title_image" src="http://www.abacusbio.com/themes/abacusbio/assets/images/apple-touch-57x57-icon.png" width="25" height="25" />
+                        </span>
+                        CloudStaff
+                    </a>
+                </div>
+
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Status Board", "Index", "Home")</li>
                     <li><a href="/Admin/Admin">Administration <span class="glyphicon glyphicon-refresh"></span></a></li>
                     <li><a href="http://goo.gl/forms/u1cbZStRaA" target="_blank">Submit Feedback <span class="glyphicon glyphicon-list-alt"></span></a></li>
+                    <li><a href="/Admin/Logout" class="pull-right">Logout <span class="glyphicon glyphicon-log-out"></span></a></li>
                 </ul>
             </div>
         </div>
     </div>
     <br />
 
-    @if(ViewBag.Message != null)
+    @if(!string.IsNullOrEmpty(ViewBag.Message))
     {
         <div class="row" id="admin_error_window">
             <div class="container-fluid">
@@ -76,6 +98,9 @@
             </div>
         </div>
     }
+    
+    <!-- Useful constant values -->
+    <input type="hidden" id="max_priority" value="@ABLCloudStaff.Biz_Logic.Constants.MAX_PRIORITY" />
 
     <div class="container-fluid">
         <div class="row">
@@ -85,6 +110,7 @@
                 <div id="all-content">
                     <ul class="tabs nav nav-tabs" data-tabs="tabs">
                         <li class="active"><a href="#users" data-toggle="tab">Users</a></li>
+                        <li><a href="#groups" data-toggle="tab">Groups</a></li>
                         <li><a href="#statuses" data-toggle="tab">Statuses</a></li>
                         <li><a href="#locations" data-toggle="tab">Locations</a></li>
                         <li><a href="#change-log" data-toggle="tab">Change Log</a></li>
@@ -125,6 +151,15 @@
                                                     <label for="last-name-input">Last Name</label>
                                                     <input type="text" id="last-name-input" class="form-control" placeholder="Smith" name="lastName" required />
                                                     <br />
+                                                    <label for="username-input">Username</label>
+                                                    <input type="text" id="username-input" class="form-control" name="username" required />
+                                                    <br />
+                                                    <p id="add_user_password_error" hidden>Passwords must match</p>
+                                                    <label for="password-input">Password</label>
+                                                    <input type="password" id="password-input" class="form-control" name="password" required />
+                                                    <label for="password-confirm-input">Confirm Password</label>
+                                                    <input type="password" id="password-confirm-input" class="form-control" name="passwordConfirm" required />
+                                                    <br />
                                                     <label for="user-type-list">User Type</label>
                                                     <select id="user-type-list" class="form-control" name="userTypeID">
                                                         <!-- User type options go here. -->
@@ -162,8 +197,59 @@
                                 </div>
                             </div>          
                             <!-- /end User tab set -->
+                        </div>
+
+                        <!-- Groups tab set. -->
+                        <div class="tab-pane" id="groups">
+
+                            <div class="container well nested-tabs">
+                                <div id="groups-content">
+                                    <ul class="tabs nav nav-tabs" data-tabs="tabs">
+                                        <li class="active"><a href="#see-all-groups" data-toggle="tab">See All</a></li>
+                                        <li><a href="#remove-group" data-toggle="tab">Remove Group</a></li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div class="tab-pane active" id="see-all-groups">
+                                            <h3>All Groups</h3>
+                                            <div class="container nested-tabs">
+                                                <div class="panel panel-default">
+                                                    <!-- Table -->
+                                                    <table id="all-groups-table" class="table table-striped">
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Group name</th>
+                                                            <th>Group is out</th>
+                                                            <th>Priority</th>
+                                                            <th>Edit</th>
+                                                        </tr>
+                                                        <!-- Groups go here. -->
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="remove-group">
+                                            <h3>Remove Group</h3>
+                                            <div class="container nested-tabs">
+                                                <!-- Remove Status Form -->
+                                                <form id="remove-group-form" action="/Admin/RemoveGroup" method="post" role="form">
+                                                    <div class="ui-widget">
+                                                        <label for="remove-group-user-autocomplete">Which Group?</label>
+                                                        <input id="remove-group-user-autocomplete" class="form-control" placeholder="Group name" required>
+                                                        <br />
+                                                        <p id="remove-group-groupID-display"></p>
+                                                        <input type="hidden" name="groupID" id="remove-group-groupID" />
+                                                    </div>
+                                                    <br />
+                                                    <button id="remove-group-submit" type="submit" class="btn btn-default">Remove Group</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                         </div>
+
                         <div class="tab-pane" id="statuses">
 
                             <!-- Status tab set -->
@@ -401,6 +487,15 @@
                                         <label for="edit-user-lastName">Last name</label>
                                         <input id="edit-user-lastName" type="text" name="lastName" class="form-control" disabled="disabled"/>
                                         <br />
+                                        <label for="edit-user-username">Username</label>
+                                        <input id="edit-user-username" type="text" class="form-control" name="username" disabled="disabled" />
+                                        <br />
+                                        <p>Password is only updated if you supply a new one.</p>
+                                        <label for="edit-user-password">New Password</label>
+                                        <input id="edit-user-password" type="password" class="form-control" name="password" disabled="disabled" />
+                                        <label for="edit-user-password-check">Confirm New Password</label>
+                                        <input id="edit-user-password-check" type="password" class="form-control" name="passwordCheck" disabled="disabled" />
+                                        <br />
                                         <label for="edit-user-userType">User Type</label>
                                         <select id="edit-user-userType" name="userType" class="form-control">
                                             <!-- User Type options go here. -->
@@ -412,6 +507,51 @@
                                     </div>
 
                                     <button id="update-user-button" type="submit" class="btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span> Update & Save</button>
+                                </form>
+                            </div>
+                            <!-- Modal Footer -->
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /modal -->
+            </div>
+        </div>
+        <!-- /row -->
+
+        <div class="row">
+            <div class="container">
+                <!--------------- Edit Group Modal---------------------->
+                <div class="modal fade" id="edit-group-modal" role="dialog" data-backdrop="static">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header" id="admin-edit-group-modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 id="edit-group-modal-title">Edit: </h4>
+                            </div>
+                            <!-- Modal Content -->
+                            <div class="modal-body" style="padding:40px 50px;">
+                                <form id="edit-group-form" action="/Admin/UpdateGroup" method="post" role="form">
+                                    <div class="form-group">
+                                        <label for="edit-group-name">Name</label>
+                                        <input id="edit-group-name" type="text" name="name" class="form-control" required="required" />
+                                        <br />
+                                        <label for="edit-group-priority">Group priority: (0 indicates highest priority)</label>
+                                        <select id="edit-group-priority" name="priority" class="form-control">
+                                            <!-- Select options go here. -->
+                                        </select>
+                                        <br />
+                                        <!-- Members multiselect -->
+                                        <label for="edit_members_of_group">Members:</label>
+                                        <select id="edit_members_of_group" multiple="multiple" name="members[]">
+                                            <!-- Select options go here. -->
+                                        </select>
+                                        <br /><br />
+                                    </div>
+                                    <button id="update-group-button" type="submit" class="btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span> Update & Save</button>
                                 </form>
                             </div>
                             <!-- Modal Footer -->

@@ -56,6 +56,7 @@ $(document).ready(function () {
                 '<input type="hidden" id="lastName-value" value="' + list[i].lastName + '" />' +
                 '<input type="hidden" id="userType-value" value="' + list[i].userTypeID + '" />' +
                 '<input type="hidden" id="isActive-value" value="' + list[i].isActive + '" />' +
+                '<input type="hidden" id="username-value" value="' + list[i].username + '" />' +
                 '</button>' + '</td>' +
                 '</tr>');
         }
@@ -80,6 +81,7 @@ $(document).ready(function () {
             var lastName = invoker.find("#lastName-value").val();
             var userTypeID = invoker.find("#userType-value").val();
             var isActive = invoker.find("#isActive-value").val();
+            var username = invoker.find("#username-value").val();
             
             // This will fire when the modal has fully revealed itself.
             $('#edit-user-modal').on('shown.bs.modal', function (e) {
@@ -119,21 +121,25 @@ $(document).ready(function () {
                 }
 
                 function get_usertypes_errorFunc(error) {
-                    alert('error' + error.responseText);
+                    //alert('Error getting user types: ' + error.responseText);
                 }
 
                 $("#edit-user-modal-title").text("Edit: " + firstName + " " + lastName);
 
-                // We need to populate and enable all fields on the form
+                // We need to populate and enable all fields on the form (except the password fields, just enable those.)
                 $("#edit-user-firstName").val(firstName).prop('disabled', false);
                 $("#edit-user-lastName").val(lastName).prop('disabled', false);
+                $("#edit-user-username").val(username).prop('disabled', false);
                 $("#edit-user-isActive").prop('disabled', false)
 
                 if (isActive == "True")
                 {
                     $("#edit-user-isActive").prop('checked', true);
                 }
-                
+
+                // Enable the password fields
+                $("#edit-user-password").prop('disabled', false);
+                $("#edit-user-password-check").prop('disabled', false);
             });
         });
         
@@ -162,18 +168,6 @@ $(document).ready(function () {
         form.submit();
 
     });
-
-    //// Intercept the form submittal, only submit if the userID is valid
-    //$("#edit-user-form").on("submit", function (e) {
-
-    //    e.preventDefault();
-    //    alert("here");
-    //    var form = $("#edit-user-form");
-    //    var userID = form.find("#userID").val();
-
-    //    if (userID != undefined && userID != null && userID != 0)
-    //        form.submit();
-    //});
 
     // Unbind the trigger for our modal form submission
     // ...doing this stops the form being submitted multiple times.

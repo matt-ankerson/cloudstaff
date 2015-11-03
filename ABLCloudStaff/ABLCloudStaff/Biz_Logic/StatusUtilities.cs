@@ -12,9 +12,9 @@ namespace ABLCloudStaff.Biz_Logic
     public static class StatusUtilities
     {
         /// <summary>
-        /// Get all available statuses for a particular user
+        /// Get all available statuses for a particular username
         /// </summary>
-        /// <param name="userID">The user to search on</param>
+        /// <param name="userID">The username to search on</param>
         /// <returns>A List of statuses</returns>
         public static List<Status> GetAvailableStatuses(int userID)
         {
@@ -36,14 +36,15 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
             }
 
             return statuses;
         }
 
         /// <summary>
-        /// Get all statuses, regarlesss of who they belong to.
+        /// Get all statuses, regardless of who they belong to.
         /// </summary>
         /// <returns>List of type Status</returns>
         public static List<Status> GetAllStatuses()
@@ -60,7 +61,32 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
+            }
+
+            return statuses;
+        }
+
+        /// <summary>
+        /// Get all default statuses (that all users should have)
+        /// </summary>
+        /// <returns>List of statuses</returns>
+        public static List<Status> GetDefaultStatuses()
+        {
+            List<Status> statuses = new List<Status>();
+
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    statuses = context.Statuses.Where(x => Constants.DEFAULT_STATUSES.Contains(x.StatusID)).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
             }
 
             return statuses;
@@ -83,7 +109,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
             }
 
             return statusIDs;
@@ -119,7 +146,7 @@ namespace ABLCloudStaff.Biz_Logic
                     // Loop over the users
                     foreach (User u in allUsers)
                     {
-                        // Add a UserStatus object for this new statusID for every user.
+                        // Add a UserStatus object for this new statusID for every username.
                         UserStatus us = new UserStatus { UserID = u.UserID, StatusID = latestStatusID, DateAdded = DateTime.Now};
                         context.UserStatuses.Add(us);
                         context.SaveChanges();
@@ -128,14 +155,15 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
             }          
         }
 
         /// <summary>
-        /// Add a new status for a single user
+        /// Add a new status for a single username
         /// </summary>
-        /// <param name="userID">The user to add the status to</param>
+        /// <param name="userID">The username to add the status to</param>
         /// <param name="statusName">The name of the status in question.</param>
         /// <param name="available">Indicates whether or not this status is considered 'in office'.</param>
         public static void AddStatusForSingleUser(int userID, string statusName, bool available)
@@ -157,7 +185,7 @@ namespace ABLCloudStaff.Biz_Logic
                     // Pull out the statusID of the recently added status.
                     int latestStatusID = context.Statuses.OrderBy(x => x.StatusID).Select(x => x.StatusID).ToList().LastOrDefault();
 
-                    // Add a UserStatus object for this new statusID and the indicated user.
+                    // Add a UserStatus object for this new statusID and the indicated username.
                     UserStatus us = new UserStatus { UserID = userID, StatusID = latestStatusID, DateAdded = DateTime.Now };
                     context.UserStatuses.Add(us);
                     context.SaveChanges();
@@ -165,7 +193,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
             }    
         }
 
@@ -186,7 +215,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
             }
         }
 
@@ -216,7 +246,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
             }
         }
     }

@@ -8,7 +8,7 @@ using System.Data.Entity;
 namespace ABLCloudStaff.Biz_Logic
 {
     /// <summary>
-    /// Provides utilities necessary for logging a change of state or location by any user of the system.
+    /// Provides utilities necessary for logging a change of state or location by any username of the system.
     /// </summary>
     public static class ChangeLogUtilities
     {
@@ -25,7 +25,7 @@ namespace ABLCloudStaff.Biz_Logic
             {
                 using (var context = new ABLCloudStaffContext())
                 {
-                    // Query for 'n' record, starting with the latest
+                    // Query for 'n' records, starting with the latest
                     changeLog = context.StatusChangeLogs.Include("User").Include("NewStatus").Include("OldStatus").OrderByDescending(x => x.StatusChangeTimeStamp).Take(nRecords).ToList();
                 }
                 
@@ -33,7 +33,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
             }
 
             return changeLog;
@@ -60,7 +61,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
             }
 
             return changeLog;
@@ -69,7 +71,7 @@ namespace ABLCloudStaff.Biz_Logic
         /// <summary>
         /// Log the change from one status to another
         /// </summary>
-        /// <param name="userID">The user to log the change for</param>
+        /// <param name="userID">The username to log the change for</param>
         /// <param name="newStatusID">The new status</param>
         /// <param name="oldStatusID">the old status</param>
         /// <param name="stateInitTimeStamp">The time that the previous state was initiated</param>
@@ -101,14 +103,15 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
             }
         }
 
         /// <summary>
         /// Log the change from one Location to another
         /// </summary>
-        /// <param name="userID">The user to log the change for</param>
+        /// <param name="userID">The username to log the change for</param>
         /// <param name="newLocID">The new location</param>
         /// <param name="oldLocID">The old location</param>
         /// <param name="stateInitTimeStamp">The time the previous state was initiated.</param>
@@ -138,7 +141,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
             }
         }
     }

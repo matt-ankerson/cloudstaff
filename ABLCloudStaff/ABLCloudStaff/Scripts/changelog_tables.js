@@ -36,7 +36,7 @@ $(document).ready(function () {
     }
 
     function errorFunc(error) {
-        alert('error' + error.responseText);
+        //alert('error' + error.responseText);
     }
 
     // Use ajax to fetch all location changes

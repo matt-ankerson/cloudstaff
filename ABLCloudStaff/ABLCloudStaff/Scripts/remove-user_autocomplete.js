@@ -29,7 +29,7 @@ $(document).ready(function () {
     }
 
     function errorFunc(error) {
-        alert('error' + error.responseText);
+        //alert('error' + error.responseText);
     }
 
     $("#remove-user-autocomplete").autocomplete({

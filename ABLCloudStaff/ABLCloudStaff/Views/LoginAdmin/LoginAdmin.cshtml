@@ -1,0 +1,70 @@
+﻿@model ABLCloudStaff.Models.User
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <script src="../../Scripts/jquery.min.js"></script>
+    <script src="../../Scripts/bootstrap.min.js"></script>
+    <script src="../../Scripts/jquery-ui.min.js"></script>
+    <script src="../../Scripts/admin_error_window.js"></script>
+    <link rel="stylesheet" href="../../Content/bootstrap.min.css">
+    <link rel="stylesheet" href="../../Content/Site.css">
+    <link rel="stylesheet" href="../../Content/jquery-ui.min.css" />
+
+    <!-- favicon from AbacusBio website -->
+    <link rel="apple-touch-icon" sizes="144x144" href="http://www.abacusbio.com/themes/abacusbio/assets/images/apple-touch-144x144-icon.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="http://www.abacusbio.com/themes/abacusbio/assets/images/apple-touch-114x114-icon.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="http://www.abacusbio.com/themes/abacusbio/assets/images/apple-touch-72x72-icon.png" />
+    <link rel="apple-touch-icon" href="http://www.abacusbio.com/themes/abacusbio/assets/images/apple-touch-57x57-icon.png" />
+    <link rel="shortcut icon" href="http://www.abacusbio.com/themes/abacusbio/favicon.ico" type="image/x-icon" />
+
+    <title>CloudStaff Login</title>
+</head>
+<body>
+    <!-- Was there an error? -->
+    @if (ViewBag.Message != null)
+    {
+        <div class="row" id="admin_error_window">
+            <div class="container-fluid">
+                <div class="col-md-12">
+                    <div class="container well">
+                        @ViewBag.Message
+                        <button type="button" id="admin_error_window_close" class="btn btn-danger pull-right">&times;</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
+                <div class="well" id="login_form">
+                    <!-- Login Form. -->
+                    <form id="add-user-form" action="/LoginAdmin/Login" method="post" role="form">
+                        <h3>Login</h3>
+                        <p>Login to use the administration controls.</p>
+                        <div class="form-group container">
+                            <label for="username_input">Username</label>
+                            <input type="text" id="username_input" class="form-control" placeholder="" name="username" required />
+                            <br />
+                            <label for="password_input">Password</label>
+                            <input type="password" id="password_input" class="form-control" placeholder="" name="password" required />
+                            <br />
+                            <!-- Submit and Cancel buttons -->
+                            <button id="login_submit" type="submit" class="btn btn-success"><span class="glyphicon glyphicon-check"></span> Login</button>
+                            &nbsp;
+                            <button id="login_cancel" type="button" onclick="location.href='/Home/Index';" class="btn btn-danger"> &times; Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -20,9 +20,8 @@ namespace ABLCloudStaff.Models
     {
         // Create the context
         private ABLCloudStaffContext dbContext = new ABLCloudStaffContext();
-
         // Number of users that will be initialised (important for the authentication table population.)
-        private const int N_USERS = 34;
+        private const int N_USERS = 33;
 
         protected override void Seed(ABLCloudStaffContext context)
         {
@@ -37,6 +36,40 @@ namespace ABLCloudStaff.Models
             PopulateUserLocation();
             PopulateUserStatus();
             PopulateCore();
+            PopulateGroup();
+            PopulateUserInGroup();       
+        }
+
+        /// <summary>
+        /// Seed the group table
+        /// </summary>
+        public void PopulateGroup()
+        {
+            List<Group> groups = new List<Group>();
+
+            groups.Add(new Group { Active = false, Name = "Coffee", Priority = 0 });
+            groups.Add(new Group { Active = false, Name = "Golf", Priority = 0 });
+
+            foreach (Group g in groups)
+                dbContext.Groups.Add(g);
+            dbContext.SaveChanges();
+        }
+
+        /// <summary>
+        /// Seed the UserInGroup table
+        /// </summary>
+        public void PopulateUserInGroup()
+        {
+            List<UserInGroup> uigs = new List<UserInGroup>();
+            uigs.Add(new UserInGroup { GroupID = 1, UserID = 20 });
+            uigs.Add(new UserInGroup { GroupID = 1, UserID = 21 });
+            uigs.Add(new UserInGroup { GroupID = 1, UserID = 22 });
+            uigs.Add(new UserInGroup { GroupID = 2, UserID = 23 });
+            uigs.Add(new UserInGroup { GroupID = 2, UserID = 24 });
+            uigs.Add(new UserInGroup { GroupID = 2, UserID = 25 });
+            foreach (UserInGroup uig in uigs)
+                dbContext.UserInGroups.Add(uig);
+            dbContext.SaveChanges();
         }
 
         /// <summary>
@@ -79,43 +112,42 @@ namespace ABLCloudStaff.Models
         /// </summary>
         public void PopulateCore()
         {
-            // We need core information entered for each user
+            // We need core information entered for each username
             List<Core> cores = new List<Core>
             {
                 new Core {UserID = 1, StatusID = 1, LocationID = 1, StateStart = DateTime.Now},
-                new Core {UserID = 2, StatusID = 2, LocationID = 2, StateStart = DateTime.Now},
-                new Core {UserID = 3, StatusID = 3, LocationID = 3, StateStart = DateTime.Now},
-                new Core {UserID = 4, StatusID = 5, LocationID = 1, StateStart = DateTime.Now},
-                new Core {UserID = 5, StatusID = 6, LocationID = 1, StateStart = DateTime.Now},
-                new Core {UserID = 6, StatusID = 3, LocationID = 1, StateStart = DateTime.Now},
-                new Core {UserID = 7, StatusID = 3, LocationID = 2, StateStart = DateTime.Now},
+                new Core {UserID = 2, StatusID = 1, LocationID = 1, StateStart = DateTime.Now},
+                new Core {UserID = 3, StatusID = 1, LocationID = 1, StateStart = DateTime.Now},
+                new Core {UserID = 4, StatusID = 1, LocationID = 1, StateStart = DateTime.Now},
+                new Core {UserID = 5, StatusID = 1, LocationID = 1, StateStart = DateTime.Now},
+                new Core {UserID = 6, StatusID = 1, LocationID = 1, StateStart = DateTime.Now},
+                new Core {UserID = 7, StatusID = 1, LocationID = 1, StateStart = DateTime.Now},
                 new Core {UserID = 8, StatusID = 1, LocationID = 1, StateStart = DateTime.Now},
                 new Core {UserID = 9, StatusID = 1, LocationID = 1, StateStart = DateTime.Now},
-                new Core {UserID = 10, StatusID = 2, LocationID = 1, StateStart = DateTime.Now},
-                new Core {UserID = 11, StatusID = 3, LocationID = 3, StateStart = DateTime.Now},
-                new Core {UserID = 12, StatusID = 5, LocationID = 1, StateStart = DateTime.Now},
-                new Core {UserID = 13, StatusID = 6, LocationID = 1, StateStart = DateTime.Now},
-                new Core {UserID = 14, StatusID = 3, LocationID = 1, StateStart = DateTime.Now},
-                new Core {UserID = 15, StatusID = 3, LocationID = 2, StateStart = DateTime.Now},
+                new Core {UserID = 10, StatusID = 1, LocationID = 1, StateStart = DateTime.Now},
+                new Core {UserID = 11, StatusID = 1, LocationID = 1, StateStart = DateTime.Now},
+                new Core {UserID = 12, StatusID = 1, LocationID = 1, StateStart = DateTime.Now},
+                new Core {UserID = 13, StatusID = 1, LocationID = 1, StateStart = DateTime.Now},
+                new Core {UserID = 14, StatusID = 1, LocationID = 1, StateStart = DateTime.Now},
+                new Core {UserID = 15, StatusID = 1, LocationID = 1, StateStart = DateTime.Now},
                 new Core {UserID = 16, StatusID = 1, LocationID = 1, StateStart = DateTime.Now},
                 new Core {UserID = 17, StatusID = 1, LocationID = 1, StateStart = DateTime.Now},
-                new Core {UserID = 18, StatusID = 2, LocationID = 2, StateStart = DateTime.Now},
-                new Core {UserID = 19, StatusID = 3, LocationID = 3, StateStart = DateTime.Now},
-                new Core {UserID = 20, StatusID = 5, LocationID = 1, StateStart = DateTime.Now},
-                new Core {UserID = 21, StatusID = 6, LocationID = 1, StateStart = DateTime.Now},
-                new Core {UserID = 22, StatusID = 3, LocationID = 1, StateStart = DateTime.Now},
-                new Core {UserID = 23, StatusID = 3, LocationID = 2, StateStart = DateTime.Now},
+                new Core {UserID = 18, StatusID = 1, LocationID = 1, StateStart = DateTime.Now},
+                new Core {UserID = 19, StatusID = 1, LocationID = 1, StateStart = DateTime.Now},
+                new Core {UserID = 20, StatusID = 1, LocationID = 1, StateStart = DateTime.Now},
+                new Core {UserID = 21, StatusID = 1, LocationID = 1, StateStart = DateTime.Now},
+                new Core {UserID = 22, StatusID = 1, LocationID = 1, StateStart = DateTime.Now},
+                new Core {UserID = 23, StatusID = 1, LocationID = 1, StateStart = DateTime.Now},
                 new Core {UserID = 24, StatusID = 1, LocationID = 1, StateStart = DateTime.Now},
                 new Core {UserID = 25, StatusID = 1, LocationID = 1, StateStart = DateTime.Now},
-                new Core {UserID = 26, StatusID = 2, LocationID = 2, StateStart = DateTime.Now},
-                new Core {UserID = 27, StatusID = 3, LocationID = 3, StateStart = DateTime.Now},
-                new Core {UserID = 28, StatusID = 5, LocationID = 1, StateStart = DateTime.Now},
-                new Core {UserID = 29, StatusID = 6, LocationID = 1, StateStart = DateTime.Now},
-                new Core {UserID = 30, StatusID = 3, LocationID = 1, StateStart = DateTime.Now},
-                new Core {UserID = 31, StatusID = 3, LocationID = 2, StateStart = DateTime.Now},
+                new Core {UserID = 26, StatusID = 1, LocationID = 1, StateStart = DateTime.Now},
+                new Core {UserID = 27, StatusID = 1, LocationID = 1, StateStart = DateTime.Now},
+                new Core {UserID = 28, StatusID = 1, LocationID = 1, StateStart = DateTime.Now},
+                new Core {UserID = 29, StatusID = 1, LocationID = 1, StateStart = DateTime.Now},
+                new Core {UserID = 30, StatusID = 1, LocationID = 1, StateStart = DateTime.Now},
+                new Core {UserID = 31, StatusID = 1, LocationID = 1, StateStart = DateTime.Now},
                 new Core {UserID = 32, StatusID = 1, LocationID = 1, StateStart = DateTime.Now},
-                new Core {UserID = 33, StatusID = 3, LocationID = 2, StateStart = DateTime.Now},
-                new Core {UserID = 34, StatusID = 1, LocationID = 1, StateStart = DateTime.Now}
+                new Core {UserID = 33, StatusID = 1, LocationID = 1, StateStart = DateTime.Now}
             };
 
             foreach (Core c in cores)
@@ -130,40 +162,73 @@ namespace ABLCloudStaff.Models
         {
             List<User> users = new List<User>
             {
-                new User { FirstName = "Anna", LastName = "Campbell", UserTypeID = 1, IsActive = true, AuthenticationID = 1 },
-                new User { FirstName = "Bram", LastName = "Visser", UserTypeID = 1, IsActive = true, AuthenticationID = 2 },
-                new User { FirstName = "Bruno", LastName = "Santos", UserTypeID = 1, IsActive = true, AuthenticationID = 3 },
-                new User { FirstName = "Daniel", LastName = "Martin-Collado", UserTypeID = 1, IsActive = true, AuthenticationID = 4 },
-                new User { FirstName = "Fiona", LastName = "Hely", UserTypeID = 1, IsActive = true, AuthenticationID = 5 },
-                new User { FirstName = "Gemma", LastName = "Jenkins", UserTypeID = 1, IsActive = true, AuthenticationID = 6 },
-                new User { FirstName = "Bruce", LastName = "McCorkindale", UserTypeID = 1, IsActive = true, AuthenticationID = 7 },
-                new User { FirstName = "Gertje", LastName = "Petersen", UserTypeID = 1, IsActive = true, AuthenticationID = 8 },
-                new User { FirstName = "Grace", LastName = "Johnstone", UserTypeID = 1, IsActive = true, AuthenticationID = 9 },
-                new User { FirstName = "Cheryl", LastName = "King", UserTypeID = 2, IsActive = true, AuthenticationID = 10 },
-                new User { FirstName = "Hadyn", LastName = "Craig", UserTypeID = 1, IsActive = true, AuthenticationID = 11 },
-                new User { FirstName = "Jason", LastName = "Archer", UserTypeID = 1, IsActive = true, AuthenticationID = 12 },
-                new User { FirstName = "Joanne", LastName = "Kerslake", UserTypeID = 1, IsActive = true, AuthenticationID = 13 },
-                new User { FirstName = "Jonathan", LastName = "Chuah", UserTypeID = 1, IsActive = true, AuthenticationID = 14 },
-                new User { FirstName = "Jude", LastName = "Sise", UserTypeID = 1, IsActive = true, AuthenticationID = 15 },
-                new User { FirstName = "Katarzyna", LastName = "Stachowicz", UserTypeID = 1, IsActive = true, AuthenticationID = 16 },
-                new User { FirstName = "Kevin", LastName = "Wilson", UserTypeID = 1, IsActive = true, AuthenticationID = 17 },
-                new User { FirstName = "Luke", LastName = "Proctor", UserTypeID = 1, IsActive = true, AuthenticationID = 18 },
-                new User { FirstName = "Mark", LastName = "Teviotdale", UserTypeID = 2, IsActive = true, AuthenticationID = 19 },
-                new User { FirstName = "Melanie", LastName = "Joubert", UserTypeID = 1, IsActive = true, AuthenticationID = 20 },
-                new User { FirstName = "Nadia", LastName = "McLean", UserTypeID = 1, IsActive = true, AuthenticationID = 21 },
-                new User { FirstName = "Nana", LastName = "Bortsie-Aryee", UserTypeID = 1, IsActive = true, AuthenticationID = 22 },
-                new User { FirstName = "Natalie", LastName = "Howes", UserTypeID = 1, IsActive = true, AuthenticationID = 23 },
-                new User { FirstName = "Neville", LastName = "Jopson", UserTypeID = 1, IsActive = true, AuthenticationID = 24 },
-                new User { FirstName = "Nicola", LastName = "Dennis", UserTypeID = 1, IsActive = true, AuthenticationID = 25 },
-                new User { FirstName = "Peter", LastName = "Amer", UserTypeID = 1, IsActive = true, AuthenticationID = 26 },
-                new User { FirstName = "Peter", LastName = "Fennessy", UserTypeID = 1, IsActive = true, AuthenticationID = 27 },
-                new User { FirstName = "Peter", LastName = "O'Neill", UserTypeID = 1, IsActive = true, AuthenticationID = 28 },
-                new User { FirstName = "Peter", LastName = "Wong", UserTypeID = 1, IsActive = true, AuthenticationID = 29 },
-                new User { FirstName = "Sammy", LastName = "Wong", UserTypeID = 1, IsActive = true, AuthenticationID = 30 },
-                new User { FirstName = "Simon", LastName = "Glennie", UserTypeID = 1, IsActive = true, AuthenticationID = 31 },
-                new User { FirstName = "Simon", LastName = "Ryan", UserTypeID = 2, IsActive = true, AuthenticationID = 32 },
-                new User { FirstName = "Robyn", LastName = "Simpson", UserTypeID = 2, IsActive = true, AuthenticationID = 33 },
-                new User { FirstName = "Tim", LastName = "Byne", UserTypeID = 1, IsActive = true, AuthenticationID = 34 }
+                //new User { FirstName = "Anna", LastName = "Campbell", UserTypeID = 1, IsActive = true, AuthenticationID = 1 },
+                //new User { FirstName = "Bram", LastName = "Visser", UserTypeID = 1, IsActive = true, AuthenticationID = 2 },
+                //new User { FirstName = "Bruno", LastName = "Santos", UserTypeID = 1, IsActive = true, AuthenticationID = 3 },
+                //new User { FirstName = "Daniel", LastName = "Martin-Collado", UserTypeID = 1, IsActive = true, AuthenticationID = 4 },
+                //new User { FirstName = "Fiona", LastName = "Hely", UserTypeID = 1, IsActive = true, AuthenticationID = 5 },
+                //new User { FirstName = "Tim", LastName = "Byne", UserTypeID = 1, IsActive = true, AuthenticationID = 6 },
+                //new User { FirstName = "Bruce", LastName = "McCorkindale", UserTypeID = 1, IsActive = true, AuthenticationID = 7 },
+                //new User { FirstName = "Gertje", LastName = "Petersen", UserTypeID = 1, IsActive = true, AuthenticationID = 8 },
+                //new User { FirstName = "Grace", LastName = "Johnstone", UserTypeID = 1, IsActive = true, AuthenticationID = 9 },
+                //new User { FirstName = "Cheryl", LastName = "King", UserTypeID = 2, IsActive = true, AuthenticationID = 10 },
+                //new User { FirstName = "Hadyn", LastName = "Craig", UserTypeID = 1, IsActive = true, AuthenticationID = 11 },
+                //new User { FirstName = "Jason", LastName = "Archer", UserTypeID = 1, IsActive = true, AuthenticationID = 12 },
+                //new User { FirstName = "Joanne", LastName = "Kerslake", UserTypeID = 1, IsActive = true, AuthenticationID = 13 },
+                //new User { FirstName = "Jonathan", LastName = "Chuah", UserTypeID = 1, IsActive = true, AuthenticationID = 14 },
+                //new User { FirstName = "Jude", LastName = "Sise", UserTypeID = 1, IsActive = true, AuthenticationID = 15 },
+                //new User { FirstName = "Katarzyna", LastName = "Stachowicz", UserTypeID = 1, IsActive = true, AuthenticationID = 16 },
+                //new User { FirstName = "Kevin", LastName = "Wilson", UserTypeID = 1, IsActive = true, AuthenticationID = 17 },
+                //new User { FirstName = "Luke", LastName = "Proctor", UserTypeID = 1, IsActive = true, AuthenticationID = 18 },
+                //new User { FirstName = "Mark", LastName = "Teviotdale", UserTypeID = 2, IsActive = true, AuthenticationID = 19 },
+                //new User { FirstName = "Melanie", LastName = "Joubert", UserTypeID = 1, IsActive = true, AuthenticationID = 20 },
+                //new User { FirstName = "Nadia", LastName = "McLean", UserTypeID = 1, IsActive = true, AuthenticationID = 21 },
+                //new User { FirstName = "Nana", LastName = "Bortsie-Aryee", UserTypeID = 1, IsActive = true, AuthenticationID = 22 },
+                //new User { FirstName = "Natalie", LastName = "Howes", UserTypeID = 1, IsActive = true, AuthenticationID = 23 },
+                //new User { FirstName = "Neville", LastName = "Jopson", UserTypeID = 1, IsActive = true, AuthenticationID = 24 },
+                //new User { FirstName = "Nicola", LastName = "Dennis", UserTypeID = 1, IsActive = true, AuthenticationID = 25 },
+                //new User { FirstName = "Peter", LastName = "Amer", UserTypeID = 1, IsActive = true, AuthenticationID = 26 },
+                //new User { FirstName = "Peter", LastName = "Fennessy", UserTypeID = 1, IsActive = true, AuthenticationID = 27 },
+                //new User { FirstName = "Peter", LastName = "O'Neill", UserTypeID = 1, IsActive = true, AuthenticationID = 28 },
+                //new User { FirstName = "Peter", LastName = "Wong", UserTypeID = 1, IsActive = true, AuthenticationID = 29 },
+                //new User { FirstName = "Sammy", LastName = "Wong", UserTypeID = 1, IsActive = true, AuthenticationID = 30 },
+                //new User { FirstName = "Simon", LastName = "Glennie", UserTypeID = 1, IsActive = true, AuthenticationID = 31 },
+                //new User { FirstName = "Simon", LastName = "Ryan", UserTypeID = 2, IsActive = true, AuthenticationID = 32 },
+                //new User { FirstName = "Ismeni", LastName = "Currin", UserTypeID = 2, IsActive = true, AuthenticationID = 33 }
+
+                new User { FirstName = "Sue", LastName = "Gregory", UserTypeID = 1, IsActive = true, AuthenticationID = 1 },
+                new User { FirstName = "Myles", LastName = "McKay", UserTypeID = 1, IsActive = true, AuthenticationID = 2 },
+                new User { FirstName = "Fred", LastName = "Ingles", UserTypeID = 1, IsActive = true, AuthenticationID = 3 },
+                new User { FirstName = "Daniel", LastName = "Long", UserTypeID = 1, IsActive = true, AuthenticationID = 4 },
+                new User { FirstName = "Fiona", LastName = "Shingles", UserTypeID = 1, IsActive = true, AuthenticationID = 5 },
+                new User { FirstName = "Greg", LastName = "West", UserTypeID = 1, IsActive = true, AuthenticationID = 6 },
+                new User { FirstName = "Bruce", LastName = "Howatt", UserTypeID = 1, IsActive = true, AuthenticationID = 7 },
+                new User { FirstName = "Russel", LastName = "Winders", UserTypeID = 1, IsActive = true, AuthenticationID = 8 },
+                new User { FirstName = "Hank", LastName = "West", UserTypeID = 1, IsActive = true, AuthenticationID = 9 },
+                new User { FirstName = "Cheryl", LastName = "Faye", UserTypeID = 2, IsActive = true, AuthenticationID = 10 },
+                new User { FirstName = "Aaron", LastName = "Craig", UserTypeID = 1, IsActive = true, AuthenticationID = 11 },
+                new User { FirstName = "Travis", LastName = "Archer", UserTypeID = 1, IsActive = true, AuthenticationID = 12 },
+                new User { FirstName = "Josh", LastName = "Knowles", UserTypeID = 1, IsActive = true, AuthenticationID = 13 },
+                new User { FirstName = "Mike", LastName = "McGregor", UserTypeID = 1, IsActive = true, AuthenticationID = 14 },
+                new User { FirstName = "Ruby", LastName = "Kaye", UserTypeID = 1, IsActive = true, AuthenticationID = 15 },
+                new User { FirstName = "Kate", LastName = "Roderique", UserTypeID = 1, IsActive = true, AuthenticationID = 16 },
+                new User { FirstName = "Kay", LastName = "Wilson", UserTypeID = 1, IsActive = true, AuthenticationID = 17 },
+                new User { FirstName = "Luke", LastName = "Wilson", UserTypeID = 1, IsActive = true, AuthenticationID = 18 },
+                new User { FirstName = "Ross", LastName = "Andrews", UserTypeID = 2, IsActive = true, AuthenticationID = 19 },
+                new User { FirstName = "Mel", LastName = "Benington", UserTypeID = 1, IsActive = true, AuthenticationID = 20 },
+                new User { FirstName = "Dean", LastName = "Huakau", UserTypeID = 1, IsActive = true, AuthenticationID = 21 },
+                new User { FirstName = "Matthew", LastName = "Ankerson", UserTypeID = 1, IsActive = true, AuthenticationID = 22 },
+                new User { FirstName = "Hayley", LastName = "Hownes", UserTypeID = 1, IsActive = true, AuthenticationID = 23 },
+                new User { FirstName = "Nigel", LastName = "Jopp", UserTypeID = 1, IsActive = true, AuthenticationID = 24 },
+                new User { FirstName = "Jo", LastName = "Dennis", UserTypeID = 1, IsActive = true, AuthenticationID = 25 },
+                new User { FirstName = "Angus", LastName = "Fredrickson", UserTypeID = 1, IsActive = true, AuthenticationID = 26 },
+                new User { FirstName = "Peter", LastName = "Anderson", UserTypeID = 1, IsActive = true, AuthenticationID = 27 },
+                new User { FirstName = "John", LastName = "Fowler", UserTypeID = 1, IsActive = true, AuthenticationID = 28 },
+                new User { FirstName = "Susan", LastName = "Clark", UserTypeID = 1, IsActive = true, AuthenticationID = 29 },
+                new User { FirstName = "Simon", LastName = "Townsend", UserTypeID = 1, IsActive = true, AuthenticationID = 30 },
+                new User { FirstName = "Pat", LastName = "Stewart", UserTypeID = 1, IsActive = true, AuthenticationID = 31 },
+                new User { FirstName = "Tim", LastName = "Forde", UserTypeID = 2, IsActive = true, AuthenticationID = 32 },
+                new User { FirstName = "Miriam", LastName = "Thompson", UserTypeID = 2, IsActive = true, AuthenticationID = 33 }
             };
 
             foreach (User u in users)
@@ -182,8 +247,10 @@ namespace ABLCloudStaff.Models
                 new Status {Name = "Out of Office", Available = false},
                 new Status {Name = "Meeting", Available = false},
                 new Status {Name = "Lunch", Available = false},
-                new Status {Name = "Home", Available = false},
-                new Status {Name = "On Leave", Available = false}
+                new Status {Name = "Working from Home", Available = false},
+                new Status {Name = "On Leave", Available = false},
+                new Status {Name = "Visiting", Available = true},
+                new Status {Name = "Sick", Available = false}
             };
 
             foreach (Status s in statuses)
@@ -201,8 +268,10 @@ namespace ABLCloudStaff.Models
                 new Location {Name = "Not applicable"},
                 new Location {Name = "Dunedin"},
                 new Location {Name = "Mosgiel"},
-                new Location {Name = "Lawrence"},
-                new Location {Name = "Nelson"}
+                new Location {Name = "On Farm"},
+                new Location {Name = "Nelson"},
+                new Location {Name = "Overseas"},
+                new Location {Name = "North Island"}
             };
 
             foreach (Location l in locations)
@@ -215,7 +284,7 @@ namespace ABLCloudStaff.Models
         /// </summary>
         public void PopulateUserStatus()
         {
-            // Add each status to each user
+            // Add each status to each username
 
             List<UserStatus> userStatuses = new List<UserStatus>
             {
@@ -449,14 +518,7 @@ namespace ABLCloudStaff.Models
                 new UserStatus {UserID = 33, StatusID = 3, DateAdded = new DateTime(2015, 3, 5)},
                 new UserStatus {UserID = 33, StatusID = 4, DateAdded = new DateTime(2015, 3, 5)},
                 new UserStatus {UserID = 33, StatusID = 5, DateAdded = new DateTime(2015, 3, 5)},
-                new UserStatus {UserID = 33, StatusID = 6, DateAdded = new DateTime(2015, 3, 5)},
-                // User 34
-                new UserStatus {UserID = 34, StatusID = 1, DateAdded = new DateTime(2015, 3, 5)},
-                new UserStatus {UserID = 34, StatusID = 2, DateAdded = new DateTime(2015, 3, 5)},
-                new UserStatus {UserID = 34, StatusID = 3, DateAdded = new DateTime(2015, 3, 5)},
-                new UserStatus {UserID = 34, StatusID = 4, DateAdded = new DateTime(2015, 3, 5)},
-                new UserStatus {UserID = 34, StatusID = 5, DateAdded = new DateTime(2015, 3, 5)},
-                new UserStatus {UserID = 34, StatusID = 6, DateAdded = new DateTime(2015, 3, 5)}
+                new UserStatus {UserID = 33, StatusID = 6, DateAdded = new DateTime(2015, 3, 5)}
             };
 
             foreach (UserStatus us in userStatuses)
@@ -636,12 +698,7 @@ namespace ABLCloudStaff.Models
                 new UserLocation {UserID = 33, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 33, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
                 new UserLocation {UserID = 33, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
-                new UserLocation {UserID = 33, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)},
-                // User 34
-                new UserLocation {UserID = 34, LocationID = 1, DateAdded = new DateTime(2015, 3, 5)},
-                new UserLocation {UserID = 34, LocationID = 2, DateAdded = new DateTime(2015, 3, 5)},
-                new UserLocation {UserID = 34, LocationID = 3, DateAdded = new DateTime(2015, 3, 5)},
-                new UserLocation {UserID = 34, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)}
+                new UserLocation {UserID = 33, LocationID = 4, DateAdded = new DateTime(2015, 3, 5)}
             };
 
             foreach (UserLocation ul in userLocations)

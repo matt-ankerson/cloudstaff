@@ -33,13 +33,36 @@ $(document).ready(function () {
         });
 
         function success_func(data, status) {
-            // Invoke a page refresh
-            window.location.href = '/Home/Index';
+            // If the update was performed successfully, we need to reflect the changes in the module box.
+            // Check the returned data
+            if (data == 'request-failed') {
+                // There was a silent issue server-side, do a hard refresh of the page. 
+                window.location.href = '/Home/Index';
+            }
+            else {
+                // Update the module box in question.
+                // The module box's element id is simply the userID to whom it belongs.
+                raw_module = document.getElementById(userID.toString());
+                module = $(raw_module);
+                // Reset the following elements:
+                // - thisUsersStatusID (get from server)
+                var thisUsersStatusID = module.find(".thisUsersStatusID");
+                thisUsersStatusID.val(data.statusID);
+                // - thisUsersLocationID (get from server)
+                var thisUsersLocationID = module.find('.thisUsersLocationID');
+                thisUsersLocationID.val(data.locationID);
+                // - status_location_details (status contained in 'data', remove location)
+                var status_location_details = module.find('.status_location_details');
+                status_location_details.html(data.status + '<br /><br />');
+                // - time_details (remove time details)
+                var time_details = module.find('.time_details');
+                time_details.html('<small><br /><br /></small>');
+            }
         }
 
         function error_func() {
-            alert("Could not perform update");
-            // Invoke a page refesh anyway, so the switch goes back to representing information consistent with server-side
+            // The update was unsuccessful.
+            // Invoke a page refesh, so the switch goes back to representing information consistent with server-side
             window.location.href = '/Home/Index';
         }
     });

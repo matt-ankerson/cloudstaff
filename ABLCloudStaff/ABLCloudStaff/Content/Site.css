@@ -1,7 +1,15 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
-    background-color: ThreeDDarkShadow;
+    background-color: #7a7a7a;
+}
+
+.jsOnly {
+    display: none;
+}
+
+.no_top_margin {
+    padding-top: 0px;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -42,6 +50,8 @@ input[type="checkbox"].input-validation-error {
     display: none;
 }
 
+/**************************************/
+
 /* For the modal boxes*/
 
 .modal-header, h4, .close {
@@ -74,14 +84,58 @@ input[type="checkbox"].input-validation-error {
     text-align: center;
 }
 
-/* For the Toggle switches */
+/*********************************/
+
+/* Toggle switches */
 .container-switch {
     height: 35px;
     text-align: center;
+    
     vertical-align: middle;
 }
 
-/*.staff-modules */
+/*********************************/
+
+/* Main Board */
+
+/* Navigation */
+#cloudstaff_title a,
+.nav.navbar-nav li a {
+    color: #0099da;
+}
+
+#title_image {
+    padding-bottom: 3px;
+}
+
+.navbar.navbar-inverse.navbar-fixed-top {
+    background-color: #e5e5e5;
+}
+
+#cloudstaff_title {
+    display: inline;
+}
+
+#redundant_link,
+#redundant_link:hover {
+    cursor: default;
+}
+
+#visitor_button,
+#see_groups_button,
+#emergency_button {
+    margin-top: 7px;
+}
+
+.btn_group_is_in {
+    background-color: #94D6F2;
+}
+
+.btn_group_is_out {
+    background-color: #F2C8B6;
+}
+
+/* Staff modules */
 .top-half-of-panel{
     cursor: pointer;
     margin-top: 40px;
@@ -102,6 +156,44 @@ input[type="checkbox"].input-validation-error {
     white-space: nowrap;
 }
 
+.out_of_time {
+    color: red;
+}
+
+.centered {
+    width: 60%;
+    margin: auto;
+}
+
+.reduced_panel_body {
+    padding: 6px;
+}
+
+.reduced_p_margin {
+    margin: 0 0 2px;
+}
+
+.btn_nopadding {
+    padding: 0px 0px;
+}
+
+/* Main board singular status/location update modal */
+#main-modal-header,
+#modal-title {
+    background-color: #0099da;
+}
+
+.global_modal_header {
+    background-color: #0099da;
+}
+
+#custom_track {
+    z-index: 0;
+}
+
+
+/********************************/
+
 /* Administration screen */
 #admin-foreground {
     background-color: lightgray;
@@ -119,16 +211,68 @@ input[type="checkbox"].input-validation-error {
     margin: auto;
 }
 
+#add_user_password_error {
+    color: red;
+}
+
 /* Administration EDIT Modals */
 #admin-edit-status-modal-header,
 #admin-edit-location-modal-header,
-#admin-edit-user-modal-header {
+#admin-edit-user-modal-header,
+#admin-edit-group-modal-header {
     background-color: lightgray;
     padding:35px 50px;
 }
 
 #edit-status-modal-title,
 #edit-location-modal-title,
-#edit-user-modal-title {
+#edit-user-modal-title,
+#edit-group-modal-title {
     background-color: lightgray;
+}
+
+/***********************************/
+
+/* Login Form for Administration */
+#login_form {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+/***********************************/
+
+.abacusbio_blue {
+    color: #0099da;
+}
+
+.no__bottom_margin {
+    margin-bottom: 0px;
+}
+
+.small_top_margin {
+    margin-top: 25px;
+}
+
+.label-info {
+    background-color:#0099da
+}
+
+.label-info[href]:focus,
+.label-info[href]:hover {
+    background-color:#31b0d5
+}
+
+.small_inout {
+    display: block;
+    width: 40px;
+    line-height: 20px;
+    text-align: center;
+    vertical-align: middle;
+}
+.vertical_aligned {
+    margin-top: 8px;
+}
+
+.padding_top {
+    padding-top: 20px;
 }

@@ -149,12 +149,18 @@
     <Compile Include="Biz_Logic\CoreUtilities.cs" />
     <Compile Include="Biz_Logic\DateTimeUtilities.cs" />
     <Compile Include="Biz_Logic\EncryptionUtilities.cs" />
+    <Compile Include="Biz_Logic\ErrorUtilities.cs" />
+    <Compile Include="Biz_Logic\GroupUtilities.cs" />
     <Compile Include="Biz_Logic\LocationUtilities.cs" />
     <Compile Include="Biz_Logic\StatusUtilities.cs" />
     <Compile Include="Biz_Logic\UserUtilities.cs" />
+    <Compile Include="Biz_Logic\VisitorLogUtilities.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\CloudStaffApiController.cs" />
+    <Compile Include="Controllers\DisplaySmallController.cs" />
+    <Compile Include="Controllers\EmergencyController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginAdminController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -163,21 +169,27 @@
     <Compile Include="Models\Core.cs" />
     <Compile Include="Models\CreateABLCloudStaffIfNotExists.cs" />
     <Compile Include="Models\DropCreateABLCloudStaffAlways.cs" />
+    <Compile Include="Models\Error.cs" />
+    <Compile Include="Models\Group.cs" />
     <Compile Include="Models\Location.cs" />
     <Compile Include="Models\LocationChangeLog.cs" />
     <Compile Include="Models\Status.cs" />
     <Compile Include="Models\StatusChangeLog.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Models\UserInGroup.cs" />
     <Compile Include="Models\UserLocation.cs" />
     <Compile Include="Models\UserStatus.cs" />
     <Compile Include="Models\UserType.cs" />
+    <Compile Include="Models\VisitorLog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-multiselect.css" />
     <Content Include="Content\bootstrap-switch.css" />
     <Content Include="Content\bootstrap-switch.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\images\calendar.gif" />
     <Content Include="Content\images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
     <Content Include="Content\images\ui-bg_diagonals-thick_20_666666_40x40.png" />
     <Content Include="Content\images\ui-bg_flat_10_000000_40x100.png" />
@@ -195,12 +207,21 @@
     <Content Include="Content\jquery-ui.min.css" />
     <Content Include="Content\jquery-ui.structure.min.css" />
     <Content Include="Content\jquery-ui.theme.min.css" />
+    <Content Include="Content\jquery.timepicker.css" />
+    <Content Include="Content\mobile-range-slider.css" />
     <Content Include="Content\slider.css" />
+    <Content Include="Content\spinner.css" />
+    <Content Include="COPYING.txt" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\bg.png" />
+    <Content Include="Scripts\bootstrap-multiselect.js" />
+    <Content Include="Scripts\Groups\add_group.js" />
+    <Content Include="Scripts\Groups\fill_group_table.js" />
+    <Content Include="Scripts\Groups\remove_group_autocomplete.js" />
+    <Content Include="Scripts\Groups\see_groups.js" />
     <Content Include="Scripts\add_location_autocomplete.js" />
     <Content Include="Scripts\add_location_form.js" />
     <Content Include="Scripts\add_status_autocomplete.js" />
@@ -215,6 +236,8 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ClassDiagram1.cd" />
     <Content Include="Content\slider.less" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="Properties\PublishProfiles\AbacusBio Zip Package.pubxml" />
     <None Include="Properties\PublishProfiles\AbacusBio.pubxml" />
     <None Include="Properties\PublishProfiles\CloudStaff.pubxml" />
     <None Include="Properties\PublishProfiles\Default Package.pubxml" />
@@ -223,11 +246,16 @@
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\changelog_tables.js" />
     <Content Include="Scripts\fill_user_table.js" />
+    <Content Include="Scripts\Groups\update_group_modal.js" />
     <Content Include="Scripts\init_modal.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-ui.min.js" />
+    <Content Include="Scripts\jquery.min.js" />
+    <Content Include="Scripts\jquery.timepicker.js" />
     <Content Include="Scripts\less.js" />
+    <Content Include="Scripts\link_modifier.js" />
+    <Content Include="Scripts\mobile-range-slider.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\remove-user_autocomplete.js" />
     <Content Include="Scripts\remove_location_autocomplete.js" />
@@ -235,22 +263,30 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\swipe_to_change_status.js" />
-    <Content Include="Scripts\time_slider.js" />
+    <Content Include="Scripts\datetime_selection.js" />
+    <Content Include="Scripts\visitor_modal.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Views\Web.config" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Admin\Admin.cshtml" />
+    <Content Include="Views\LoginAdmin\LoginAdmin.cshtml" />
+    <Content Include="Views\DisplaySmall\DisplaySmall.cshtml" />
+    <Content Include="Views\Emergency\Emergency.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

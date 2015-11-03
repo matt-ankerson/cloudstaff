@@ -18,7 +18,7 @@ namespace ABLCloudStaff.Biz_Logic
     public static class AuthenticationUtilities
     {
         /// <summary>
-        /// Return the userID that maps to a given userName. Return 0 if no user exists.
+        /// Return the userID that maps to a given userName. Return 0 if no username exists.
         /// </summary>
         /// <param name="userName">The userName to search on.</param>
         /// <returns>The appropriate userID.</returns>
@@ -34,11 +34,14 @@ namespace ABLCloudStaff.Biz_Logic
                     // Pull up the Authentication instance by the given userName. We assume uniqueness.
                     Authentication authInstance = context.Authentications.Where(x => x.UserName == userName).FirstOrDefault();
 
-                    userID = authInstance.UserID;
+                    // Check that the auth instance isn't null.
+                    if (authInstance != null)
+                        userID = authInstance.UserID;
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception(ex.Message);
+                    ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                    throw ex;
                 }
             }
 
@@ -58,7 +61,7 @@ namespace ABLCloudStaff.Biz_Logic
             try
             {
                 // We first set up required fields in the User table:
-                // Given a userID, we need to pull up that user and set thier AuthenticationID to thier UserID.
+                // Given a userID, we need to pull up that username and set thier AuthenticationID to thier UserID.
                 using (var context = new ABLCloudStaffContext())
                 {
                     // Before we do anything:
@@ -86,10 +89,12 @@ namespace ABLCloudStaff.Biz_Logic
                     {
                         string tokenHash = EncryptionUtilities.HashPassword(token);
                         Authentication auth = new Authentication { UserID = userID, UserName = userName, Password = passwordHash, Token = tokenHash };
+                        context.Authentications.Add(auth);
                     }
                     else
                     {
                         Authentication auth = new Authentication { UserID = userID, UserName = userName, Password = passwordHash };
+                        context.Authentications.Add(auth);
                     }
 
                     context.SaveChanges();
@@ -99,14 +104,66 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception("Couldn't add authentication: " + ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now, "Couldn't add authentication information.");
+                throw ex;
             }
         }
 
         /// <summary>
-        /// Verify given user credentials, returns empty string if successful.
+        /// Update the authentication instance indicated by the userID.
         /// </summary>
-        /// <param name="userID">The user to check</param>
+        /// <param name="userID">Indicates the Auth instance to update.</param>
+        /// <param name="userName">The new username</param>
+        /// <param name="password">The new password.</param>
+        public static void UpdateAuthentication(int userID, string userName, string password)
+        {
+            // User and Authentication share an optional 1 to 1 relationship.
+
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    // Before we do anything:
+                    // Username must be unique, so check for that. But, don't include this user's existing username.
+
+                    // Get this user's existing username
+                    string existingUsernameForThisUser = context.Authentications.Where(a => a.UserID == userID).Select(a => a.UserName).FirstOrDefault();
+
+                    // Get a list of all existing usernames (not inclusive of this user's existing username.)
+                    List<string> existingUsernames = context.Authentications.Where(x => x.UserName != existingUsernameForThisUser).Select(x => x.UserName).ToList();
+
+                    if (existingUsernames.Contains(userName))
+                        throw new Exception("Username must be unique.");
+
+                    // As an extra step of caution, let's reset the AuthenticationID on the associated User instance
+                    User u = context.Users.Where(x => x.UserID == userID).FirstOrDefault();
+                    u.AuthenticationID = userID;
+
+                    context.SaveChanges();      // Save changes to User instance.
+
+                    // Hash the password before saving in the database.
+                    string passwordHash = EncryptionUtilities.HashPassword(password);
+
+                    // Pull up the Authentication instance.
+                    Authentication auth = context.Authentications.Where(a => a.UserID == userID).FirstOrDefault();
+                    // Update fields.
+                    auth.UserName = userName;
+                    auth.Password = passwordHash;
+
+                    context.SaveChanges();      // Save changes to Authentication instance.       
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorUtilities.LogException(ex.Message, DateTime.Now, "Couldn't update authentication information.");
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Verify given username credentials, returns empty string if successful.
+        /// </summary>
+        /// <param name="userID">The username to check</param>
         /// <param name="userName">Username to check</param>
         /// <param name="password">Password to check</param>
         /// <returns>Empty string or message containing reason for failure.</returns>
@@ -116,13 +173,13 @@ namespace ABLCloudStaff.Biz_Logic
 
             try
             {
-                // Pull up the user indicated by the given userID
+                // Pull up the username indicated by the given userID
                 User u = UserUtilities.GetUser(userID);
 
                 // Check userName and password
                 if (userName.Equals(u.Authentication.UserName))
                 {
-                    // Username matches, now check password
+                    // Username matches, start check password
                     if (!VerifyPassword(userID, password))
                     {
                         response = "Password is incorrect.";
@@ -136,7 +193,8 @@ namespace ABLCloudStaff.Biz_Logic
             catch (Exception ex)
             {
                 response = "Authentication Failed.";
-                throw new Exception("Authentication Failed: " + ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now,  "Authentication Failed.");
+                throw ex;
             }
 
             return response;
@@ -145,7 +203,7 @@ namespace ABLCloudStaff.Biz_Logic
         /// <summary>
         /// Authenticate a given api token against one already stored in the db. Return appropriate response.
         /// </summary>
-        /// <param name="userID">The user to authenticate against.</param>
+        /// <param name="userID">The username to authenticate against.</param>
         /// <param name="token">The token to try</param>
         /// <returns>Empty string for success, or reason for failure.</returns>
         public static string AuthenticateUserIDToken(int userID, string token)
@@ -154,7 +212,7 @@ namespace ABLCloudStaff.Biz_Logic
 
             try
             {
-                // Pull up the user indicated by the given userID
+                // Pull up the username indicated by the given userID
                 User u = UserUtilities.GetUser(userID);
                 
                 // Check that a token exists already in the db
@@ -179,14 +237,15 @@ namespace ABLCloudStaff.Biz_Logic
             catch (Exception ex)
             {
                 response = "Authentication failed due to an error.";
-                throw new Exception("Authentication Failed: " + ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now, "Authentication Failed.");
+                throw ex;
             }
 
             return response;
         }
 
         /// <summary>
-        /// Issue and store a new api token for a user who doesn't already own one.
+        /// Issue and store a new api token for a username who doesn't already own one.
         /// </summary>
         /// <param name="userID"></param>
         /// <returns>The new api token.</returns>
@@ -198,43 +257,36 @@ namespace ABLCloudStaff.Biz_Logic
             {
                 using (var context = new ABLCloudStaffContext())
                 {
-                    // Check whether or not this user already has a api token
+                    // Get the indicated username.
                     User u = context.Users.Include("Authentication").Where(x => x.UserID == userID).FirstOrDefault();
 
-                    if (u.Authentication.Token == null)
-                    {
-                        // Generate a new token
-                        string newToken = EncryptionUtilities.GenerateApiToken();
+                    // Generate a new token
+                    string newToken = EncryptionUtilities.GenerateApiToken();
 
-                        // Hash the new token
-                        string newTokenHashed = EncryptionUtilities.HashPassword(newToken);
+                    // Hash the new token
+                    string newTokenHashed = EncryptionUtilities.HashPassword(newToken);
 
-                        // Save the new hashed token
-                        u.Authentication.Token = newTokenHashed;
-                        context.SaveChanges();
+                    // Save the new hashed token
+                    u.Authentication.Token = newTokenHashed;
+                    context.SaveChanges();
 
-                        // Return the unhashed version of the token
-                        response = newToken;
-                    }
-                    else
-                    {
-                        // Return the token that already exists
-                        response = u.Authentication.Token;
-                    }
+                    // Return the unhashed version of the token
+                    response = newToken;
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception("Couldn't generate token: " + ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now, "Couldn't generate new api token");
+                throw ex;
             }
 
             return response;
         }
 
         /// <summary>
-        /// Verify a given password against a given user's already stored password.
+        /// Verify a given password against a given username's already stored password.
         /// </summary>
-        /// <param name="userID">The user in question.</param>
+        /// <param name="userID">The username in question.</param>
         /// <param name="password">The password given in this request.</param>
         /// <returns>Boolean value indicating success or failure.</returns>
         public static bool VerifyPassword(int userID, string password)
@@ -243,7 +295,7 @@ namespace ABLCloudStaff.Biz_Logic
 
             try
             {
-                // Get the user in question
+                // Get the username in question
                 User user = UserUtilities.GetUser(userID);
 
                 if(user != null)
@@ -256,7 +308,8 @@ namespace ABLCloudStaff.Biz_Logic
             }
             catch (Exception ex)
             {
-                throw new Exception("Couldn't get password for user " + userID.ToString() + " " + ex.Message);
+                ErrorUtilities.LogException(ex.Message, DateTime.Now, "Couldn't get password for userID " + userID.ToString());
+                throw ex;
             }
 
             return passwordsMatch;
@@ -284,6 +337,31 @@ namespace ABLCloudStaff.Biz_Logic
             bool result = testHash.Equals(correctHash);
             return result;
         }
+
+        /// <summary>
+        /// Get the username type for the indicated username.
+        /// </summary>
+        /// <param name="userID">The username to query for.</param>
+        /// <returns>String, representing the type of this username.</returns>
+        public static string GetUserType(int userID)
+        {
+            string userType = "";
+
+            try
+            {
+                using (var context = new ABLCloudStaffContext())
+                {
+                    userType = context.Users.Include("UserType").Where(x => x.UserID == userID).Select(x => x.UserType.Type).FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorUtilities.LogException(ex.Message, DateTime.Now);
+                throw ex;
+            }
+
+            return userType;
+        }
     }
 
     /// <summary>
@@ -293,5 +371,14 @@ namespace ABLCloudStaff.Biz_Logic
     {
         public int UserID { get; set; }
         public string ApiToken { get; set; }
+    }
+
+    /// <summary>
+    /// Encapsulates information for a helpful authentication error.
+    /// </summary>
+    public class AuthErrorInfo
+    {
+        public string Message { get; set; }
+        public string Detail { get; set; }
     }
 }

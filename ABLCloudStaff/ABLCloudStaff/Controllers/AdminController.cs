@@ -14,52 +14,111 @@ namespace ABLCloudStaff.Controllers
         // GET: /Admin/
         public ActionResult Admin()
         {
-            return View();
+            // Check Session for username
+            string username = null;
+            
+            try
+            {
+                username = Session["username"].ToString();
+            }
+            catch (Exception ex) { }
+
+            // If we have a username in session:
+            if (string.IsNullOrEmpty(username))
+            {
+                // There is no username in session, redirect to the login screen.
+                return RedirectToAction("LoginAdmin", "LoginAdmin");
+            }
+            else
+            {
+                // We have a username in session, return the admin screen.
+
+                // Check for any error messages in TempData that we should propagate to the UI.
+                if (TempData["Message"] != null)
+                {
+                    ViewBag.Message = TempData["Message"].ToString();
+                }
+                
+
+                return View();
+            }
         }
 
         /// <summary>
-        /// Accept parameters necessary for adding a user.
+        /// Destroy the session's username variable and redirect to the main board.
+        /// </summary>
+        /// <returns>Redirect to Action (Main board)</returns>
+        public ActionResult Logout()
+        {
+            try
+            {
+                // Destroy the session variable.
+                Session["username"] = null;
+            }
+            catch (Exception ex) { }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        /// <summary>
+        /// Accept parameters necessary for adding a username.
         /// </summary>
         /// <returns>An ActionResult object</returns>
         [HttpPost]
-        public ActionResult AddNewUser(string firstName, string lastName, string userTypeID, string active)
+        public ActionResult AddNewUser(string firstName, string lastName, string userTypeID, string active, string username, string password, string passwordConfirm)
         {
             int actualUserTypeID = Convert.ToInt32(userTypeID);
-            bool actualActive;
 
+            // Is this an acitve user?
+            bool actualActive;
             if (active == "on")
                 actualActive = true;
             else
                 actualActive = false;
 
             // Perform the insertion.
-            // This will also add a new core instance to the database for the new user
-            // ... and all default statuses and locations.
-            UserUtilities.AddUser(firstName, lastName, actualUserTypeID, actualActive);
+            // This will also add:
+            // - A new core instance to the database for the new user.
+            // - All default statuses and locations.
+            // - A new authentication instance for this user to use for the API. (and admin interface if appropriate)
+            try
+            {
+                // Before performing inset, ensure the passwords match.
+                if (!password.Equals(passwordConfirm))
+                    throw new Exception("Passwords do not match.");
 
-            return View("Admin");
+                UserUtilities.AddUser(firstName, lastName, actualUserTypeID, actualActive, username, password);
+            }
+            catch (Exception ex)
+            {
+                // Report the error
+                ViewBag.Message = "There was an error: " + ex.Message;
+                return View("Admin");
+            }
+
+            return RedirectToAction("Admin", "Admin");
         }
 
         /// <summary>
-        /// Delete a user and their dependencies
+        /// Delete a username and their dependencies
         /// </summary>
-        /// <param name="userID">The user to delete</param>
+        /// <param name="userID">The username to delete</param>
         /// <returns></returns>
         [HttpPost]
         public ActionResult RemoveUser(string userID)
         {
-            // If we have a user ID
+            // If we have a username ID
             if (!string.IsNullOrEmpty(userID))
             {
                 int actualUserID = Convert.ToInt32(userID);
                 UserUtilities.FlagUserDeleted(actualUserID);
             }
-            
-            return View("Admin");
+
+            return RedirectToAction("Admin", "Admin");
         }
 
         /// <summary>
-        /// Get all user's names and IDs currently in database
+        /// Get all username's names and IDs currently in database
         /// </summary>
         /// <returns>A Dictionary of users</returns>
         public JsonResult GetAllUsers()
@@ -78,6 +137,25 @@ namespace ABLCloudStaff.Controllers
         }
 
         /// <summary>
+        /// Get a dicitonary of all general and admin users
+        /// </summary>
+        /// <returns>Return json dict of users.</returns>
+        public JsonResult GetGeneralAndAdminUsers()
+        {
+            // This dictionary will hold userID and corresponding name
+            Dictionary<string, string> usersDict = new Dictionary<string, string>();
+
+            List<User> rawUsers = UserUtilities.GetGeneralAndAdminUsers();
+
+            foreach (User u in rawUsers)
+            {
+                usersDict.Add(u.UserID.ToString(), u.FirstName + " " + u.LastName);
+            }
+
+            return Json(usersDict, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
         /// Get all users in verbose detail
         /// </summary>
         /// <returns>An Ienumberable of type UserInfo in JSON format</returns>
@@ -88,7 +166,7 @@ namespace ABLCloudStaff.Controllers
             // Get all our users (regardless of deleted status)
             List<User> allUsers = UserUtilities.GetAllUsers();
 
-            // Iterate our users and build our list of stringified user information
+            // Iterate our users and build our list of stringified username information
             foreach (User user in allUsers)
             {
                 UserInfo ui = new UserInfo();
@@ -98,7 +176,11 @@ namespace ABLCloudStaff.Controllers
                 ui.userType = user.UserType.Type;
                 ui.userTypeID = user.UserTypeID.ToString();
                 ui.isActive = user.IsActive.ToString();
-                // Add to the list of verbose user details
+                if (user.Authentication != null)
+                    ui.username = user.Authentication.UserName;
+                else
+                    ui.username = "";
+                // Add to the list of verbose username details
                 userInfo.Add(ui);
             }
 
@@ -108,16 +190,17 @@ namespace ABLCloudStaff.Controllers
         }
 
         /// <summary>
-        /// Accept parameters necessary to update a user's information
+        /// Accept parameters necessary to update a username's information
         /// </summary>
-        /// <param name="userID">The user's userID</param>
+        /// <param name="userID">The username's userID</param>
         /// <param name="firstName">String to set the firstName</param>
         /// <param name="lastName">String to set the lastName</param>
-        /// <param name="userType">String to set the user type ID</param>
+        /// <param name="userType">String to set the username type ID</param>
         /// <param name="isActive">String to indicate IsActive status</param>
         /// <returns>ActionResult object</returns>
         [HttpPost]
-        public ActionResult UpdateUser(string userID, string firstName, string lastName, string userType, string isActive)
+        public ActionResult UpdateUser(string userID, string firstName, string lastName, string userType, 
+            string isActive, string username, string password, string passwordCheck)
         {
             // Convert fields to appropriate types
             bool actualIsActive;
@@ -131,11 +214,29 @@ namespace ABLCloudStaff.Controllers
                 else
                     actualIsActive = false;
 
-                // Perform the update
-                UserUtilities.UpdateUser(actualUserID, firstName, lastName, actualUserTypeID, actualIsActive);
-            } 
+                // Perform the update.
+                // We also need to update the user's associated authentication information.
+                try
+                {
+                    // Before performing inset, ensure the passwords match.
+                    if (!password.Equals(passwordCheck))
+                        throw new Exception("Passwords do not match.");
 
-            return View("Admin");
+                    UserUtilities.UpdateUser(actualUserID, firstName, lastName, actualUserTypeID, actualIsActive);
+
+                    // Now update the fields on the associated Authentication instance. (Providing a password was provided)
+                    if (!string.IsNullOrEmpty(password))
+                        AuthenticationUtilities.UpdateAuthentication(actualUserID, username, password);
+                }
+                catch (Exception ex)
+                {
+                    // Report the error
+                    ViewBag.Message = "There was an error: " + ex.Message;
+                    return View("Admin");
+                }
+            }
+
+            return RedirectToAction("Admin", "Admin");
         }
 
         /// <summary>
@@ -164,7 +265,7 @@ namespace ABLCloudStaff.Controllers
                 StatusUtilities.UpdateStatus(actualStatusID, name, actualAvailable);
             }
 
-            return View("Admin");
+            return RedirectToAction("Admin", "Admin");
         }
 
         /// <summary>
@@ -183,7 +284,7 @@ namespace ABLCloudStaff.Controllers
                 LocationUtilities.UpdateLocation(actualLocationID, name);
             }
 
-            return View("Admin");
+            return RedirectToAction("Admin", "Admin");
         }
 
         /// <summary>
@@ -265,7 +366,7 @@ namespace ABLCloudStaff.Controllers
         /// </summary>
         /// <param name="statusName">The name of the status in question</param>
         /// <param name="available">Indicates whether or not this status is considered 'in office'</param>
-        /// <param name="userID">If not null, add the status just for this user.</param>
+        /// <param name="userID">If not null, add the status just for this username.</param>
         /// <returns>ActionResult object</returns>
         public ActionResult AddStatus(string statusName, string available, string userID)
         {
@@ -277,7 +378,7 @@ namespace ABLCloudStaff.Controllers
                 if (available == "on")
                     actualAvailable = true;
 
-                // If we've got a userID, then we need to add the status ONLY for that user.
+                // If we've got a userID, then we need to add the status ONLY for that username.
                 if (!string.IsNullOrEmpty(userID))
                 {
                     actualUserID = Convert.ToInt32(userID);
@@ -288,14 +389,15 @@ namespace ABLCloudStaff.Controllers
                     StatusUtilities.AddStatusForAllUsers(statusName, actualAvailable);
                 }         
             }
-            return View("Admin");
+
+            return RedirectToAction("Admin", "Admin");
         }
 
         /// <summary>
         /// Add a new location
         /// </summary>
         /// <param name="locationName">The name of this location</param>
-        /// <param name="userID">Optional, indicates the user to assign the location to.</param>
+        /// <param name="userID">Optional, indicates the username to assign the location to.</param>
         /// <returns>ActionResult object</returns>
         public ActionResult AddLocation(string locationName, string userID)
         {
@@ -304,7 +406,7 @@ namespace ABLCloudStaff.Controllers
             if (!string.IsNullOrEmpty(locationName))
             {
 
-                // If we've got a userID, then we need to add the lacation ONLY for that user.
+                // If we've got a userID, then we need to add the lacation ONLY for that username.
                 if (!string.IsNullOrEmpty(userID))
                 {
                     actualUserID = Convert.ToInt32(userID);
@@ -316,7 +418,7 @@ namespace ABLCloudStaff.Controllers
                 }
             }
 
-            return View("Admin");
+            return RedirectToAction("Admin", "Admin");
         }
 
         /// <summary>
@@ -336,16 +438,34 @@ namespace ABLCloudStaff.Controllers
                 // If our statusID is freed up:
                 if(!inUseStatusIDs.Contains(actualStatusID))
                 {
-                    // Perform the removal. (This will be a HARD DELETE)
-                    StatusUtilities.DeleteStatus(actualStatusID);
+                    // If this is not a core status:
+                    if ((actualStatusID != Constants.DEFAULT_IN_STATUS) || (actualStatusID != Constants.DEFAULT_IN_STATUS))
+                    {
+                        try
+                        {
+                            // Perform the removal. (This will be a HARD DELETE)
+                            StatusUtilities.DeleteStatus(actualStatusID);
+                        }
+                        catch (Exception ex)
+                        {
+                            ViewBag.Message = "There was a problem removing the requested Status.";
+                            return PartialView("Admin", "Admin");
+                        }
+                    }
+                    else
+                    {
+                        ViewBag.Message = "Cannot remove Status because it is a core Status.";
+                        return PartialView("Admin", "Admin");
+                    }
                 }
                 else
                 {
                     ViewBag.Message = "Cannot remove Status because it is currently in use.";
+                    return PartialView("Admin", "Admin");
                 }
             }
 
-            return View("Admin");
+            return RedirectToAction("Admin", "Admin");
         }
 
         /// <summary>
@@ -367,21 +487,31 @@ namespace ABLCloudStaff.Controllers
                 {
                     if(actualLocationID != Constants.DEFAULT_LOCATION)
                     {
-                        // Perform the removal. (This will be a HARD DELETE)
-                        LocationUtilities.DeleteLocation(actualLocationID);
+                        try
+                        {
+                            // Perform the removal. (This will be a HARD DELETE)
+                            LocationUtilities.DeleteLocation(actualLocationID);
+                        }
+                        catch (Exception ex)
+                        {
+                            ViewBag.Message = "There was a problem removing the requested location.";
+                            return PartialView("Admin", "Admin");
+                        }
                     }
                     else
                     {
                         ViewBag.Message = "Cannot remove Location because it is a core location.";
+                        return PartialView("Admin", "Admin");
                     }
                 }
                 else
                 {
                     ViewBag.Message = "Cannot remove Location because it is currently in use.";
+                    return PartialView("Admin", "Admin");
                 }
             }
 
-            return View("Admin");
+            return RedirectToAction("Admin", "Admin");
         }
 
         /// <summary>
@@ -448,17 +578,125 @@ namespace ABLCloudStaff.Controllers
         }
 
         /// <summary>
-        /// Gets all possible user types
+        /// Gets all possible username types
         /// </summary>
         /// <returns>A list of type UserType</returns>
         public JsonResult GetUserTypes()
         {
-            // Get all user types
+            // Get all username types
             List<UserType> userTypes = UserUtilities.GetAllUserTypes();
 
             IEnumerable<UserType> data = userTypes;
 
             return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// Get a list of all groups (active or not)
+        /// </summary>
+        /// <returns>List of GroupInfo objects in JSON format.</returns>
+        public JsonResult GetAllGroups()
+        {
+            List<GroupInfo> groupInfos = new List<GroupInfo>();           
+            List<Group> groups = GroupUtilities.GetAllGroups();
+
+            foreach (Group g in groups)
+            {
+                groupInfos.Add(new GroupInfo {
+                     GroupID = g.GroupID.ToString(),
+                     Active = g.Active.ToString(),
+                     Name = g.Name,
+                     Priority = g.Priority.ToString()
+                });
+            }
+
+            IEnumerable<GroupInfo> data = groupInfos;
+
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// Return a list of users belonging to an indicated group.
+        /// </summary>
+        /// <param name="groupID">The group to get members of.</param>
+        /// <returns>Dictionary of users and thier id.</returns>
+        public JsonResult GetMembersOfGroup(string groupID)
+        {
+            Dictionary<string, string> members = new Dictionary<string, string>();
+
+            if(!string.IsNullOrEmpty(groupID))
+            {
+                int actualGroupID = Convert.ToInt32(groupID);
+                List<User> rawMembers = GroupUtilities.GetMembersOfGroup(actualGroupID);
+
+                foreach (User u in rawMembers)
+                {
+                    members.Add(u.UserID.ToString(), u.FirstName + " " + u.LastName);
+                }
+            }
+
+            return Json(members, JsonRequestBehavior.AllowGet);
+            
+        }
+
+        /// <summary>
+        /// Update an indicated group with the given information.
+        /// </summary>
+        /// <param name="groupID">Group to update</param>
+        /// <param name="name">New name for group</param>
+        /// <param name="priority">New priority value for group</param>
+        /// <returns></returns>
+        public ActionResult UpdateGroup(string groupID, string name, List<string> members, string priority="0")
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(groupID))
+                    throw new Exception("Group ID failed to propagate.");
+                if (string.IsNullOrEmpty(name))
+                    throw new Exception("No group name supplied.");
+                if ((members.Count <= 0)||(members == null))
+                    throw new Exception("At least one member must be supplied for a group.");
+
+                int actualGroupID = Convert.ToInt32(groupID);
+                int actualPriority = Convert.ToInt32(priority);
+                List<int> actualMembers = new List<int>();
+
+                // Build list of integer IDs for members
+                foreach (string userIDStr in members)
+                    actualMembers.Add(Convert.ToInt32(userIDStr));
+
+                // Perform the update. This will replace members with those supplied.
+                GroupUtilities.UpdateGroup(actualGroupID, name, actualPriority, actualMembers);
+            }
+            catch (Exception ex)
+            {
+                // Report the error
+                TempData["Message"] = "There was an error: " + ex.Message;
+            }
+
+            return RedirectToAction("Admin", "Admin");
+        }
+
+        /// <summary>
+        /// Remove an indicated group.
+        /// </summary>
+        /// <param name="groupID">The group to remove.</param>
+        /// <returns>Redirects to admin home.</returns>
+        public ActionResult RemoveGroup(string groupID)
+        {
+            try
+            {
+                int actualGroupID = Convert.ToInt32(groupID);
+                // Perform the deletion:
+                GroupUtilities.RemoveGroup(actualGroupID);
+            }
+            catch (Exception ex)
+            {
+                // Report the error
+                TempData["Message"] = "There was an error: " + ex.Message;
+            }
+
+            return RedirectToAction("Admin", "Admin");
         }
 	}
 }

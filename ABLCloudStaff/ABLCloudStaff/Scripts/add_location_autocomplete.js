@@ -28,7 +28,7 @@ $(document).ready(function () {
     }
 
     function errorFunc(error) {
-        alert('error' + error.responseText);
+        //alert('error' + error.responseText);
     }
 
     $("#add-location-user-autocomplete").autocomplete({
