@@ -122,7 +122,8 @@ input[type="checkbox"].input-validation-error {
 }
 
 #visitor_button,
-#see_groups_button {
+#see_groups_button,
+#emergency_button {
     margin-top: 7px;
 }
 

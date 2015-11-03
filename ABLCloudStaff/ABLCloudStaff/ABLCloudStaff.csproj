@@ -158,6 +158,7 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\CloudStaffApiController.cs" />
     <Compile Include="Controllers\DisplaySmallController.cs" />
+    <Compile Include="Controllers\EmergencyController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginAdminController.cs" />
     <Compile Include="Global.asax.cs">
@@ -274,7 +275,9 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Views\Web.config" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -283,6 +286,7 @@
     <Content Include="Views\Admin\Admin.cshtml" />
     <Content Include="Views\LoginAdmin\LoginAdmin.cshtml" />
     <Content Include="Views\DisplaySmall\DisplaySmall.cshtml" />
+    <Content Include="Views\Emergency\Emergency.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
