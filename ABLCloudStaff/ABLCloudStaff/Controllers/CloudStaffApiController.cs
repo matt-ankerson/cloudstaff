@@ -23,7 +23,7 @@ namespace ABLCloudStaff.Controllers
         /// </summary>
         /// <param name="userName">The userName of this username.</param>
         /// <param name="password">The password for this username.</param>
-        /// <returns>A response message containing the token, or a message detailing the error.</returns>
+        /// <returns>A response message containing the new api token and appropriate userID, or a message detailing the error.</returns>
         [HttpGet]
         public HttpResponseMessage Register(string userName, string password)
         {
@@ -289,7 +289,7 @@ namespace ABLCloudStaff.Controllers
         }
 
         /// <summary>
-        /// Push new status, location and time allotted to the server
+        /// Push new status, location and time allotted for status & location to the server
         /// (By using a core info object, populated from json in the request body.)
         /// </summary>
         /// <remarks>
@@ -305,7 +305,7 @@ namespace ABLCloudStaff.Controllers
         /// Body:
         /// {'userID': '1', 'statusID': '1', 'locationID': '1', 'returnTime': '26-Aug-15 11:59:54 AM' }
         /// </remarks>
-        /// <param name="coreInfo">The new core info for the given username</param>
+        /// <param name="coreInfo">The new core info for the given userID</param>
         [HttpPost]
         public HttpResponseMessage PostStatusOrLocationUpdate([FromBody] CoreInfo coreInfo, [FromUri]string apiToken)
         {
