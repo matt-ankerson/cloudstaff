@@ -123,6 +123,8 @@ namespace ABLCloudStaff.Biz_Logic
             try
             {
                 int userID = 0;
+                List<int> defaultStatuses = new List<int>();
+                List<int> defaultLocations = new List<int>();
 
                 using (var context = new ABLCloudStaffContext())
                 {
@@ -137,6 +139,11 @@ namespace ABLCloudStaff.Biz_Logic
                 {
                     // Get the userID back out from the added record
                     userID = context.Users.OrderBy(x => x.UserID).Select(x => x.UserID).ToList().LastOrDefault();
+
+                    // Get default statuses.
+                    defaultStatuses = context.DefaultStatuses.Select(x => x.StatusID).ToList();
+                    // Get default locations
+                    defaultLocations = context.DefaultLocations.Select(x => x.LocationID).ToList();
                 }
 
                 // Now that we have the userID for the new user, we need to add some associative information:
@@ -146,12 +153,12 @@ namespace ABLCloudStaff.Biz_Logic
 
                 // Add default statuses and locations for the new user.
                 // Statuses
-                foreach (var statusID in Constants.DEFAULT_STATUSES)
+                foreach (var statusID in defaultStatuses)
                 {
                     AddUserStatus(userID, statusID);
                 }
                 // Locations
-                foreach (var locationID in Constants.DEFAULT_LOCATIONS)
+                foreach (var locationID in defaultLocations)
                 {
                     AddUserLocation(userID, locationID);
                 }

@@ -50,5 +50,7 @@ namespace ABLCloudStaff.Models
         public DbSet<VisitorLog> VisitorLogs { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<UserInGroup> UserInGroups { get; set; }
+        public DbSet<DefaultStatus> DefaultStatuses { get; set; }
+        public DbSet<DefaultLocation> DefaultLocations { get; set; }
     }
 }

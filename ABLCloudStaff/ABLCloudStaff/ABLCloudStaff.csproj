@@ -168,6 +168,8 @@
     <Compile Include="Models\Authentication.cs" />
     <Compile Include="Models\Core.cs" />
     <Compile Include="Models\CreateABLCloudStaffIfNotExists.cs" />
+    <Compile Include="Models\DefaultLocation.cs" />
+    <Compile Include="Models\DefaultStatus.cs" />
     <Compile Include="Models\DropCreateABLCloudStaffAlways.cs" />
     <Compile Include="Models\Error.cs" />
     <Compile Include="Models\Group.cs" />
@@ -190,6 +192,11 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\images\calendar.gif" />
+    <Content Include="Content\images\icons\apple-touch-114x114-icon.png" />
+    <Content Include="Content\images\icons\apple-touch-144x144-icon.png" />
+    <Content Include="Content\images\icons\apple-touch-57x57-icon.png" />
+    <Content Include="Content\images\icons\apple-touch-72x72-icon.png" />
+    <Content Include="Content\images\icons\favicon.ico" />
     <Content Include="Content\images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
     <Content Include="Content\images\ui-bg_diagonals-thick_20_666666_40x40.png" />
     <Content Include="Content\images\ui-bg_flat_10_000000_40x100.png" />
@@ -269,12 +276,6 @@
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
-    <Content Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\Web.config">
       <SubType>Designer</SubType>
