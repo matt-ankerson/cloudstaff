@@ -16,11 +16,11 @@ namespace ABLCloudStaff.Models
         public int UserID { get; set; }
         public int NewLocationID { get; set; }
         public int OldLocationID { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string OldLocation { get; set; }
+        public string NewLocation { get; set; }
         public DateTime LocationChangeTimeStamp { get; set; }
         public DateTime LocationInitTimeStamp { get; set; } // The time that the previous location was started
-
-        public virtual User User { get; set; }
-        public virtual Location NewLocation { get; set; }
-        public virtual Location OldLocation { get; set; }
     }
 }

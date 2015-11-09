@@ -530,10 +530,10 @@ namespace ABLCloudStaff.Controllers
             foreach(var log in statusChangeLog)
             {
                 ChangeLogInfo cli = new ChangeLogInfo();
-                cli.firstName = log.User.FirstName;
-                cli.lastName = log.User.LastName;
-                cli.oldState = log.OldStatus.Name;
-                cli.newState = log.NewStatus.Name;
+                cli.firstName = log.FirstName;
+                cli.lastName = log.LastName;
+                cli.oldState = log.OldStatus;
+                cli.newState = log.NewStatus;
                 // Assign a meaningful date/time string
                 cli.stateChangeTimestamp = log.StatusChangeTimeStamp.ToShortDateString() + ", " + log.StatusChangeTimeStamp.ToShortTimeString();
                 cli.prevStateInitTimestamp = log.StatusInitTimeStamp.ToShortDateString() + ", " + log.StatusInitTimeStamp.ToShortTimeString();
@@ -561,10 +561,10 @@ namespace ABLCloudStaff.Controllers
             foreach (var log in locationChangeLog)
             {
                 ChangeLogInfo cli = new ChangeLogInfo();
-                cli.firstName = log.User.FirstName;
-                cli.lastName = log.User.LastName;
-                cli.oldState = log.OldLocation.Name;
-                cli.newState = log.NewLocation.Name;
+                cli.firstName = log.FirstName;
+                cli.lastName = log.LastName;
+                cli.oldState = log.OldLocation;
+                cli.newState = log.NewLocation;
                 // Assign a meaningful date/time string
                 cli.stateChangeTimestamp = log.LocationChangeTimeStamp.ToShortDateString() + ", " + log.LocationChangeTimeStamp.ToShortTimeString();
                 cli.prevStateInitTimestamp = log.LocationInitTimeStamp.ToShortDateString() + ", " + log.LocationInitTimeStamp.ToShortTimeString();

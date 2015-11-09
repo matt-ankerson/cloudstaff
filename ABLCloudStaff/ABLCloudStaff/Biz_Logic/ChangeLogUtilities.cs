@@ -26,7 +26,7 @@ namespace ABLCloudStaff.Biz_Logic
                 using (var context = new ABLCloudStaffContext())
                 {
                     // Query for 'n' records, starting with the latest
-                    changeLog = context.StatusChangeLogs.Include("User").Include("NewStatus").Include("OldStatus").OrderByDescending(x => x.StatusChangeTimeStamp).Take(nRecords).ToList();
+                    changeLog = context.StatusChangeLogs.OrderByDescending(x => x.StatusChangeTimeStamp).Take(nRecords).ToList();
                 }
                 
                 
@@ -54,7 +54,7 @@ namespace ABLCloudStaff.Biz_Logic
                 using (var context = new ABLCloudStaffContext())
                 {
                     // Query for 'n' record, starting with the latest
-                    changeLog = context.LocationChangeLogs.Include("User").Include("NewLocation").Include("OldLocation").OrderByDescending(x => x.LocationChangeTimeStamp).Take(nRecords).ToList();
+                    changeLog = context.LocationChangeLogs.OrderByDescending(x => x.LocationChangeTimeStamp).Take(nRecords).ToList();
                 }
 
 
@@ -90,12 +90,15 @@ namespace ABLCloudStaff.Biz_Logic
                 // Save the new ChangeLog object to the db
                 using (var context = new ABLCloudStaffContext())
                 {
-                    // Explicitly assign statuses
+                    // Explicitly assign new and old status names.
                     Status newStatus = context.Statuses.Where(x => x.StatusID == newStatusID).FirstOrDefault();
                     Status oldStatus = context.Statuses.Where(x => x.StatusID == oldStatusID).FirstOrDefault();
-                    changeLog.NewStatus = newStatus;
-                    changeLog.OldStatus = oldStatus;
+                    changeLog.NewStatus = newStatus.Name;
+                    changeLog.OldStatus = oldStatus.Name;
 
+                    // Explicitly assign the user's first and last names.
+                    changeLog.FirstName = context.Users.Where(x => x.UserID == userID).Select(x => x.FirstName).FirstOrDefault();
+                    changeLog.LastName = context.Users.Where(x => x.UserID == userID).Select(x => x.LastName).FirstOrDefault();
 
                     context.StatusChangeLogs.Add(changeLog);
                     context.SaveChanges();
@@ -130,11 +133,17 @@ namespace ABLCloudStaff.Biz_Logic
                 // Save the new ChangeLog object to the db
                 using (var context = new ABLCloudStaffContext())
                 {
-                    // Explicitly assign locations
+                    // Explicitly assign new and old locations
                     Location oldLocation = context.Locations.Where(x => x.LocationID == oldLocID).FirstOrDefault();
                     Location newLocation = context.Locations.Where(x => x.LocationID == newLocID).FirstOrDefault();
-                    changeLog.OldLocation = oldLocation;
-                    changeLog.NewLocation = newLocation;
+                    changeLog.OldLocation = oldLocation.Name;
+                    changeLog.NewLocation = newLocation.Name;
+
+                    // Explicitly assign user's first and last names
+                    changeLog.FirstName = context.Users.Where(x => x.UserID == userID).Select(x => x.FirstName).FirstOrDefault();
+                    changeLog.LastName = context.Users.Where(x => x.UserID == userID).Select(x => x.LastName).FirstOrDefault();
+
+
                     context.LocationChangeLogs.Add(changeLog);
                     context.SaveChanges();
                 }
