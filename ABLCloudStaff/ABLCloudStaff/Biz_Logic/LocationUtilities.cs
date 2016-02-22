@@ -76,7 +76,10 @@ namespace ABLCloudStaff.Biz_Logic
             {
                 using (var context = new ABLCloudStaffContext())
                 {
-                    locations = context.Locations.Where(x => Constants.DEFAULT_LOCATIONS.Contains(x.LocationID)).ToList();
+                    // Get default locations
+                    List<int> defaultLocations = context.DefaultLocations.Select(x => x.LocationID).ToList();
+
+                    locations = context.Locations.Where(x => defaultLocations.Contains(x.LocationID)).ToList();
                 }
             }
             catch (Exception ex)
@@ -115,6 +118,9 @@ namespace ABLCloudStaff.Biz_Logic
         /// <summary>
         /// Add a new location for all users
         /// </summary>
+        /// <remarks>
+        /// It is important that we add this location for future users. To do this, add a new default location to the DefaultLocation table.
+        /// </remarks>
         /// <param name="locationName">The name of this location</param>
         public static void AddLocationForAllUsers(string locationName)
         {
@@ -146,6 +152,11 @@ namespace ABLCloudStaff.Biz_Logic
                         context.UserLocations.Add(ul);
                         context.SaveChanges();
                     }
+
+                    // Add a new default location
+                    context.DefaultLocations.Add(new DefaultLocation { LocationID = latestLocationID });
+                    // Save again
+                    context.SaveChanges();
                 }
             }
             catch (Exception ex)

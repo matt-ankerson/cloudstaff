@@ -80,7 +80,10 @@ namespace ABLCloudStaff.Biz_Logic
             {
                 using (var context = new ABLCloudStaffContext())
                 {
-                    statuses = context.Statuses.Where(x => Constants.DEFAULT_STATUSES.Contains(x.StatusID)).ToList();
+                    // Get default statuses.
+                    List<int> defaultStatuses = context.DefaultStatuses.Select(x => x.StatusID).ToList();
+
+                    statuses = context.Statuses.Where(x => defaultStatuses.Contains(x.StatusID)).ToList();
                 }
             }
             catch (Exception ex)
@@ -119,6 +122,9 @@ namespace ABLCloudStaff.Biz_Logic
         /// <summary>
         /// Add a new status for all users
         /// </summary>
+        /// <remarks>
+        /// It is important that we add the status for future users. In order to do this, add the new status' ID to the DefaultStatus table.
+        /// </remarks>
         /// <param name="statusName">The name of the status in question</param>
         /// <param name="available">Indicates wheter or not this status is considered 'in office'.</param>
         public static void AddStatusForAllUsers(string statusName, bool available)
@@ -151,6 +157,11 @@ namespace ABLCloudStaff.Biz_Logic
                         context.UserStatuses.Add(us);
                         context.SaveChanges();
                     }
+
+                    // Add the status as a default status in the DefaultStatus table.
+                    context.DefaultStatuses.Add(new DefaultStatus { StatusID = latestStatusID });
+                    // Save again.
+                    context.SaveChanges();
                 }
             }
             catch (Exception ex)

@@ -37,6 +37,38 @@ namespace ABLCloudStaff.Models
             PopulateCore();
             //PopulateGroup();
             //PopulateUserInGroup();
+            PopulateDefaultStatuses();
+            PopulateDefaultLocations();
+        }
+
+        /// <summary>
+        /// Seed the DefaultStatus table
+        /// </summary>
+        public void PopulateDefaultStatuses()
+        {
+            List<DefaultStatus> defaultStatuses = new List<DefaultStatus>();
+
+            foreach (int id in Constants.DEFAULT_STATUSES)
+            {
+                dbContext.DefaultStatuses.Add(new DefaultStatus { StatusID = id });
+            }
+
+            dbContext.SaveChanges();
+        }
+
+        /// <summary>
+        /// Seed the DefaultLocation table
+        /// </summary>
+        public void PopulateDefaultLocations()
+        {
+            List<DefaultLocation> defaultLocations = new List<DefaultLocation>();
+
+            foreach (int id in Constants.DEFAULT_LOCATIONS)
+            {
+                dbContext.DefaultLocations.Add(new DefaultLocation { LocationID = id });
+            }
+
+            dbContext.SaveChanges();
         }
 
         /// <summary>
